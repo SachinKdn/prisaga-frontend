@@ -1,6 +1,6 @@
 'use client';
 
-import handleError from "@hooks/handleError";
+import handleError from '@hooks/handleError';
 
 const useAuthenticatedFileUploadApi = () => {
   const uploadFile = async (payload: any) => {
@@ -22,7 +22,7 @@ const useAuthenticatedFileUploadApi = () => {
       if (!response.ok) {
         throw new Error(`File not uploaded!`);
       }
-      console.log(response)
+      console.log(response);
       const data: IResponse<UploadResponse> = await response.json();
       return data;
     } catch (error) {

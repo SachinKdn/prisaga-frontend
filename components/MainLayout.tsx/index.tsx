@@ -12,13 +12,15 @@ import Sidebar from './Sidebar';
 import { publicRoutes } from './routes';
 import { RootState } from '@/store';
 
-const MainLayout = ({ children } : { children: React.ReactNode }) => {
+const MainLayout = ({ children }: { children: React.ReactNode }) => {
   const user = useSelector((state: RootState) => state.auth.user);
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
   const isMd = useMediaQuery(theme.breakpoints.down('md'));
-  
-  const sidebarWidth = open ? sizeConfigs.sidebar.width : sizeConfigs.sidebar.closedWidth;
+
+  const sidebarWidth = open
+    ? sizeConfigs.sidebar.width
+    : sizeConfigs.sidebar.closedWidth;
 
   const toggleDrawer = () => setOpen(!open);
 
@@ -32,12 +34,12 @@ const MainLayout = ({ children } : { children: React.ReactNode }) => {
 
   return (
     <Box sx={styles.root}>
-      <Topbar 
-        sidebarWidth={sidebarWidth} 
-        open={open} 
-        toggleDrawer={toggleDrawer} 
+      <Topbar
+        sidebarWidth={sidebarWidth}
+        open={open}
+        toggleDrawer={toggleDrawer}
       />
-      
+
       <Box
         component="nav"
         sx={{
@@ -47,7 +49,7 @@ const MainLayout = ({ children } : { children: React.ReactNode }) => {
       >
         <Sidebar toggleDrawer={toggleDrawer} open={open} />
       </Box>
-      
+
       <Box
         component="main"
         sx={{

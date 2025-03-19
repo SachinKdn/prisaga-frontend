@@ -1,14 +1,14 @@
-import { Box, Typography } from '@mui/material'
-import Image from 'next/image'
-import Link from 'next/link'
-import NotFoundImage from "@assets/png/notFoundImg.png"
-import theme from './theme'
- 
+import { Box, Typography } from '@mui/material';
+import Image from 'next/image';
+import Link from 'next/link';
+import NotFoundImage from '@assets/png/notFoundImg.png';
+import theme from './theme';
+
 export default function NotFound() {
   return (
     <Box sx={style.wrapper}>
       <Image
-        src={NotFoundImage}// Ensure you have this image in your public folder
+        src={NotFoundImage} // Ensure you have this image in your public folder
         alt="Page Not Found"
         width={400}
         height={300}
@@ -24,23 +24,23 @@ export default function NotFound() {
         Go to Homepage
       </Link>
     </Box>
-  )
+  );
 }
 
 const style = {
-    wrapper:{
-        width: "100%",
-        height: "100%",
-        display: "flex",
-        flexDirection: 'column',
-        justifyContent: "center",
-        alignItems: 'center'
-    },
-    imgWrapper:{
-        marginBottom: '8vh'
-    },
-    link: {
+  wrapper: {
+    width: '100%',
+    height: '100%',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  imgWrapper: {
+    marginBottom: '8vh',
+  },
+  link: {
     color: theme.palette.primary.main,
     textDecoration: 'none',
-  }
-}
+  },
+};

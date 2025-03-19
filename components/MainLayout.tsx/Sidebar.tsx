@@ -1,11 +1,8 @@
 import React, { useState } from 'react';
-import { Drawer, useMediaQuery, Box, ListItemIcon, Typography, Button } from '@mui/material';
+import { Drawer, useMediaQuery, Box, Typography, Button } from '@mui/material';
 import theme from '@/app/theme';
 import sizeConfigs from '@/configs/sizeConfigs';
-import Image from 'next/image';
-import logoImg from '@assets/png/hiring-icon.png';
-import Logo from '@assets/svg/prisaga-svg-logo.svg'
-import { ReactNode } from 'react';
+import Logo from '@assets/svg/prisaga-svg-logo.svg';
 import { routes } from './routes';
 import SidebarItem from './SidebarItem';
 import CloseBar from '@assets/svg/close-bar.svg';
@@ -21,16 +18,13 @@ type Props = {
   open: boolean;
   toggleDrawer: () => void;
 };
-interface Routes {
-  icon: ReactNode;
-  text: string;
-  to: string;
-}
 const Sidebar = (props: Props) => {
   const { toggleDrawer, open } = props;
   const dispatch = useDispatch<AppDispatch>();
   const isMd = useMediaQuery(theme.breakpoints.down('md'));
-  const sidebarWidth = open ? sizeConfigs.sidebar.width : sizeConfigs.sidebar.closedWidth;
+  const sidebarWidth = open
+    ? sizeConfigs.sidebar.width
+    : sizeConfigs.sidebar.closedWidth;
   const pathname = usePathname();
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
   const handleClose = () => {
@@ -89,7 +83,7 @@ const Sidebar = (props: Props) => {
                 minWidth: '40px',
                 display: 'flex',
                 alignItems: 'center',
-                paddingLeft: '2px'
+                paddingLeft: '2px',
               }}
             >
               <LogoutIcon />
@@ -101,8 +95,7 @@ const Sidebar = (props: Props) => {
                   pathname === '/login'
                     ? colorConfigs.sidebar.activeBg
                     : colorConfigs.sidebar.color,
-              fontSize: '0.88rem',
-
+                fontSize: '0.88rem',
               }}
             >
               Logout
@@ -125,7 +118,12 @@ const Sidebar = (props: Props) => {
               marginTop: '15px',
             }}
           >
-            <Button onClick={handleClose} color="secondary" variant="outlined" sx={styles.closeBtn}>
+            <Button
+              onClick={handleClose}
+              color="secondary"
+              variant="outlined"
+              sx={styles.closeBtn}
+            >
               No
             </Button>
             <Button
@@ -167,17 +165,17 @@ const styles = {
     flexDirection: 'column',
     width: '100%',
   },
-  logoWrapper:{
-    height: "80px",
+  logoWrapper: {
+    height: '80px',
     width: 'auto',
     display: 'flex',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   logo: {
     height: 'unset',
     borderRadius: '0',
     maxWidth: '168px',
-    margin: 'auto'
+    margin: 'auto',
   },
   barOpener: {
     position: 'absolute',
@@ -203,7 +201,7 @@ const styles = {
     position: 'relative',
     display: 'flex',
     alignItems: 'center',
-    height: '42px'
+    height: '42px',
   },
   submit: {
     width: '100%',

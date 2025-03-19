@@ -10,8 +10,6 @@ import {
   TablePagination,
   TableRow,
   Theme,
-  Typography,
-  useTheme,
 } from '@mui/material';
 import { createStyles } from '@mui/styles';
 import dayjs from 'dayjs';
@@ -62,7 +60,7 @@ const CustomTable = <T extends { _id?: string }>({
   rowsPerPage = 10,
 }: TableProps<T>) => {
   const styles = useStyle(theme);
-
+  // disable-no-any
   const formatDate = (date: any) => {
     return date ? dayjs(date).format('MMM DD YYYY HH:mm:ss') : '--';
   };
@@ -93,7 +91,10 @@ const CustomTable = <T extends { _id?: string }>({
             </IconButton>
           )}
           {canDelete && onDelete && row._id && (
-            <IconButton onClick={() => onDelete(row._id as string)} sx={styles.iconEditButton}>
+            <IconButton
+              onClick={() => onDelete(row._id as string)}
+              sx={styles.iconEditButton}
+            >
               <Delete sx={{ color: '#AD1400' }} />
             </IconButton>
           )}
@@ -102,7 +103,7 @@ const CustomTable = <T extends { _id?: string }>({
     }
 
     if (column.field === 'goto') {
-      console.log("1497189491284012849712789412")
+      console.log('1497189491284012849712789412');
       return (
         <Link className="hover:text-[#16BDCD]" href={`vendor/${row['_id']}`}>
           View Here
@@ -122,6 +123,7 @@ const CustomTable = <T extends { _id?: string }>({
     }
 
     if (column.field === ('ageSex' as Extract<keyof T, string>)) {
+      // disable-no-any
       const rowAsAny = row as any; // Type assertion for special case
       return (
         <Box sx={styles.flexCenter}>
@@ -132,17 +134,20 @@ const CustomTable = <T extends { _id?: string }>({
     }
 
     if (column.field === 'isApproved') {
-      row[column.field];
       console.log('value---', value);
       return (
         <span>
-          {row[column.field] ? <ShieldCheck color="#00873C" /> : <ShieldX color="#DE0101" />}
+          {row[column.field] ? (
+            <ShieldCheck color="#00873C" />
+          ) : (
+            <ShieldX color="#DE0101" />
+          )}
         </span>
       );
     }
     if (column.field === 'location') {
       console.log('value---location------', value);
-      const location: Location = row[column.field] as Location;
+      const location: ILocation = row[column.field] as ILocation;
       return <span>{location.city}</span>;
     }
     return value as React.ReactNode;
@@ -177,7 +182,11 @@ const CustomTable = <T extends { _id?: string }>({
           <TableBody sx={styles.tableBody}>
             {isLoading ? (
               <TableRow>
-                <TableCell colSpan={columns.length} align="center" sx={{ borderBottom: 'none' }}>
+                <TableCell
+                  colSpan={columns.length}
+                  align="center"
+                  sx={{ borderBottom: 'none' }}
+                >
                   <Loader height={35} />
                 </TableCell>
               </TableRow>

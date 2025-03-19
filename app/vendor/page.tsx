@@ -1,7 +1,5 @@
 import React from 'react';
-import { Box } from '@mui/material';
-import { getAgencyList, getUsersList } from '@/api/user';
-import Users from '@components/Users';
+import { getAgencyList } from '@/api/user';
 import Vendors from '@components/Vendors';
 
 const Page = async () => {

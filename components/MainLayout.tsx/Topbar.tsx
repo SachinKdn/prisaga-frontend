@@ -1,14 +1,20 @@
-import React, {useRef} from 'react';
-import { Box, useMediaQuery, AppBar, Toolbar, IconButton, Typography } from '@mui/material';
+import React, { useRef } from 'react';
+import {
+  Box,
+  useMediaQuery,
+  AppBar,
+  Toolbar,
+  IconButton,
+  Typography,
+} from '@mui/material';
 import colorConfigs from '@/configs/colorConfigs';
 import theme from '@/app/theme';
 import MenuIcon from '@mui/icons-material/Menu';
 import Image from 'next/image';
-import LogoImage from '@assets/png/PrisagaHiring+-png.png';
-import Logo from '@assets/svg/prisaga-svg-logo.svg'
+import Logo from '@assets/svg/prisaga-svg-logo.svg';
 import ProfileImage from '@assets/png/profile-pic.png';
 import { useState } from 'react';
-import ProfileDialog, { cards } from '../ProfileDialog';
+import { cards } from '../ProfileDialog';
 import { RootState } from '@store';
 import { useSelector } from 'react-redux';
 import Card from '@components/ProfileDialog/Card';
@@ -51,14 +57,13 @@ const Topbar = (props: Props) => {
         </Box>
         <Box sx={styles.box}>
           {/* <Image src={LogoImage} alt="logo" style={styles.logoImg} /> */}
-          <Logo/>
+          <Logo />
           <Image
             src={ProfileImage}
             alt="profileImg"
             style={styles.profileImg}
             onClick={handleProfileDialog}
           />
-          
 
           {open && <ProfilePopup open={open} onClose={handleProfileDialog} />}
         </Box>
@@ -160,14 +165,14 @@ const styles = {
       fontSize: '0.68rem',
     },
   },
-  popUpWrapper:{
+  popUpWrapper: {
     borderRadius: '12px',
     padding: '15px 12px 15px 12px',
     position: 'absolute',
     top: '44px',
     right: '24px',
     backgroundColor: '#fff',
-      boxShadow: '10px 10px 30px 0px #0000001F',
+    boxShadow: '10px 10px 30px 0px #0000001F',
   },
   innerWrapper: {
     display: 'flex',
@@ -184,22 +189,20 @@ const styles = {
   },
 };
 
-
-
 interface ProfilePopupProps {
   open: boolean;
   onClose: () => void;
 }
-const ProfilePopup: React.FC<ProfilePopupProps> = ({ open, onClose }) => {
+const ProfilePopup: React.FC<ProfilePopupProps> = ({ onClose }) => {
   const user = useSelector((state: RootState) => state.auth.user);
   // Change the ref type to HTMLElement
-  const dropdownRef = useRef<HTMLElement | null>(null); 
+  const dropdownRef = useRef<HTMLElement | null>(null);
 
   // Assuming useOnClickOutside works with HTMLElement type
   useOnClickOutside(dropdownRef, () => onClose());
 
   return (
-    <Box ref={dropdownRef} sx={styles.popUpWrapper} >
+    <Box ref={dropdownRef} sx={styles.popUpWrapper}>
       <Box sx={styles.innerWrapper}>
         {cards.map((card, index) => {
           if (user && user.role && card.access.includes(user.role)) {
@@ -217,4 +220,4 @@ const ProfilePopup: React.FC<ProfilePopupProps> = ({ open, onClose }) => {
       </Box>
     </Box>
   );
-}
+};

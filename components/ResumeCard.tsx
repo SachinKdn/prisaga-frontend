@@ -1,42 +1,42 @@
-import theme from '@app/theme'
-import { Box, Typography, Button, Divider } from '@mui/material'
-import React from 'react'
-import DownloadIcon from '@mui/icons-material/Download'
-import EmailIcon from '@mui/icons-material/Email'
-import PhoneIcon from '@mui/icons-material/Phone'
-import LocationOnIcon from '@mui/icons-material/LocationOn'
-import WorkIcon from '@mui/icons-material/Work'
-import BuildIcon from '@mui/icons-material/Build'
-import BusinessCenterIcon from '@mui/icons-material/BusinessCenter'
-import CodeIcon from '@mui/icons-material/Code'
+import theme from '@app/theme';
+import { Box, Typography, Button, Divider } from '@mui/material';
+import React from 'react';
+import DownloadIcon from '@mui/icons-material/Download';
+import EmailIcon from '@mui/icons-material/Email';
+import PhoneIcon from '@mui/icons-material/Phone';
+import LocationOnIcon from '@mui/icons-material/LocationOn';
+import WorkIcon from '@mui/icons-material/Work';
+import BuildIcon from '@mui/icons-material/Build';
+import BusinessCenterIcon from '@mui/icons-material/BusinessCenter';
 
-
-interface Props{
-    data: UploadedResume
+interface Props {
+  data: UploadedResume;
 }
 const ResumeCard = (props: Props) => {
-    const {data} = props;
-    const handleDownload =async () => {
-      const link = document.createElement('a');
-      link.href = data.resume.fileUrl;
-      
-      link.download = data.resume.fileName || 'resume-file';
-      
-      document.body.appendChild(link);
-      link.target = '_blank';
-      link.click();
-      
-      document.body.removeChild(link);
-      window.URL.revokeObjectURL(data.resume.fileUrl)
-    };
-    
+  const { data } = props;
+  const handleDownload = async () => {
+    const link = document.createElement('a');
+    link.href = data.resume.fileUrl;
+
+    link.download = data.resume.fileName || 'resume-file';
+
+    document.body.appendChild(link);
+    link.target = '_blank';
+    link.click();
+
+    document.body.removeChild(link);
+    window.URL.revokeObjectURL(data.resume.fileUrl);
+  };
+
   return (
     <Box sx={style.wrapper}>
       <Box sx={style.innerWrapper}>
         {/* Row 1: Name, Email, Phone */}
         <Box sx={style.row}>
           <Box sx={style.nameSection}>
-            <Typography sx={style.heading}>{data.firstName} &nbsp; {data.lastName}</Typography>
+            <Typography sx={style.heading}>
+              {data.firstName} &nbsp; {data.lastName}
+            </Typography>
           </Box>
           <Box sx={style.contactSection}>
             <Box sx={style.contactItem}>
@@ -49,23 +49,25 @@ const ResumeCard = (props: Props) => {
             </Box>
           </Box>
         </Box>
-        
+
         <Divider sx={style.divider} />
-        
+
         {/* Row 2: Location and Experience */}
         <Box sx={style.row}>
           <Box sx={style.infoItem}>
             <LocationOnIcon sx={style.icon} />
-            <Typography sx={style.text}>{data.location.city}, {data.location.state}</Typography>
+            <Typography sx={style.text}>
+              {data.location.city}, {data.location.state}
+            </Typography>
           </Box>
           <Box sx={style.infoItem}>
             <WorkIcon sx={style.icon} />
             <Typography sx={style.text}>{data.experience}</Typography>
           </Box>
         </Box>
-        
+
         <Divider sx={style.divider} />
-        
+
         {/* Row 3: Skills, Expertise, Department */}
         <Box sx={style.skillsRow}>
           {/* <Box sx={style.skillSection}>
@@ -79,7 +81,7 @@ const ResumeCard = (props: Props) => {
               <Box sx={style.tag}>MongoDB</Box>
             </Box>
           </Box> */}
-          
+
           <Box sx={style.skillSection}>
             <Box sx={style.skillHeader}>
               <BuildIcon sx={style.icon} />
@@ -89,7 +91,7 @@ const ResumeCard = (props: Props) => {
               <Box sx={style.tag}>{data.areaOfExpertise}</Box>
             </Box>
           </Box>
-          
+
           <Box sx={style.skillSection}>
             <Box sx={style.skillHeader}>
               <BusinessCenterIcon sx={style.icon} />
@@ -98,12 +100,12 @@ const ResumeCard = (props: Props) => {
             <Typography sx={style.text}>{data.summary}</Typography>
           </Box>
         </Box>
-        
+
         {/* Download Button */}
         <Box sx={style.downloadSection}>
-          <Button 
-            variant="contained" 
-            startIcon={<DownloadIcon sx={{fontSize: "0.88rem !important"}}/>}
+          <Button
+            variant="contained"
+            startIcon={<DownloadIcon sx={{ fontSize: '0.88rem !important' }} />}
             sx={style.downloadBtn}
             onClick={handleDownload}
           >
@@ -112,10 +114,10 @@ const ResumeCard = (props: Props) => {
         </Box>
       </Box>
     </Box>
-  )
-}
+  );
+};
 
-export default ResumeCard
+export default ResumeCard;
 
 const style = {
   wrapper: {
@@ -127,9 +129,9 @@ const style = {
   },
   innerWrapper: {
     display: 'flex',
-    flexDirection: "column",
+    flexDirection: 'column',
     gap: '1px',
-    width: '100%'
+    width: '100%',
   },
   row: {
     display: 'flex',
@@ -189,30 +191,30 @@ const style = {
     display: 'inline-block',
   },
   heading: {
-    fontSize: "1rem",
+    fontSize: '1rem',
     fontWeight: 600,
-    color: theme.palette.primary.main
+    color: theme.palette.primary.main,
   },
   subHeading: {
-    fontSize: "0.88rem",
+    fontSize: '0.88rem',
     fontWeight: 500,
-    color: theme.palette.text.primary
+    color: theme.palette.text.primary,
   },
   text: {
-    fontSize: "0.75rem",
-    color: theme.palette.text.secondary
+    fontSize: '0.75rem',
+    color: theme.palette.text.secondary,
   },
   icon: {
     color: theme.palette.primary.main,
-    fontSize: '1rem'
+    fontSize: '1rem',
   },
   divider: {
-    margin: '2px 0'
+    margin: '2px 0',
   },
   downloadSection: {
     display: 'flex',
     justifyContent: 'flex-end',
-    marginTop: '8px'
+    marginTop: '8px',
   },
   downloadBtn: {
     borderRadius: '4px',
@@ -225,5 +227,5 @@ const style = {
       backgroundColor: '#43afb0',
       boxShadow: 'none',
     },
-  }
-}
+  },
+};

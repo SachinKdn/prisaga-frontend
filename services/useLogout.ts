@@ -1,4 +1,4 @@
-import { useRouter } from 'next/navigation'; 
+import { useRouter } from 'next/navigation';
 import { logout } from '@/store/slices/user';
 const useLogout = () => {
   const router = useRouter();
@@ -13,7 +13,7 @@ const useLogout = () => {
     }
   };
 
-  return handleLogout; 
+  return handleLogout;
 };
 
 export default useLogout;

@@ -1,10 +1,5 @@
-import CreateNewCompany from "@components/CreateNewCompany";
-
-
+import CreateNewCompany from '@components/CreateNewCompany';
 
 export default function Page() {
-    return (
-      <CreateNewCompany/>
-    );
-  }
-  
+  return <CreateNewCompany />;
+}

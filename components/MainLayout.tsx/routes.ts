@@ -1,13 +1,8 @@
 import DashboardOutlinedIcon from '@assets/svg/dashboard.svg';
 import UsersIcon from '@assets/svg/users.svg';
 import SummaryIcon from '@assets/svg/summary.svg';
-import GridIcon from '@assets/svg/grid.svg';
-import DensityIcon from '@assets/svg/map.svg';
 import DataIcon from '@assets/svg/data-menu.svg';
 import CardIcon from '@assets/svg/card-board.svg';
-import SignalIcon from '@assets/svg/signal-icon.svg';
-import LogoutIcon from '@assets/svg/logout.svg';
-import { ReactNode } from 'react';
 import { UserRole } from '@/constant/enum';
 
 export interface RouteType {
@@ -49,6 +44,5 @@ export const routes: RouteType[] = [
     access: [UserRole.USER, UserRole.ADMIN, UserRole.SUPERADMIN],
   },
 ];
-
 
 export const publicRoutes = ['/login', '/signup', '/reset-password'];

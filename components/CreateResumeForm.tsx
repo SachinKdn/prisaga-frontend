@@ -4,7 +4,6 @@ import {
   Button,
   CircularProgress,
   FormControl,
-  FormHelperText,
   MenuItem,
   Select,
   Typography,
@@ -17,16 +16,9 @@ import { Input } from './common/Input';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { ResumeFormSchema } from '@utils/yup';
-import {
-  areaOfExpertise,
-  experienceLevels,
-  states,
-} from '@constant/resume-data';
+import { areaOfExpertise, experienceLevels } from '@constant/resume-data';
 import UploadResume from './common/UploadResume';
-import {
-  getCitiesByState,
-  getIndianStates,
-} from '@services/loadOptions';
+import { getCitiesByState, getIndianStates } from '@services/loadOptions';
 import { createResume } from '@api/clientUser';
 import handleSuccess from '@hooks/handleSuccess';
 import { useRouter } from 'next/navigation';
@@ -40,18 +32,16 @@ const CreateResumeForm = () => {
     handleSubmit,
     setValue,
     formState: { errors },
-    reset,
-    getValues,
     watch,
     control,
   } = useForm<Resume>({
     resolver: yupResolver(ResumeFormSchema),
-    defaultValues:{
-      location:{
+    defaultValues: {
+      location: {
         city: '',
-        state: ''
-      }
-    }
+        state: '',
+      },
+    },
   });
   const router = useRouter();
   const [loading, setLoading] = useState(false);
@@ -80,20 +70,20 @@ const CreateResumeForm = () => {
   const onSubmit: SubmitHandler<Resume> = async (data) => {
     console.log('submitted---', data);
     setLoading(true);
-      const result = await createResume(data);
-      console.log(result);
-      if (result) {
-        handleSuccess('Resume created successfully');
-        router.back();
-      }
-    
+    const result = await createResume(data);
+    console.log(result);
+    if (result) {
+      handleSuccess('Resume created successfully');
+      router.back();
+    }
+
     setLoading(false);
   };
-  console.log(errors)
+  console.log(errors);
   return (
     <Box sx={style.wrapper}>
       <Typography variant="h2" sx={style.heading}>
-        Let's add the new resume in our warehouse
+        Let&aposs add the new resume in our warehouse
       </Typography>
       <form onSubmit={handleSubmit(onSubmit)}>
         <DetailsHeading title="Personal Details" />
@@ -160,7 +150,7 @@ const CreateResumeForm = () => {
               register={register}
               error={errors.location?.postalCode?.message}
             />
-            
+
             <Box>
               <Typography sx={style.labelText}>Select State</Typography>
               <FormControl
@@ -185,13 +175,20 @@ const CreateResumeForm = () => {
                   defaultValue=""
                   render={({ field }) => (
                     <Select
-                    inputProps={{MenuProps: {disableScrollLock: true}}}
-                     {...field} displayEmpty sx={style.select}>
+                      inputProps={{ MenuProps: { disableScrollLock: true } }}
+                      {...field}
+                      displayEmpty
+                      sx={style.select}
+                    >
                       <MenuItem value="" disabled sx={style.selectItem}>
                         Select State
                       </MenuItem>
                       {states.map((state) => (
-                        <MenuItem key={state.value} value={state.value} sx={style.selectItem}>
+                        <MenuItem
+                          key={state.value}
+                          value={state.value}
+                          sx={style.selectItem}
+                        >
                           {state.label}
                         </MenuItem>
                       ))}
@@ -199,10 +196,9 @@ const CreateResumeForm = () => {
                   )}
                 />
                 {!!errors.location?.state?.message && (
-                   <Typography 
-                   sx={style.error} 
-                 >{errors.location?.state?.message}
-                 </Typography>
+                  <Typography sx={style.error}>
+                    {errors.location?.state?.message}
+                  </Typography>
                 )}
               </FormControl>
             </Box>
@@ -229,13 +225,21 @@ const CreateResumeForm = () => {
                   control={control}
                   defaultValue=""
                   render={({ field }) => (
-                    <Select {...field} displayEmpty sx={style.select}
-                    inputProps={{MenuProps: {disableScrollLock: true}}}>
+                    <Select
+                      {...field}
+                      displayEmpty
+                      sx={style.select}
+                      inputProps={{ MenuProps: { disableScrollLock: true } }}
+                    >
                       <MenuItem value="" disabled sx={style.selectItem}>
                         Select City
                       </MenuItem>
                       {cities.map((city) => (
-                        <MenuItem key={city.value} value={city.value} sx={style.selectItem}>
+                        <MenuItem
+                          key={city.value}
+                          value={city.value}
+                          sx={style.selectItem}
+                        >
                           {city.label}
                         </MenuItem>
                       ))}
@@ -243,10 +247,9 @@ const CreateResumeForm = () => {
                   )}
                 />
                 {!!errors.location?.city?.message && (
-                   <Typography 
-                   sx={style.error} 
-                 >{errors.location?.city?.message}
-                 </Typography>
+                  <Typography sx={style.error}>
+                    {errors.location?.city?.message}
+                  </Typography>
                 )}
               </FormControl>
             </Box>
@@ -278,13 +281,21 @@ const CreateResumeForm = () => {
                   control={control}
                   defaultValue=""
                   render={({ field }) => (
-                    <Select {...field} displayEmpty sx={style.select}
-                    inputProps={{MenuProps: {disableScrollLock: true}}}>
+                    <Select
+                      {...field}
+                      displayEmpty
+                      sx={style.select}
+                      inputProps={{ MenuProps: { disableScrollLock: true } }}
+                    >
                       <MenuItem value="" disabled sx={style.selectItem}>
                         Select Experience
                       </MenuItem>
                       {experienceLevels.map((type) => (
-                        <MenuItem key={type._id} value={type._id} sx={style.selectItem}>
+                        <MenuItem
+                          key={type._id}
+                          value={type._id}
+                          sx={style.selectItem}
+                        >
                           {type.name}
                         </MenuItem>
                       ))}
@@ -292,10 +303,9 @@ const CreateResumeForm = () => {
                   )}
                 />
                 {!!errors.experience && (
-                  <Typography 
-                  sx={style.error} 
-                >{errors.experience.message}
-                </Typography>
+                  <Typography sx={style.error}>
+                    {errors.experience.message}
+                  </Typography>
                 )}
               </FormControl>
             </Box>
@@ -324,14 +334,21 @@ const CreateResumeForm = () => {
                   control={control}
                   defaultValue=""
                   render={({ field }) => (
-                    <Select {...field}
-                    inputProps={{MenuProps: {disableScrollLock: true}}}
-                     displayEmpty sx={style.select}>
+                    <Select
+                      {...field}
+                      inputProps={{ MenuProps: { disableScrollLock: true } }}
+                      displayEmpty
+                      sx={style.select}
+                    >
                       <MenuItem value="" disabled sx={style.selectItem}>
                         Select Area
                       </MenuItem>
                       {areaOfExpertise.map((type) => (
-                        <MenuItem key={type._id} value={type._id} sx={style.selectItem}>
+                        <MenuItem
+                          key={type._id}
+                          value={type._id}
+                          sx={style.selectItem}
+                        >
                           {type.name}
                         </MenuItem>
                       ))}
@@ -339,31 +356,28 @@ const CreateResumeForm = () => {
                   )}
                 />
                 {!!errors.areaOfExpertise && (
-                   <Typography 
-                   sx={style.error} 
-                 >{errors.areaOfExpertise.message}
-                 </Typography>
+                  <Typography sx={style.error}>
+                    {errors.areaOfExpertise.message}
+                  </Typography>
                 )}
               </FormControl>
             </Box>
             <Box>
-        <Typography sx={style.labelText}>
-          Summary
-        </Typography>
-            <TextField
-            {...register('summary')}
-            name='summary'
-            id="outlined-multiline-static"
-            // label="Summary"
-            multiline
-            rows={3}
-            placeholder="Enter summary"
-            sx={style.textField}
-          />
-           </Box>
+              <Typography sx={style.labelText}>Summary</Typography>
+              <TextField
+                {...register('summary')}
+                name="summary"
+                id="outlined-multiline-static"
+                // label="Summary"
+                multiline
+                rows={3}
+                placeholder="Enter summary"
+                sx={style.textField}
+              />
+            </Box>
           </Box>
           <DetailsHeading title="Upload Resume" />
-          <UploadResume 
+          <UploadResume
             name="pdf"
             label="Upload Resume"
             required={true}
@@ -372,23 +386,25 @@ const CreateResumeForm = () => {
             setIsUploading={setUploading}
             uploadedFileName={''}
           />
-        <Button
-              type="submit"
-              color="primary"
-              variant="contained"
-              fullWidth
-              disabled={loading}
-              sx={style.btn}
-            >
-              {loading || uploading ? (
-                <Box sx={{display: 'flex', alignItems: 'center' , gap: 2}}>
+          <Button
+            type="submit"
+            color="primary"
+            variant="contained"
+            fullWidth
+            disabled={loading}
+            sx={style.btn}
+          >
+            {loading || uploading ? (
+              <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
                 <CircularProgress size={18} style={{ color: 'white' }} />
-                <Typography sx={{fontSize: '0.75rem'}}>{`${uploading ? 'Uploading...' : 'Saving...'}`}</Typography>
-                </Box>
-              ) : (
-                `Save`
-              )}
-            </Button>
+                <Typography
+                  sx={{ fontSize: '0.75rem' }}
+                >{`${uploading ? 'Uploading...' : 'Saving...'}`}</Typography>
+              </Box>
+            ) : (
+              `Save`
+            )}
+          </Button>
         </Box>
       </form>
     </Box>
@@ -434,16 +450,15 @@ const style = {
     lineHeight: '21px',
     color: theme.palette.text.secondary,
   },
-  error:{
+  error: {
     fontSize: '12px',
     color: 'red',
     height: '18px',
     margin: 0,
-    lineHeight: "unset",
-    '& .MuiFormControl-root .MuiFormHelperText-root':{
+    lineHeight: 'unset',
+    '& .MuiFormControl-root .MuiFormHelperText-root': {
       lineHeight: '18px !important',
-
-    }
+    },
   },
   heading: {
     color: theme.palette.primary.main,
@@ -478,12 +493,12 @@ const style = {
     borderRadius: '4px',
     width: '100%',
     backgroundColor: '#FAFAFA',
-    maxHeight: '350px !important'
+    maxHeight: '350px !important',
   },
   btn: {
     width: '100%',
     height: '38px',
-    marginTop: "40px",
+    marginTop: '40px',
     borderWidth: '1.5px',
     color: 'white',
     borderRadius: '4px',
@@ -499,7 +514,7 @@ const style = {
     },
     '&:disabled': {
       backgroundColor: theme.palette.secondary.main,
-      color: "white"
+      color: 'white',
     },
   },
   textField: {
@@ -510,15 +525,15 @@ const style = {
       fontSize: '0.8rem',
       fontWeight: '500',
       lineHeight: '24px',
-      padding: "8px 10px",
-      
+      padding: '8px 10px',
+
       // Autofill styling
       '& input:-webkit-autofill': {
         WebkitBoxShadow: '0 0 0 100px #FFFFFF inset',
         WebkitTextFillColor: '#4A4A4A',
         caretColor: '#4A4A4A',
         borderRadius: 'inherit',
-        fontFamily: 'inherit'
+        fontFamily: 'inherit',
       },
       '& input:-webkit-autofill:focus': {
         WebkitBoxShadow: '0 0 0 100px #FFFFFF inset',
@@ -539,7 +554,7 @@ const style = {
       lineHeight: '1',
     },
     '& input::-webkit-outer-spin-button, & input::-webkit-inner-spin-button': {
-      WebkitAppearance: "none",
+      WebkitAppearance: 'none',
       margin: 0,
     },
   },

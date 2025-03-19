@@ -13,24 +13,30 @@ type Props = {
 const SidebarItem = ({ item, toggleDrawer }: Props) => {
   const pathname = usePathname();
   const isMd = useMediaQuery(theme.breakpoints.down('md'));
-  console.log(pathname)
+  console.log(pathname);
   const Icon = item.icon;
-  const isActive = pathname.includes(item.to)
+  const isActive = pathname.includes(item.to);
   return (
     <Link href={item.to} onClick={isMd ? toggleDrawer : () => {}}>
-      <Box sx={{...styles.wrapper,
-      bgcolor: isActive ? colorConfigs.sidebar.activeBg : 'transparent',}
-      }>
+      <Box
+        sx={{
+          ...styles.wrapper,
+          bgcolor: isActive ? colorConfigs.sidebar.activeBg : 'transparent',
+        }}
+      >
         {isActive && (
-          <ActiveBarIcon style={{ position: 'absolute', left: 0, height: '70%' }} />
+          <ActiveBarIcon
+            style={{ position: 'absolute', left: 0, height: '70%' }}
+          />
         )}
         <Box
           sx={{
-            color:
-              isActive ? colorConfigs.sidebar.activeColor : colorConfigs.sidebar.color,
+            color: isActive
+              ? colorConfigs.sidebar.activeColor
+              : colorConfigs.sidebar.color,
             minWidth: '40px',
             display: 'flex',
-            alignItems: 'center'
+            alignItems: 'center',
           }}
         >
           <Icon />
@@ -38,9 +44,10 @@ const SidebarItem = ({ item, toggleDrawer }: Props) => {
         <Typography
           variant="body1"
           sx={{
-            color:
-              isActive ? colorConfigs.sidebar.activeColor : colorConfigs.sidebar.color,
-              fontSize: '0.88rem',
+            color: isActive
+              ? colorConfigs.sidebar.activeColor
+              : colorConfigs.sidebar.color,
+            fontSize: '0.88rem',
           }}
         >
           {item.text}
@@ -62,6 +69,6 @@ const styles = {
     position: 'relative',
     display: 'flex',
     alignItems: 'center',
-    height: '42px'
+    height: '42px',
   },
 };

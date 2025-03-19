@@ -6,6 +6,7 @@ import useDebounce from '@hooks/useDebounce';
 export interface AutocompleteOption {
   id: string | number;
   label: string;
+  // disable-no-any
   [key: string]: any; // Allow for additional properties
 }
 
@@ -22,7 +23,10 @@ interface DynamicAutocompleteProps {
   helperText?: string;
   debounceMs?: number;
   freeSolo?: boolean;
-  renderOption?: (props: React.HTMLAttributes<HTMLLIElement>, option: AutocompleteOption) => React.ReactNode;
+  renderOption?: (
+    props: React.HTMLAttributes<HTMLLIElement>,
+    option: AutocompleteOption
+  ) => React.ReactNode;
 }
 
 const DynamicAutocomplete: React.FC<DynamicAutocompleteProps> = ({
@@ -36,7 +40,7 @@ const DynamicAutocomplete: React.FC<DynamicAutocompleteProps> = ({
   disabled = false,
   error = false,
   helperText = '',
-  debounceMs = 300,
+  // debounceMs = 300,
   freeSolo = false,
   renderOption,
 }) => {
@@ -61,20 +65,28 @@ const DynamicAutocomplete: React.FC<DynamicAutocompleteProps> = ({
     [inputValue] // Dependencies are empty because we want to create this function once
   );
   // Load initial options when component mounts or open state changes
+  console.log(debouncedLoadOptions);
 
-
-
+  const debouncedInputValue = useDebounce(inputValue, 500);
+  useEffect(() => {
+    console.log('searchValue', debouncedInputValue);
+    // Do whatever you need with the debounced value here
+  }, [debouncedInputValue]);
   // Handle input change
-  const handleInputChange = (event: React.SyntheticEvent, newInputValue: string) => {
-      const searchValue = useDebounce(newInputValue, 500);
-      console.log("searchValue", searchValue)
-      setInputValue(searchValue);
+  const handleInputChange = (
+    event: React.SyntheticEvent,
+    newInputValue: string
+  ) => {
+    // Just update the input value directly - the debounce happens automatically
+    setInputValue(newInputValue);
   };
 
   return (
     <Autocomplete
       value={value}
-      onChange={(event, newValue) => onChange(newValue as AutocompleteOption | null)}
+      onChange={(event, newValue) =>
+        onChange(newValue as AutocompleteOption | null)
+      }
       inputValue={inputValue}
       onInputChange={handleInputChange}
       options={options}
@@ -103,7 +115,9 @@ const DynamicAutocomplete: React.FC<DynamicAutocompleteProps> = ({
             ...params.InputProps,
             endAdornment: (
               <React.Fragment>
-                {loading ? <CircularProgress color="inherit" size={20} /> : null}
+                {loading ? (
+                  <CircularProgress color="inherit" size={20} />
+                ) : null}
                 {params.InputProps.endAdornment}
               </React.Fragment>
             ),

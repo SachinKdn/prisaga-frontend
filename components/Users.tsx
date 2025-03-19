@@ -1,12 +1,9 @@
 'use client';
-import { Box, Button, CircularProgress, Theme, useTheme } from '@mui/material';
-import { createStyles } from '@mui/styles';
+import { Box, Button, CircularProgress } from '@mui/material';
 import { useEffect, useState } from 'react';
 import AddIcon from '@mui/icons-material/Add';
 import useDebounce from '../hooks/useDebounce';
 import { useSelector } from 'react-redux';
-import { FetchBaseQueryError } from '@reduxjs/toolkit/query';
-import { getUsersColumns } from '@/constant/TableColumns';
 import { RootState } from '@/store';
 import { UserRole } from '@/constant/enum';
 import CustomDialog from './common/CustomDialog';
@@ -40,7 +37,7 @@ const Users = (props: Props) => {
     setPage(newPage + 1);
     setTablePage(newPage);
   };
-
+  console.log('page, searchValue-', page, searchValue);
   //   const [deleteUser, { isLoading: deleteUserLoading }] =
   //     useDeleteUserMutation();
 
@@ -57,15 +54,15 @@ const Users = (props: Props) => {
   };
   const handleDelete = async () => {
     console.log('You are trying to delete this user id-', selectedUserId);
-    try {
-      //   const response = await deleteUser({
-      //     _id: selectedUserId,
-      //   }).unwrap();
-      //   handleSuccess(response.message);
-      //   refetch();
-    } catch (error) {
-      //   handleError(error as FetchBaseQueryError);
-    }
+    // try {
+    //   const response = await deleteUser({
+    //     _id: selectedUserId,
+    //   }).unwrap();
+    //   handleSuccess(response.message);
+    //   refetch();
+    // } catch (error) {
+    //   handleError(error as FetchBaseQueryError);
+    // }
     setOpenDeleteDialog(false);
   };
   const handleUserCreated = (newUser: User) => {
@@ -76,7 +73,9 @@ const Users = (props: Props) => {
   const handleUserUpdated = (updatedUser: User) => {
     console.log(updatedUser);
     setUsers((prevUsers) =>
-      prevUsers.map((user) => (user._id === updatedUser._id ? { ...user, ...updatedUser } : user))
+      prevUsers.map((user) =>
+        user._id === updatedUser._id ? { ...user, ...updatedUser } : user
+      )
     );
     // refetch();
   };
@@ -115,7 +114,8 @@ const Users = (props: Props) => {
   const columns =
     user &&
     (user.role === UserRole.SUPERADMIN ||
-      (user.role === UserRole.VENDOR && user._id === user.agency?.createdBy._id))
+      (user.role === UserRole.VENDOR &&
+        user._id === user.agency?.createdBy._id))
       ? usersColumns
       : usersColumns.slice(0, -1);
   console.log(users);
@@ -127,7 +127,8 @@ const Users = (props: Props) => {
         </Box>
         {user &&
           (user.role === UserRole.SUPERADMIN ||
-            (user.role === UserRole.VENDOR && user._id === user.agency?.createdBy._id)) && (
+            (user.role === UserRole.VENDOR &&
+              user._id === user.agency?.createdBy._id)) && (
             <Button
               sx={styles.btn}
               variant="contained"
@@ -184,7 +185,12 @@ const Users = (props: Props) => {
               marginTop: '15px',
             }}
           >
-            <Button onClick={handleClose} color="secondary" variant="outlined" sx={styles.closeBtn}>
+            <Button
+              onClick={handleClose}
+              color="secondary"
+              variant="outlined"
+              sx={styles.closeBtn}
+            >
               Cancel
             </Button>
             <Button
@@ -195,7 +201,11 @@ const Users = (props: Props) => {
               onClick={handleDelete}
               disabled={false ? true : false}
             >
-              {false ? <CircularProgress size={22} style={{ color: 'white' }} /> : 'Confirm'}
+              {false ? (
+                <CircularProgress size={22} style={{ color: 'white' }} />
+              ) : (
+                'Confirm'
+              )}
             </Button>
           </Box>
         </CustomDialog>
@@ -206,68 +216,68 @@ const Users = (props: Props) => {
 
 export default Users;
 const styles = {
-    outerWrapper: {
-      display: 'flex',
-      flexDirection: 'column',
-      gap: '5px',
-      minHeight: 'calc(100vh - 150px)',
-      overflowX: 'auto',
-    },
-    btn: {
-      margin: '0 8px',
-      width: '138px',
-      height: '36px',
-      borderRadius: '10px',
-      fontSize: '15px',
-      fontWeight: '600',
-      fontFamily: theme.typography.fontFamily,
-      color: theme.palette.common.white,
-      lineHeight: '14.52px',
-      textTransform: 'capitalize',
+  outerWrapper: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '5px',
+    minHeight: 'calc(100vh - 150px)',
+    overflowX: 'auto',
+  },
+  btn: {
+    margin: '0 8px',
+    width: '138px',
+    height: '36px',
+    borderRadius: '10px',
+    fontSize: '15px',
+    fontWeight: '600',
+    fontFamily: theme.typography.fontFamily,
+    color: theme.palette.common.white,
+    lineHeight: '14.52px',
+    textTransform: 'capitalize',
+    boxShadow: 'none',
+    backgroundColor: theme.palette.secondary.main,
+    ':hover': {
+      backgroundColor: '#43afb0',
       boxShadow: 'none',
-      backgroundColor: theme.palette.secondary.main,
-      ':hover': {
-        backgroundColor: '#43afb0',
-        boxShadow: 'none',
-      },
     },
+  },
 
-    submit: {
-      width: '100%',
-      height: '35px',
-      borderWidth: '1.5px',
+  submit: {
+    width: '100%',
+    height: '35px',
+    borderWidth: '1.5px',
+    color: '#fff',
+    borderRadius: '8px',
+    fontSize: '14px',
+    fontWeight: '500',
+    lineHeight: '19.95px',
+    fontFamily: '"Helvetica Neue", Arial, sans-serif',
+    boxShadow: 'none',
+    backgroundColor: theme.palette.secondary.main,
+    ':hover': {
+      backgroundColor: '#43afb0',
+      boxShadow: 'none',
+    },
+    '&:disabled': {
       color: '#fff',
-      borderRadius: '8px',
-      fontSize: '14px',
-      fontWeight: '500',
-      lineHeight: '19.95px',
-      fontFamily: '"Helvetica Neue", Arial, sans-serif',
-      boxShadow: 'none',
       backgroundColor: theme.palette.secondary.main,
-      ':hover': {
-        backgroundColor: '#43afb0',
-        boxShadow: 'none',
-      },
-      '&:disabled': {
-        color: '#fff',
-        backgroundColor: theme.palette.secondary.main,
-      },
     },
-    closeBtn: {
-      width: '100%',
-      height: '35px',
-      borderWidth: '1.5px',
+  },
+  closeBtn: {
+    width: '100%',
+    height: '35px',
+    borderWidth: '1.5px',
+    borderColor: '#FD0015',
+    color: '#FD0015',
+    borderRadius: '8px',
+    fontSize: '14px',
+    fontWeight: '500',
+    lineHeight: '19.95px',
+    fontFamily: '"Helvetica Neue", Arial, sans-serif',
+    boxShadow: 'none',
+    backgroundColor: theme.palette.primary.main,
+    ':hover': {
       borderColor: '#FD0015',
-      color: '#FD0015',
-      borderRadius: '8px',
-      fontSize: '14px',
-      fontWeight: '500',
-      lineHeight: '19.95px',
-      fontFamily: '"Helvetica Neue", Arial, sans-serif',
-      boxShadow: 'none',
-      backgroundColor: theme.palette.primary.main,
-      ':hover': {
-        borderColor: '#FD0015',
-      },
     },
-  };
+  },
+};

@@ -1,7 +1,7 @@
 import { Box, Theme, Typography, useTheme } from '@mui/material';
 import { createStyles } from '@mui/styles';
 import Link from 'next/link';
-import React, { ReactNode } from 'react';
+import React from 'react';
 
 interface Props {
   icon: React.ComponentType<React.SVGProps<SVGSVGElement>>;
@@ -17,7 +17,12 @@ const Card: React.FC<Props> = (props: Props) => {
   const Icon = icon;
 
   return (
-    <Box sx={styles.outerWrapper} component={Link} href={href} onClick={onClick}>
+    <Box
+      sx={styles.outerWrapper}
+      component={Link}
+      href={href}
+      onClick={onClick}
+    >
       <Box sx={styles.iconWrapper}>
         <Icon />
       </Box>
@@ -42,7 +47,8 @@ const useStyle = (theme: Theme) =>
 
     iconWrapper: {
       display: 'flex',
-      alignItems: 'center',},
+      alignItems: 'center',
+    },
     title: {
       fontSize: '0.88rem',
       fontWeight: 400,

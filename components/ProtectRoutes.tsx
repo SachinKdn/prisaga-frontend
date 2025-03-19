@@ -24,20 +24,19 @@ interface ProtectedRoutesProps {
 
 export default function ProtectedRoutes({ children }: ProtectedRoutesProps) {
   const dispatch = useDispatch<AppDispatch>();
-  const handleLogout  = useLogout();
+  const handleLogout = useLogout();
   const { user } = useSelector((state: RootState) => state.auth);
   const router = useRouter();
   const pathname = usePathname();
-  const token = localStorage.getItem('token')
+  const token = localStorage.getItem('token');
   const [authStatus, setAuthStatus] = useState<AuthStatus>('loading');
-  
+
   const isPublicRoute = publicRoutes.includes(pathname);
-  console.log("user-->", user)
+  console.log('user-->', user);
   // Early return for public routes with a user already in the store
 
-
   useEffect(() => {
-    console.log("first")
+    console.log('first');
     const fetchProfile = async () => {
       // Skip authentication check for public routes
       if (isPublicRoute) {
@@ -47,13 +46,13 @@ export default function ProtectedRoutes({ children }: ProtectedRoutesProps) {
 
       try {
         const result = await getProfile();
-        console.log(result)
+        console.log(result);
         if (!result.success) {
           setAuthStatus('unauthenticated');
           handleLogout();
           return;
         }
-        
+
         if (result.data) {
           dispatch(setUserInStore(result.data));
           setAuthStatus('authenticated');
@@ -64,14 +63,14 @@ export default function ProtectedRoutes({ children }: ProtectedRoutesProps) {
         router.push('/login');
       }
     };
-    if(!token && !isPublicRoute){
-      router.push('/login')
+    if (!token && !isPublicRoute) {
+      router.push('/login');
       setAuthStatus('unauthenticated');
       return;
     }
     fetchProfile();
   }, []);
-  
+
   if (user && isPublicRoute) {
     return <>{children}</>;
   }
@@ -94,8 +93,9 @@ export default function ProtectedRoutes({ children }: ProtectedRoutesProps) {
   // Allow access to auth pages (login/sign-up) when not authenticated
   // Or any page when authenticated
   if (
-    (authStatus === 'unauthenticated' && (pathname === '/login' || pathname === '/sign-up')) || 
-    authStatus === 'authenticated' || 
+    (authStatus === 'unauthenticated' &&
+      (pathname === '/login' || pathname === '/sign-up')) ||
+    authStatus === 'authenticated' ||
     isPublicRoute
   ) {
     return <>{children}</>;
@@ -106,11 +106,10 @@ export default function ProtectedRoutes({ children }: ProtectedRoutesProps) {
 }
 
 const style = {
-  loaderWrapper:{
+  loaderWrapper: {
     width: '100%',
     height: '100vh',
     display: 'grid',
-    placeItems: 'center'
-
-  }
-}
+    placeItems: 'center',
+  },
+};

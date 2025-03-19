@@ -6,7 +6,6 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useDispatch } from 'react-redux';
 import { useRouter } from 'next/navigation';
-import { toast } from 'react-hot-toast';
 
 import theme from '@/app/theme';
 import { AppDispatch } from '@/store';
@@ -17,7 +16,6 @@ import { Input } from '@/components/common/Input';
 import { CustomButton } from '@/components/common/Button';
 import { UserRole } from '@constant/enum';
 import handleError from '@hooks/handleError';
-import handleSuccess from '@hooks/handleSuccess';
 
 interface UserLogin {
   email: string;
@@ -38,22 +36,25 @@ const LoginForm: React.FC = () => {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<UserLogin>({ 
-    resolver: yupResolver(LoginSchema) 
+  } = useForm<UserLogin>({
+    resolver: yupResolver(LoginSchema),
   });
 
   const onSubmit = async (formData: UserLogin) => {
     try {
       setIsLoading(true);
-      
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}user/login`, {
-        method: 'POST',
-        credentials: 'include',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
-      });
+
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}user/login`,
+        {
+          method: 'POST',
+          credentials: 'include',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(formData),
+        }
+      );
 
       const result: IResponse<LoginUserResponse> = await response.json();
 
@@ -72,7 +73,7 @@ const LoginForm: React.FC = () => {
   const handleAuthSuccess = (user: User, accessToken: string) => {
     // Store token in localStorage
     localStorage.setItem('token', accessToken);
-    
+
     // Dispatch login success action
     dispatch(loginSuccess(user));
 
@@ -85,7 +86,7 @@ const LoginForm: React.FC = () => {
     };
 
     const route = routeMap[user.role as UserRole];
-    
+
     if (route) {
       router.push(route);
     }
@@ -95,11 +96,11 @@ const LoginForm: React.FC = () => {
     <Box sx={styles.sideForm} pl={5}>
       <Box sx={styles.sideFormInner}>
         <Typography sx={styles.heading}>Welcome Back 👋</Typography>
-        
+
         <Typography mt={2} sx={{ fontSize: 18, lineHeight: 1 }}>
           Enter details to login
         </Typography>
-        
+
         <form style={{ width: '100%' }} onSubmit={handleSubmit(onSubmit)}>
           <Box mt={3} sx={{ width: '100%' }}>
             <Input
@@ -109,7 +110,7 @@ const LoginForm: React.FC = () => {
               register={register}
               error={errors.email?.message}
             />
-            
+
             <Input
               label="Password"
               name="password"
@@ -118,7 +119,7 @@ const LoginForm: React.FC = () => {
               error={errors.password?.message}
             />
           </Box>
-          
+
           <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
             <Typography
               component="span"
@@ -136,7 +137,7 @@ const LoginForm: React.FC = () => {
               </strong>
             </Typography>
           </Box>
-          
+
           <CustomButton
             type="submit"
             variant="contained"
@@ -146,14 +147,14 @@ const LoginForm: React.FC = () => {
             btnText="Login"
           />
         </form>
-        
+
         <Typography
           component="span"
           onClick={() => router.push('/signup')}
           my={3}
           sx={styles.footer}
         >
-          Don't have an account? <strong>Sign up</strong>
+          Don&apost have an account? <strong>Sign up</strong>
         </Typography>
       </Box>
     </Box>
@@ -176,8 +177,8 @@ const styles = {
   },
   sideForm: {
     width: '38%',
-    padding: "0",
-    margin: "auto",
+    padding: '0',
+    margin: 'auto',
     backgroundColor: 'white',
     borderTopLeftRadius: 30,
     borderBottomLeftRadius: 30,

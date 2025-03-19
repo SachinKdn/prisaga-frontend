@@ -16,7 +16,10 @@ interface RequestConfig extends RequestInit {
 }
 
 // Generic request function
-async function request<T>(url: string, config: RequestConfig = {}): Promise<T | undefined> {
+async function request<T>(
+  url: string,
+  config: RequestConfig = {}
+): Promise<T | undefined> {
   const { isNotifyError = false, bodyData, ...restConfig } = config;
 
   const token = localStorage.getItem('token');
@@ -65,14 +68,19 @@ async function request<T>(url: string, config: RequestConfig = {}): Promise<T | 
   }
 }
 
-export async function createUser(payload: UserInput): Promise<User | undefined> {
+export async function createUser(
+  payload: UserInput
+): Promise<User | undefined> {
   return request<User>('user/createUser', {
     method: 'POST',
     bodyData: payload, // Pass the payload as the bodyData
   });
 }
 
-export async function updateUser(payload: UserInput, id: string): Promise<User | undefined> {
+export async function updateUser(
+  payload: UserInput,
+  id: string
+): Promise<User | undefined> {
   return request<User>(`user/update/${id}`, {
     method: 'PUT',
     bodyData: payload, // Pass the payload as the bodyData

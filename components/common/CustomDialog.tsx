@@ -1,4 +1,4 @@
-import { Dialog, DialogContent, DialogTitle, Theme, useTheme } from '@mui/material';
+import { Dialog, DialogContent, DialogTitle } from '@mui/material';
 import React, { ReactNode } from 'react';
 import CloseIcon from '@assets/svg/close.svg';
 import theme from '@/app/theme';
@@ -10,9 +10,21 @@ interface Props {
   title: string;
   children: ReactNode;
 }
-const CustomDialog: React.FC<Props> = ({ open, onClose, title, children, isCrossIcon = true }) => {
+const CustomDialog: React.FC<Props> = ({
+  open,
+  onClose,
+  title,
+  children,
+  isCrossIcon = true,
+}) => {
   return (
-    <Dialog open={open} onClose={onClose} fullWidth maxWidth="sm" sx={styles.dialog}>
+    <Dialog
+      open={open}
+      onClose={onClose}
+      fullWidth
+      maxWidth="sm"
+      sx={styles.dialog}
+    >
       <DialogTitle>
         {title}
         {isCrossIcon && (

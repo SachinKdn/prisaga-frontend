@@ -1,18 +1,10 @@
 import React from 'react';
-import { Box } from '@mui/material';
-import { getAgencyById, getAgencyList, getUsersList } from '@/api/user';
-import Users from '@/components/Users';
-import Vendors from '@/components/Vendors';
+import { getAgencyById } from '@/api/user';
 import VendorDetails from '@/components/VendorDetails';
 
-type PageProps = {
-  params: { id: string };
-};
-
-export default async function Page({ params }: PageProps) {
-  const id = (await params).id;
+export default async function Page(props: { params: Promise<{ id: string }> }) {
+  const { id } = await props.params;
   const response = await getAgencyById(id);
-  console.log('\n\n\n\n\response', response);
   if (!response) return <>Sorry</>;
   return (
     <>

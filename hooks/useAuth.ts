@@ -7,7 +7,9 @@ import { UserRole } from '@/constant/enum';
 export function useAuth(requiredRole?: UserRole[]) {
   const router = useRouter();
   const dispatch = useDispatch<AppDispatch>();
-  const { user, isAuthenticated } = useSelector((state: RootState) => state.auth);
+  const { user, isAuthenticated } = useSelector(
+    (state: RootState) => state.auth
+  );
 
   // useEffect(() => {
   //   const token = localStorage.getItem('token');

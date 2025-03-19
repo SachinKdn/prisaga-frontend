@@ -1,8 +1,6 @@
 import React from 'react';
-import { Box, Dialog, DialogContent, Theme, useTheme, SxProps } from '@mui/material';
-import { createStyles } from '@mui/styles';
+import { Box, Dialog, DialogContent, SxProps } from '@mui/material';
 import Card from './Card';
-import { ReactNode } from 'react';
 import ProfileIcon from '@assets/svg/profile-icon.svg';
 import KeyIcon from '@assets/svg/key-01.svg';
 import SettingIcon from '@assets/svg/settings-02.svg';
@@ -29,7 +27,12 @@ export const cards: ICard[] = [
     icon: ProfileIcon,
     name: 'Profile',
     to: '/profile',
-    access: [UserRole.USER, UserRole.SUPERADMIN, UserRole.ADMIN, UserRole.VENDOR],
+    access: [
+      UserRole.USER,
+      UserRole.SUPERADMIN,
+      UserRole.ADMIN,
+      UserRole.VENDOR,
+    ],
   },
   {
     icon: KeyIcon,
@@ -47,7 +50,7 @@ export const cards: ICard[] = [
     icon: Building2,
     name: 'Our Organisation',
     to: '/company',
-    access: [UserRole.ADMIN, UserRole.SUPERADMIN,],
+    access: [UserRole.ADMIN, UserRole.SUPERADMIN],
   },
   {
     icon: TrendIcon,

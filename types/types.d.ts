@@ -1,8 +1,7 @@
-
 interface UserLogin {
-    email: string;
-    password: string;
-  }
+  email: string;
+  password: string;
+}
 
 interface IResponse<T> {
   success: boolean;
@@ -19,10 +18,7 @@ interface ITableResponse<T> {
 }
 
 interface UploadResponse {
- resume: { fileUrl: string;
-  _id: string;
-  fileName: string;
-  fileType: string;}
+  resume: { fileUrl: string; _id: string; fileName: string; fileType: string };
 }
 
 interface BaseSchema {
@@ -37,7 +33,7 @@ interface User extends BaseSchema {
   phoneNumber?: string;
   username?: string;
   image?: string;
-  location?: Location;
+  location?: ILocation;
   role: UserRole;
   linkedin?: string;
   createdBy?: string;
@@ -50,7 +46,7 @@ interface Agency {
   agencyName: string;
   activeUsers: number;
   spentRequest: number;
-  location: Location;
+  location: ILocation;
   createdBy: User;
   phoneNumber: string;
   website_url: string;
@@ -105,7 +101,6 @@ interface AgencyDetails {
   agency: Agency;
 }
 
-
 interface Company {
   _id?: string;
   name: string;
@@ -118,35 +113,34 @@ interface Company {
 }
 
 interface Resume {
-firstName: string;
-lastName?: string;
-location: ILocation;
-email: string;
-phoneNumber: string;
-linkedin: string;
-website?: string;
-resume: string;
-experience: string;
-areaOfExpertise: string;
-summary?: string;
+  firstName: string;
+  lastName?: string;
+  location: ILocation;
+  email: string;
+  phoneNumber: string;
+  linkedin: string;
+  website?: string;
+  resume: string;
+  experience: string;
+  areaOfExpertise: string;
+  summary?: string;
 }
 
-interface UploadedResume{
-  
-firstName: string;
-lastName?: string;
-location: ILocation;
-email: string;
-phoneNumber: string;
-linkedin: string;
-website?: string;
-resume: UploadedFile;
-experience: string;
-areaOfExpertise: string;
-summary?: string;
+interface UploadedResume {
+  firstName: string;
+  lastName?: string;
+  location: ILocation;
+  email: string;
+  phoneNumber: string;
+  linkedin: string;
+  website?: string;
+  resume: UploadedFile;
+  experience: string;
+  areaOfExpertise: string;
+  summary?: string;
 }
 
-interface UploadedFile{
+interface UploadedFile {
   fileName: string;
   fileUrl: string;
 }

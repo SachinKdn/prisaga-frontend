@@ -3,8 +3,6 @@ interface FetchErrorResponse {
   message: string;
 }
 
-
-
 // Custom error handler for fetch API errors
 const handleError = (error: unknown): { error: string } => {
   if (error instanceof Error) {

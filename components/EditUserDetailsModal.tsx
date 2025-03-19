@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { useForm, SubmitHandler, Controller } from 'react-hook-form';
+import { useForm, SubmitHandler } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import toast from 'react-hot-toast';
 import EmailConfirmationImage from '@assets/png/emailConfirmation.png';
 
 import {
@@ -10,18 +9,11 @@ import {
   DialogContent,
   DialogActions,
   Button,
-  Theme,
-  useTheme,
-  FormControl,
-  Select,
-  MenuItem,
   Typography,
-  FormHelperText,
   CircularProgress,
   Box,
 } from '@mui/material';
 import CloseIcon from '@assets/svg/close.svg';
-import { createStyles } from '@mui/styles';
 import { UserFormSchema } from '@/utils/yup';
 import theme from '@/app/theme';
 import { createUser, updateUser } from '@/api/clientUser';
@@ -43,7 +35,6 @@ const EditUserDetailsModal: React.FC<UserDetailsFormProps> = ({
   onClose,
   initialData,
   isEdit,
-  isSuperAdmin = false,
   onUserCreated,
   handleUserUpdated,
 }) => {
@@ -52,7 +43,6 @@ const EditUserDetailsModal: React.FC<UserDetailsFormProps> = ({
   const {
     register,
     handleSubmit,
-    control,
     watch,
     formState: { errors },
     reset,
@@ -70,7 +60,7 @@ const EditUserDetailsModal: React.FC<UserDetailsFormProps> = ({
         email: initialData.email,
       });
     }
-  }, [initialData]);
+  }, [initialData, isEdit, reset]);
   const onSubmit: SubmitHandler<UserInput> = async (data) => {
     console.log('submitted---', data);
     setLoading(true);
@@ -79,7 +69,7 @@ const EditUserDetailsModal: React.FC<UserDetailsFormProps> = ({
       console.log(result);
       if (result && onUserCreated) {
         handleSuccess('Invitation Sent Successfully');
-        setIsCreated(true)
+        setIsCreated(true);
         onUserCreated(result);
       }
     } else {
@@ -94,84 +84,112 @@ const EditUserDetailsModal: React.FC<UserDetailsFormProps> = ({
     setLoading(false);
   };
   return (
-    <Dialog open={open} onClose={onClose} fullWidth maxWidth="sm" sx={styles.dialog}>
+    <Dialog
+      open={open}
+      onClose={onClose}
+      fullWidth
+      maxWidth="sm"
+      sx={styles.dialog}
+    >
       <DialogTitle sx={styles.title}>
-        {!isEdit ? isCreated ? 'Invitation Sent' : 'Add User' : 'Edit User Details'}
+        {!isEdit
+          ? isCreated
+            ? 'Invitation Sent'
+            : 'Add User'
+          : 'Edit User Details'}
         <CloseIcon
           style={{ cursor: 'pointer', float: 'right', marginTop: '10px' }}
           onClick={onClose}
         />
       </DialogTitle>
       <DialogContent>
-        {!isCreated ? <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-3">
-          <Input
-            name="firstName"
-            type="text"
-            label="First Name"
-            placeholder="First Name"
-            register={register}
-            error={errors.firstName?.message}
-          />
-          <Input
-            name="lastName"
-            type="text"
-            label="Last Name"
-            placeholder="Last Name"
-            register={register}
-            error={errors.lastName?.message}
-          />
-          <Input
-            name="email"
-            type="text"
-            label="Email"
-            disabled={isEdit}
-            placeholder="Enter email"
-            register={register}
-            error={errors.email?.message}
-          />
-          <Input
-            name="username"
-            type="text"
-            label="UserName"
-            placeholder="Create username"
-            register={register}
-            error={errors.username?.message}
-          />
-          <Input
-            name="phoneNumber"
-            type="text"
-            label="Phone Number"
-            placeholder="Enter Phone Number"
-            register={register}
-            error={errors.phoneNumber?.message}
-          />
+        {!isCreated ? (
+          <form
+            onSubmit={handleSubmit(onSubmit)}
+            className="flex flex-col gap-3"
+          >
+            <Input
+              name="firstName"
+              type="text"
+              label="First Name"
+              placeholder="First Name"
+              register={register}
+              error={errors.firstName?.message}
+            />
+            <Input
+              name="lastName"
+              type="text"
+              label="Last Name"
+              placeholder="Last Name"
+              register={register}
+              error={errors.lastName?.message}
+            />
+            <Input
+              name="email"
+              type="text"
+              label="Email"
+              disabled={isEdit}
+              placeholder="Enter email"
+              register={register}
+              error={errors.email?.message}
+            />
+            <Input
+              name="username"
+              type="text"
+              label="UserName"
+              placeholder="Create username"
+              register={register}
+              error={errors.username?.message}
+            />
+            <Input
+              name="phoneNumber"
+              type="text"
+              label="Phone Number"
+              placeholder="Enter Phone Number"
+              register={register}
+              error={errors.phoneNumber?.message}
+            />
 
-          <DialogActions sx={styles.diaogAction}>
-            <Button onClick={onClose} color="secondary" variant="outlined" sx={styles.closeBtn}>
-              Cancel
-            </Button>
-            <Button
-              type="submit"
-              color="primary"
-              variant="contained"
-              fullWidth
-              sx={styles.btn}
-              disabled={loading}
-            >
-              {loading ? (
-                <CircularProgress size={24} style={{ color: 'white' }} />
-              ) : (
-                `${!isEdit ? 'Submit' : 'Update'}`
-              )}
-            </Button>
-          </DialogActions>
-        </form> : (
+            <DialogActions sx={styles.diaogAction}>
+              <Button
+                onClick={onClose}
+                color="secondary"
+                variant="outlined"
+                sx={styles.closeBtn}
+              >
+                Cancel
+              </Button>
+              <Button
+                type="submit"
+                color="primary"
+                variant="contained"
+                fullWidth
+                sx={styles.btn}
+                disabled={loading}
+              >
+                {loading ? (
+                  <CircularProgress size={24} style={{ color: 'white' }} />
+                ) : (
+                  `${!isEdit ? 'Submit' : 'Update'}`
+                )}
+              </Button>
+            </DialogActions>
+          </form>
+        ) : (
           <div>
             <Box sx={styles.imgWrapper}>
-            <Image src={EmailConfirmationImage} alt="email image" style={styles.confirmImg}/>
+              <Image
+                src={EmailConfirmationImage}
+                alt="email image"
+                style={styles.confirmImg}
+              />
             </Box>
-            <Typography sx={styles.thankHeading}>We just emailed invitation link to {watch('email')}{' '}</Typography>
-            <Typography sx={styles.thank}>Click the link to verify and create password.{' '}</Typography>
+            <Typography sx={styles.thankHeading}>
+              We just emailed invitation link to {watch('email')}{' '}
+            </Typography>
+            <Typography sx={styles.thank}>
+              Click the link to verify and create password.{' '}
+            </Typography>
           </div>
         )}
       </DialogContent>
@@ -263,23 +281,22 @@ const styles = {
     width: '100%',
     backgroundColor: '#FAFAFA',
   },
-  confirmImg:{
-    width: "70%",
-    height:'auto',
-    margin: 'auto'
-
+  confirmImg: {
+    width: '70%',
+    height: 'auto',
+    margin: 'auto',
   },
-  imgWrapper:{
+  imgWrapper: {
     display: 'grid',
-    placeItems: 'center'
+    placeItems: 'center',
   },
-  thankHeading:{
-    fontSize: "18px",
-    textAlign: "center"
+  thankHeading: {
+    fontSize: '18px',
+    textAlign: 'center',
   },
-  thank:{
-    textAlign: "center",
-    fontSize: "13px",
-    marginTop: "5px"
-  }
+  thank: {
+    textAlign: 'center',
+    fontSize: '13px',
+    marginTop: '5px',
+  },
 };

@@ -1,11 +1,6 @@
 'use client';
-import React, { useState, useCallback, memo } from 'react';
-import { 
-  TextField, 
-  Typography, 
-  SxProps, 
-  InputAdornment 
-} from '@mui/material';
+import React, { memo } from 'react';
+import { TextField, Typography, SxProps, InputAdornment } from '@mui/material';
 import theme from '@app/theme';
 
 interface InputProps {
@@ -18,6 +13,7 @@ interface InputProps {
   required?: boolean;
   disabled?: boolean;
   helperText?: string;
+  // disable-no-any
   register?: any;
   error?: string;
 }
@@ -32,23 +28,22 @@ const InputComponent: React.FC<InputProps> = (props) => {
     labelSx,
     required = false,
     disabled = false,
-    helperText,
     register,
     error,
   } = props;
 
-  const [inputType, setInputType] = useState(type);
-  const [showPassword, setShowPassword] = useState(false);
+  // const [inputType, setInputType] = useState(type);
+  // const [showPassword, setShowPassword] = useState(false);
 
-  // Memoize handlers to prevent unnecessary re-renders
-  const handleClickShowPassword = useCallback(() => {
-    setShowPassword((prev) => !prev);
-    setInputType((prev) => (prev === 'password' ? 'text' : 'password'));
-  }, []);
+  // // Memoize handlers to prevent unnecessary re-renders
+  // const handleClickShowPassword = useCallback(() => {
+  //   setShowPassword((prev) => !prev);
+  //   setInputType((prev) => (prev === 'password' ? 'text' : 'password'));
+  // }, []);
 
-  const handleMouseDownPassword = useCallback((event: React.MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault();
-  }, []);
+  // const handleMouseDownPassword = useCallback((event: React.MouseEvent<HTMLButtonElement>) => {
+  //   event.preventDefault();
+  // }, []);
 
   // Compute registration props once
   const registrationProps = register ? register(name) : { name };
@@ -56,28 +51,28 @@ const InputComponent: React.FC<InputProps> = (props) => {
   return (
     <div className="flex flex-col gap-3">
       {label && (
-        <Typography sx={labelSx || styles.labelText}>
-          {label}
-        </Typography>
+        <Typography sx={labelSx || styles.labelText}>{label}</Typography>
       )}
-      
+
       <TextField
         {...registrationProps}
-        type={inputType}
+        type={type}
+        // type={inputType}
         placeholder={placeholder}
         required={required}
         disabled={disabled}
         InputProps={{
-          startAdornment: type === 'phone' ? (
-            <InputAdornment position="start">+1</InputAdornment>
-          ) : undefined,
+          startAdornment:
+            type === 'phone' ? (
+              <InputAdornment position="start">+1</InputAdornment>
+            ) : undefined,
         }}
         className={`${className} ${error ? 'text-red-500' : 'text-light-dark'}`}
         sx={styles.textField}
       />
-      
-      <Typography 
-        sx={styles.error} 
+
+      <Typography
+        sx={styles.error}
         style={{ visibility: error ? 'visible' : 'hidden' }}
       >
         {error || ' '}
@@ -112,14 +107,14 @@ const styles = {
       fontSize: '0.8rem',
       fontWeight: '500',
       lineHeight: '24px',
-      
+
       // Autofill styling
       '& input:-webkit-autofill': {
         WebkitBoxShadow: '0 0 0 100px #FFFFFF inset',
         WebkitTextFillColor: theme.palette.text.primary,
         caretColor: theme.palette.text.primary,
         borderRadius: 'inherit',
-        fontFamily: 'inherit'
+        fontFamily: 'inherit',
       },
       '& input:-webkit-autofill:focus': {
         WebkitBoxShadow: '0 0 0 100px #FFFFFF inset',
@@ -140,7 +135,7 @@ const styles = {
       lineHeight: '1',
     },
     '& input::-webkit-outer-spin-button, & input::-webkit-inner-spin-button': {
-      WebkitAppearance: "none",
+      WebkitAppearance: 'none',
       margin: 0,
     },
   },
