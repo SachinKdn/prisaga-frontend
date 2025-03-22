@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { usePathname, useRouter } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 import { Oval } from 'react-loader-spinner';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -13,7 +13,7 @@ import { setUserInStore } from '@/store/slices/user';
 // Routes configuration
 import { publicRoutes } from './MainLayout.tsx/routes';
 import { Box } from '@mui/material';
-import useLogout from '@services/useLogout';
+import useLogout from '@hooks/useLogout';
 
 // Types
 type AuthStatus = 'loading' | 'authenticated' | 'unauthenticated';
@@ -26,13 +26,11 @@ export default function ProtectedRoutes({ children }: ProtectedRoutesProps) {
   const dispatch = useDispatch<AppDispatch>();
   const handleLogout = useLogout();
   const { user } = useSelector((state: RootState) => state.auth);
-  const router = useRouter();
   const pathname = usePathname();
   const token = localStorage.getItem('token');
-  const [authStatus, setAuthStatus] = useState<AuthStatus>('loading');
+  const [authStatus, setAuthStatus] = useState<AuthStatus>('authenticated');
 
   const isPublicRoute = publicRoutes.includes(pathname);
-  console.log('user-->', user);
   // Early return for public routes with a user already in the store
 
   useEffect(() => {
@@ -45,6 +43,7 @@ export default function ProtectedRoutes({ children }: ProtectedRoutesProps) {
       }
 
       try {
+        console.log('going to fetch profile');
         const result = await getProfile();
         console.log(result);
         if (!result.success) {
@@ -60,16 +59,21 @@ export default function ProtectedRoutes({ children }: ProtectedRoutesProps) {
       } catch (error) {
         console.error('Error fetching user profile:', error);
         setAuthStatus('unauthenticated');
-        router.push('/login');
+        handleLogout();
       }
     };
+    console.log('!token && !isPublicRoute');
     if (!token && !isPublicRoute) {
-      router.push('/login');
+      handleLogout();
       setAuthStatus('unauthenticated');
       return;
     }
-    fetchProfile();
-  }, []);
+    if (!user) {
+      fetchProfile();
+    } else {
+      setAuthStatus('authenticated');
+    }
+  }, [user]);
 
   if (user && isPublicRoute) {
     return <>{children}</>;
@@ -100,7 +104,8 @@ export default function ProtectedRoutes({ children }: ProtectedRoutesProps) {
   ) {
     return <>{children}</>;
   }
-
+  console.log('authStatus', authStatus);
+  console.log('unexpected!!!!');
   // This should not be reached normally, but added as a fallback
   return null;
 }

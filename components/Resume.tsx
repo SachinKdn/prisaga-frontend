@@ -7,7 +7,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from '@store';
 import AddIcon from '@mui/icons-material/Add';
 import { useRouter } from 'next/navigation';
-import { getResumes } from '@api/clientUser';
+import { getResumes } from '@api/client';
 import ResumeCard from './ResumeCard';
 
 const Resume = () => {
@@ -24,6 +24,7 @@ const Resume = () => {
         setResumes(result);
       }
     };
+    console.log('fetch the resumes');
     fetch();
   }, []);
   return (

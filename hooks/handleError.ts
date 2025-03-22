@@ -7,12 +7,7 @@ interface FetchErrorResponse {
 const handleError = (error: unknown): { error: string } => {
   if (error instanceof Error) {
     // Network or general error (this happens when fetch fails)
-    toast.error(error.message, {
-      position: 'top-right',
-      style: {
-        fontSize: '15px',
-      },
-    });
+    toast.error(error.message);
     return { error: error.message };
   }
 

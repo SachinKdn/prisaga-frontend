@@ -28,7 +28,16 @@ export default function RootLayout({
               <MainLayout>{children}</MainLayout>
             </ProtectedRoutes>
           </ThemeProviderWrapper>
-          <Toaster position="top-right" reverseOrder={false} />
+          <Toaster
+            position="top-right"
+            toastOptions={{
+              style: {
+                fontSize: '12px',
+                fontWeight: '500',
+              },
+            }}
+            reverseOrder={false}
+          />
         </ReduxProvider>
       </body>
     </html>

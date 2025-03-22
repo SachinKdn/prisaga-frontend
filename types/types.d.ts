@@ -3,9 +3,10 @@ interface UserLogin {
   password: string;
 }
 
-interface IResponse<T> {
+interface IResponse<T = any> {
   success: boolean;
   message?: string;
+  status?: number;
   data: T;
 }
 

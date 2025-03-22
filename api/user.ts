@@ -1,7 +1,6 @@
 'use server';
 
 import { cookies } from 'next/headers';
-import { redirect } from 'next/navigation';
 
 interface RequestConfig extends RequestInit {
   isNotifyError?: boolean;
@@ -85,6 +84,7 @@ export async function getProfile(): Promise<IResponse<User | null>> {
     console.log('Return without call');
     return {
       data: null,
+      status: 401,
       success: false,
       message: 'Unauthorized',
     };
@@ -96,8 +96,9 @@ export async function getProfile(): Promise<IResponse<User | null>> {
   };
 
   try {
+    console.log('headers---> ', headers);
     const response = await fetch(`${baseUrl}user/me`, { headers });
-
+    console.log('\n\n\n response---> ', response);
     if (response.status === 401) {
       return {
         data: null,

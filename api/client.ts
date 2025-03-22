@@ -1,13 +1,6 @@
 'use client';
-
 import handleError from '@hooks/handleError';
-
-interface ApiResponse<T = any> {
-  data: T;
-  message: string;
-  status: number;
-  success: boolean;
-}
+import { getToken } from './tokenHandler';
 
 interface ValidationError {
   errors: {
@@ -33,12 +26,10 @@ async function request<T>(
   config: RequestConfig = {}
 ): Promise<T | undefined> {
   const { isNotifyError = false, bodyData, ...restConfig } = config;
-  const token = localStorage.getItem('token');
+  const token = await getToken();
   const baseUrl = process.env.NEXT_PUBLIC_API_URL;
-
   if (!token) {
-    // Use window.location for client-side redirects rather than Next.js redirect
-    window.location.href = '/login';
+    localStorage.clear();
     return undefined;
   }
 
@@ -62,12 +53,12 @@ async function request<T>(
     console.log(response);
     // Handle unauthorized access
     if (response.status === 401) {
+      localStorage.clear();
       window.location.href = '/login';
       return undefined;
     }
 
-    // const result = await response.json() as ApiResponse<T>;
-    const result = (await response.json()) as ApiResponse<T> | ErrorResponse;
+    const result = (await response.json()) as IResponse<T> | ErrorResponse;
     // if (!response.ok) {
     //   console.log("Error in response.ok->", result)
     //   throw new Error(result.message || 'Something went wrong!');
@@ -93,7 +84,7 @@ async function request<T>(
         result.message || `Error ${response.status}: ${response.statusText}`
       );
     }
-    return (result as ApiResponse<T>).data;
+    return (result as IResponse<T>).data;
   } catch (error) {
     if (isNotifyError) {
       handleError(

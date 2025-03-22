@@ -7,7 +7,7 @@ const useLogout = () => {
     try {
       localStorage.clear();
       logout();
-      router.push('/login');
+      router.replace('/login');
     } catch (error) {
       console.error('Error signing out:', error);
     }

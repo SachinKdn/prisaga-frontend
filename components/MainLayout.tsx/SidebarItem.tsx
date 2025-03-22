@@ -13,7 +13,6 @@ type Props = {
 const SidebarItem = ({ item, toggleDrawer }: Props) => {
   const pathname = usePathname();
   const isMd = useMediaQuery(theme.breakpoints.down('md'));
-  console.log(pathname);
   const Icon = item.icon;
   const isActive = pathname.includes(item.to);
   return (

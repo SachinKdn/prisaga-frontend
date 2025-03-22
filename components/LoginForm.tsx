@@ -16,6 +16,7 @@ import { Input } from '@/components/common/Input';
 import { CustomButton } from '@/components/common/Button';
 import { UserRole } from '@constant/enum';
 import handleError from '@hooks/handleError';
+import { setToken } from '@api/tokenHandler';
 
 interface UserLogin {
   email: string;
@@ -61,7 +62,8 @@ const LoginForm: React.FC = () => {
       if (!response.ok) {
         throw new Error(result.message);
       }
-
+      console.log(result.data.accessToken);
+      await setToken(result.data.accessToken);
       handleAuthSuccess(result.data.user, result.data.accessToken);
     } catch (error) {
       handleError(error);

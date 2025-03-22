@@ -19,7 +19,7 @@ import { ResumeFormSchema } from '@utils/yup';
 import { areaOfExpertise, experienceLevels } from '@constant/resume-data';
 import UploadResume from './common/UploadResume';
 import { getCitiesByState, getIndianStates } from '@services/loadOptions';
-import { createResume } from '@api/clientUser';
+import { createResume } from '@api/client';
 import handleSuccess from '@hooks/handleSuccess';
 import { useRouter } from 'next/navigation';
 interface Option {

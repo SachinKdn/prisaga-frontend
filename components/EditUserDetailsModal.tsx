@@ -16,7 +16,7 @@ import {
 import CloseIcon from '@assets/svg/close.svg';
 import { UserFormSchema } from '@/utils/yup';
 import theme from '@/app/theme';
-import { createUser, updateUser } from '@/api/clientUser';
+import { createUser, updateUser } from '@api/client';
 import handleSuccess from '@/hooks/handleSuccess';
 import { Input } from './common/Input';
 import Image from 'next/image';
