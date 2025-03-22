@@ -3,8 +3,6 @@ import { Box, Button } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import Header from './Header';
 import theme from '@app/theme';
-import { useSelector } from 'react-redux';
-import { RootState } from '@store';
 import AddIcon from '@mui/icons-material/Add';
 import { useRouter } from 'next/navigation';
 import { getResumes } from '@api/client';
@@ -12,7 +10,6 @@ import ResumeCard from './ResumeCard';
 import ResumeCardSkeleton from './Skeletons/ResumeCardSkeleton';
 
 const Resume = () => {
-  const user = useSelector((state: RootState) => state.auth.user);
   const router = useRouter();
 
   const [resumes, setResumes] = useState<UploadedResume[]>([]);
