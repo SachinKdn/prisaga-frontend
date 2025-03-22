@@ -51,8 +51,19 @@ const UploadResume = (props: Props) => {
       }
     }
   };
+  const handleBoxClick = () => {
+    if (fileInputRef.current) fileInputRef.current.click();
+  };
   return (
-    <Box sx={{ margin: 'auto', marginTop: '15px', width: '100%' }}>
+    <Box
+      sx={{
+        margin: 'auto',
+        marginTop: '15px',
+        width: '100%',
+        cursor: 'pointer',
+      }}
+      onClick={handleBoxClick}
+    >
       <Box sx={style.labelWrapper}>
         <Typography sx={style.para}>Upload</Typography>
         <Typography sx={style.error}>{error}</Typography>
@@ -108,10 +119,10 @@ const style = {
     height: '45px',
     display: 'grid',
     [theme.breakpoints.down('md')]: {
-      width: '306px',
+      // width: '306px',
     },
     [theme.breakpoints.down('sm')]: {
-      width: '216px',
+      // width: '216px',
     },
   },
   iconWrapper: {

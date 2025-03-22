@@ -9,20 +9,20 @@ import AddIcon from '@mui/icons-material/Add';
 import { useRouter } from 'next/navigation';
 import { getResumes } from '@api/client';
 import ResumeCard from './ResumeCard';
+import ResumeCardSkeleton from './Skeletons/ResumeCardSkeleton';
 
 const Resume = () => {
   const user = useSelector((state: RootState) => state.auth.user);
   const router = useRouter();
 
-  console.log('user', user);
   const [resumes, setResumes] = useState<UploadedResume[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
   useEffect(() => {
     const fetch = async () => {
+      setIsLoading(true);
       const result = await getResumes();
-      console.log('result', result);
-      if (result) {
-        setResumes(result);
-      }
+      if (result) setResumes(result);
+      setIsLoading(false);
     };
     console.log('fetch the resumes');
     fetch();
@@ -40,16 +40,30 @@ const Resume = () => {
         </Button>
       </Header>
 
-      <Box sx={styles.list}>
-        {resumes.map((resume, index) => (
-          <ResumeCard data={resume} key={index} />
-        ))}
-      </Box>
+      {isLoading ? (
+        <SkeletonLoading />
+      ) : (
+        <Box sx={styles.list}>
+          {resumes.map((resume, index) => (
+            <ResumeCard data={resume} key={index} />
+          ))}
+        </Box>
+      )}
     </Box>
   );
 };
 
 export default Resume;
+
+const SkeletonLoading = () => {
+  return (
+    <Box sx={styles.list}>
+      {new Array(3).fill(null).map((_, index) => (
+        <ResumeCardSkeleton key={index} />
+      ))}
+    </Box>
+  );
+};
 
 const styles = {
   outerWrapper: {

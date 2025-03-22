@@ -83,13 +83,14 @@ const CreateResumeForm = () => {
   return (
     <Box sx={style.wrapper}>
       <Typography variant="h2" sx={style.heading}>
-        Let&aposs add the new resume in our warehouse
+        Let&apos;s add the new resume in our warehouse
       </Typography>
       <form onSubmit={handleSubmit(onSubmit)}>
         <DetailsHeading title="Personal Details" />
         <Box sx={style.innerWrapper}>
           <Box sx={style.formContainer}>
             <Input
+              wrapperSx={{ flex: 1 }}
               name="firstName"
               type="text"
               label="First Name"
@@ -98,6 +99,7 @@ const CreateResumeForm = () => {
               error={errors.firstName?.message}
             />
             <Input
+              wrapperSx={{ flex: 1 }}
               name="lastName"
               type="text"
               label="Last Name"
@@ -106,6 +108,7 @@ const CreateResumeForm = () => {
               error={errors.lastName?.message}
             />
             <Input
+              wrapperSx={{ flex: 1 }}
               name="email"
               type="text"
               label="Email"
@@ -116,6 +119,7 @@ const CreateResumeForm = () => {
           </Box>
           <Box sx={style.formContainer}>
             <Input
+              wrapperSx={{ flex: 1 }}
               name="phoneNumber"
               type="text"
               label="Phone Number"
@@ -124,6 +128,7 @@ const CreateResumeForm = () => {
               error={errors.phoneNumber?.message}
             />
             <Input
+              wrapperSx={{ flex: 1 }}
               name="linkedin"
               type="text"
               label="LinkedIn Profile"
@@ -132,6 +137,7 @@ const CreateResumeForm = () => {
               error={errors.linkedin?.message}
             />
             <Input
+              wrapperSx={{ flex: 1 }}
               name="website"
               type="text"
               label="Website URL"
@@ -143,6 +149,7 @@ const CreateResumeForm = () => {
           <DetailsHeading title="Address Details" />
           <Box sx={style.formContainer}>
             <Input
+              wrapperSx={{ flex: 1 }}
               name="location.postalCode"
               type="number"
               label="Pincode"
@@ -151,7 +158,7 @@ const CreateResumeForm = () => {
               error={errors.location?.postalCode?.message}
             />
 
-            <Box>
+            <Box sx={{ flex: 1 }}>
               <Typography sx={style.labelText}>Select State</Typography>
               <FormControl
                 fullWidth
@@ -202,7 +209,7 @@ const CreateResumeForm = () => {
                 )}
               </FormControl>
             </Box>
-            <Box>
+            <Box sx={{ flex: 1 }}>
               <Typography sx={style.labelText}>Select City</Typography>
               <FormControl
                 fullWidth
@@ -256,7 +263,7 @@ const CreateResumeForm = () => {
           </Box>
           <DetailsHeading title="Professional Details" />
           <Box sx={style.formContainer}>
-            <Box>
+            <Box sx={{ flex: 1 }}>
               <Typography sx={style.labelText}>
                 Select Experience Level
               </Typography>
@@ -309,7 +316,7 @@ const CreateResumeForm = () => {
                 )}
               </FormControl>
             </Box>
-            <Box>
+            <Box sx={{ flex: 1 }}>
               <Typography sx={style.labelText}>
                 Select Area Of Expertise
               </Typography>
@@ -362,7 +369,7 @@ const CreateResumeForm = () => {
                 )}
               </FormControl>
             </Box>
-            <Box>
+            <Box sx={{ flex: 1 }}>
               <Typography sx={style.labelText}>Summary</Typography>
               <TextField
                 {...register('summary')}
@@ -418,8 +425,7 @@ const style = {
     display: 'flex',
     flexDirection: 'column',
     height: '100%',
-    width: '70%',
-    minWidth: '750px',
+    width: '80%',
     margin: 'auto',
   },
   innerWrapper: {
@@ -429,12 +435,8 @@ const style = {
     width: '100%',
   },
   formContainer: {
-    display: 'grid',
-    gridTemplateColumns: {
-      xs: '1fr',
-      sm: '1fr 1fr',
-      md: '1fr 1fr 1fr',
-    },
+    display: 'flex',
+    justifyContent: 'space-between',
     gap: '20px',
   },
   labelText: {

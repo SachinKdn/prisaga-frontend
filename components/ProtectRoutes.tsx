@@ -31,10 +31,8 @@ export default function ProtectedRoutes({ children }: ProtectedRoutesProps) {
   const [authStatus, setAuthStatus] = useState<AuthStatus>('authenticated');
 
   const isPublicRoute = publicRoutes.includes(pathname);
-  // Early return for public routes with a user already in the store
 
   useEffect(() => {
-    console.log('first');
     const fetchProfile = async () => {
       // Skip authentication check for public routes
       if (isPublicRoute) {
@@ -62,7 +60,6 @@ export default function ProtectedRoutes({ children }: ProtectedRoutesProps) {
         handleLogout();
       }
     };
-    console.log('!token && !isPublicRoute');
     if (!token && !isPublicRoute) {
       handleLogout();
       setAuthStatus('unauthenticated');

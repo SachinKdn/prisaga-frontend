@@ -156,7 +156,7 @@ const LoginForm: React.FC = () => {
           my={3}
           sx={styles.footer}
         >
-          Don&apost have an account? <strong>Sign up</strong>
+          Don&apos;t have an account? <strong>Sign up</strong>
         </Typography>
       </Box>
     </Box>
@@ -178,13 +178,10 @@ const styles = {
     },
   },
   sideForm: {
-    width: '38%',
+    width: '30%',
     padding: '0',
     margin: 'auto',
     backgroundColor: 'white',
-    borderTopLeftRadius: 30,
-    borderBottomLeftRadius: 30,
-    height: '100%',
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
@@ -205,7 +202,7 @@ const styles = {
     flexDirection: 'column',
     alignItems: 'flex-start',
     justifyContent: 'center',
-    width: '70%',
+    width: '90%',
     maxWidth: '100%',
     overflowY: 'scroll',
     scrollbarWidth: 'none',

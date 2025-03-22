@@ -1,12 +1,19 @@
 'use client';
 import React, { memo } from 'react';
-import { TextField, Typography, SxProps, InputAdornment } from '@mui/material';
+import {
+  TextField,
+  Typography,
+  SxProps,
+  InputAdornment,
+  Box,
+} from '@mui/material';
 import theme from '@app/theme';
 
 interface InputProps {
   name: string;
   label: string;
   labelSx?: SxProps;
+  wrapperSx?: SxProps;
   type?: 'text' | 'email' | 'phone' | 'password' | 'number';
   placeholder?: string;
   className?: string;
@@ -26,6 +33,7 @@ const InputComponent: React.FC<InputProps> = (props) => {
     placeholder,
     className = '',
     labelSx,
+    wrapperSx,
     required = false,
     disabled = false,
     register,
@@ -49,7 +57,7 @@ const InputComponent: React.FC<InputProps> = (props) => {
   const registrationProps = register ? register(name) : { name };
 
   return (
-    <div className="flex flex-col gap-3">
+    <Box sx={wrapperSx}>
       {label && (
         <Typography sx={labelSx || styles.labelText}>{label}</Typography>
       )}
@@ -77,7 +85,7 @@ const InputComponent: React.FC<InputProps> = (props) => {
       >
         {error || ' '}
       </Typography>
-    </div>
+    </Box>
   );
 };
 

@@ -15,7 +15,9 @@ export default function Page() {
           style={styles.logo}
         /> */}
       </Box>
-      <LoginForm />
+      <Box sx={styles.formWrapper}>
+        <LoginForm />
+      </Box>
     </Box>
   );
 }
@@ -24,12 +26,21 @@ const styles = {
   wrapper: {
     width: '100%',
     height: '100vh',
+    display: 'flex',
+    flexDirection: 'column',
+  },
+  formWrapper: {
+    width: '100%',
+    flex: 1,
+    display: 'flex',
+    alignItems: 'center',
   },
   header: {
     display: 'flex',
     alignItems: 'center',
     width: '100%',
-    margin: '15px',
+    paddingTop: '15px',
+    paddingLeft: '15px',
   },
   logo: {
     // width: 'auto',
