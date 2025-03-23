@@ -16,6 +16,7 @@ const useStyle = (theme: Theme) =>
       width: '100% !important',
       flexWrap: 'wrap',
       gap: '20px',
+      marginTop: '6px',
       // [theme.breakpoints.down(700)]: {
       //   flexDirection: "column",
       //   gap: "20px",

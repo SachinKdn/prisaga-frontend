@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useMemo, useRef } from 'react';
 import {
   Box,
   useMediaQuery,
@@ -19,6 +19,7 @@ import { RootState } from '@store';
 import { useSelector } from 'react-redux';
 import Card from '@components/ProfileDialog/Card';
 import { useOnClickOutside } from '@hooks/useOnClickOutside';
+import { usePathname } from 'next/navigation';
 
 type Props = {
   sidebarWidth: string;
@@ -32,6 +33,19 @@ const Topbar = (props: Props) => {
   const handleProfileDialog = () => {
     setOpen(!open);
   };
+  const pathname = usePathname();
+  const pageHeading: Record<string, string> = {
+    '': 'Dashboard',
+    resume: 'Resume Warehouse',
+    profile: 'My Profile',
+  };
+
+  const title = useMemo(() => {
+    console.log(pathname);
+    const route = pathname.split('/')[1];
+    return pageHeading[route];
+  }, [pathname]);
+  console.log('title--->', title);
   return (
     <AppBar
       position="fixed"
@@ -52,7 +66,7 @@ const Topbar = (props: Props) => {
             </IconButton>
           )}
           <Typography variant="h4" sx={styles.secondHeading}>
-            Dashboard
+            {title}
           </Typography>
         </Box>
         <Box sx={styles.box}>
@@ -75,7 +89,7 @@ const Topbar = (props: Props) => {
 export default Topbar;
 const styles = {
   root: {
-    height: '80px',
+    height: '60px',
     width: '100%',
     boxShadow: 'unset',
     backgroundColor: colorConfigs.topbar.bg,
@@ -152,11 +166,12 @@ const styles = {
     },
   },
   secondHeading: {
-    fontSize: '1.1rem',
-    fontWeight: 500,
+    fontSize: '1.2rem',
+    fontWeight: 600,
     textDecoration: 'none',
     textOverflow: 'ellipsis',
     whiteSpace: 'nowrap',
+    color: theme.palette.primary.main,
     overflow: 'hidden',
     [theme.breakpoints.down('md')]: {
       fontSize: '0.85rem',

@@ -1,5 +1,4 @@
 'use server';
-
 import { redirect } from 'next/navigation';
 import { clearToken, getToken } from './tokenHandler';
 import { permanentRedirect } from 'next/navigation';

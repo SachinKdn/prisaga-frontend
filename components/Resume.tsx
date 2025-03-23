@@ -8,25 +8,59 @@ import { useRouter } from 'next/navigation';
 import { getResumes } from '@api/client';
 import ResumeCard from './ResumeCard';
 import ResumeCardSkeleton from './Skeletons/ResumeCardSkeleton';
+import SearchInput from './common/SearchInput';
+import useDebounce from '@hooks/useDebounce';
+import { areaOfExpertises, experienceLevels } from '@constant/resume-data';
+import SingleSelect from './common/SingleSelect';
+import NoDataFound from './common/noData';
 
 const Resume = () => {
   const router = useRouter();
 
   const [resumes, setResumes] = useState<UploadedResume[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [searchInput, setSearchInput] = useState('');
+  const [experience, setExperience] = useState<string>('');
+  const [areaOfExpertise, setAreaOfExpertise] = useState<string>('');
+  const searchValue = useDebounce(searchInput, 500);
+  const handleOnChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { value } = event.target;
+    setSearchInput(value);
+  };
   useEffect(() => {
     const fetch = async () => {
       setIsLoading(true);
-      const result = await getResumes();
-      if (result) setResumes(result);
+      const params = new URLSearchParams();
+      if (searchValue) params.append('search', searchValue);
+      if (experience) params.append('experience', experience);
+      if (areaOfExpertise) params.append('areaOfExpertise', areaOfExpertise);
+
+      const result = await getResumes(params.toString());
+      if (result) setResumes(result.data);
       setIsLoading(false);
     };
-    console.log('fetch the resumes');
+    console.log('fetch the resumes--searchValue>', searchValue);
     fetch();
-  }, []);
+  }, [searchValue, experience, areaOfExpertise]);
+
   return (
     <Box sx={styles.outerWrapper}>
       <Header title={`Total resumes (${resumes.length})`}>
+        <Box sx={{ display: 'flex', gap: 1 }}>
+          <SingleSelect
+            value={experience}
+            setValue={setExperience}
+            items={experienceLevels}
+            placeholder="Select Experience"
+          />
+          <SingleSelect
+            value={areaOfExpertise}
+            setValue={setAreaOfExpertise}
+            items={areaOfExpertises}
+            placeholder="Select area of expertise"
+          />
+          <SearchInput onChange={handleOnChange} sx={styles.searchBar} />
+        </Box>
         <Button
           sx={styles.btn}
           variant="contained"
@@ -39,6 +73,8 @@ const Resume = () => {
 
       {isLoading ? (
         <SkeletonLoading />
+      ) : resumes.length === 0 ? (
+        <NoDataFound />
       ) : (
         <Box sx={styles.list}>
           {resumes.map((resume, index) => (
@@ -88,7 +124,16 @@ const styles = {
       boxShadow: 'none',
     },
   },
-
+  searchBar: {
+    height: '28px !important',
+    '& .MuiOutlinedInput-root': {
+      fontSize: '0.75rem !important',
+      height: '100%',
+      color: '#757897',
+      fontWeight: 500,
+      paddingLeft: '5px',
+    },
+  },
   list: {
     display: 'flex',
     flexDirection: 'column',
