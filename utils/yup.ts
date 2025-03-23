@@ -51,10 +51,6 @@ export const UserFormSchema = Yup.object().shape({
 const locationSchema = Yup.object().shape({
   city: Yup.string().required('City is required'),
   state: Yup.string().required('State is required'),
-  postalCode: Yup.number()
-    .typeError('Postal Code must be a number')
-    .required('Postal Code is required')
-    .integer('Postal Code must be an integer'),
 });
 
 export const CompanySchema = Yup.object().shape({
@@ -95,7 +91,7 @@ export const ResumeFormSchema = Yup.object().shape({
         return /^[0-9]{10}$/.test(value);
       }
     ),
-  linkedin: Yup.string().required('LinkedIn profile is required'),
+  linkedin: Yup.string().optional(),
   website: Yup.string().optional(),
   resume: Yup.string().required('Resume file is required'),
   experience: Yup.string().required('Experience level is required'),

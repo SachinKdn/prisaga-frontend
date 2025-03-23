@@ -70,7 +70,7 @@ interface UserInput {
 }
 interface ILocation {
   area?: string;
-  postalCode: number;
+  postalCode?: number;
   city: string;
   state: string;
 }
@@ -123,7 +123,7 @@ interface Resume {
   location: ILocation;
   email: string;
   phoneNumber: string;
-  linkedin: string;
+  linkedin?: string;
   website?: string;
   resume: string;
   experience: string;

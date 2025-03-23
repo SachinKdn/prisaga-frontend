@@ -38,6 +38,7 @@ const style = {
   },
   imgWrapper: {
     marginBottom: '8vh',
+    marginTop: '6vh',
   },
   link: {
     color: theme.palette.primary.main,
