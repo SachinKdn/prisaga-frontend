@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { Oval } from 'react-loader-spinner';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -27,6 +27,7 @@ export default function ProtectedRoutes({ children }: ProtectedRoutesProps) {
   const handleLogout = useLogout();
   const { user } = useSelector((state: RootState) => state.auth);
   const pathname = usePathname();
+  const router = useRouter();
   const token = localStorage.getItem('token');
   const [authStatus, setAuthStatus] = useState<AuthStatus>('authenticated');
 
@@ -100,6 +101,9 @@ export default function ProtectedRoutes({ children }: ProtectedRoutesProps) {
     isPublicRoute
   ) {
     return <>{children}</>;
+    if (authStatus === 'unauthenticated' && !isPublicRoute) {
+      router.push('/login');
+    }
   }
   console.log('authStatus', authStatus);
   console.log('unexpected!!!!');
