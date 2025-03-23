@@ -115,7 +115,7 @@ const LoginForm: React.FC = () => {
           <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
             <Typography
               component="span"
-              onClick={() => router.push('/forgot-password')}
+              onClick={() => {}}
               textAlign="right"
               width="100%"
               sx={{
