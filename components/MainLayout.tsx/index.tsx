@@ -54,7 +54,8 @@ const MainLayout = ({ children }: { children: React.ReactNode }) => {
         component="main"
         sx={{
           flexGrow: 1,
-          p: 3,
+          py: 0,
+          px: 2,
           width: `calc(100% - ${!isMd ? sidebarWidth : '0px'})`,
           minHeight: '100vh',
           boxSizing: 'border-box',
@@ -64,7 +65,7 @@ const MainLayout = ({ children }: { children: React.ReactNode }) => {
           },
         }}
       >
-        <Toolbar sx={{ minHeight: '64px !important' }} />
+        <Toolbar sx={{ minHeight: '60px !important' }} />
         {children}
       </Box>
     </Box>

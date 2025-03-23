@@ -1,22 +1,23 @@
 import TextField from '@mui/material/TextField';
-import SearchIcon from '@mui/icons-material/Search';
 import { SxProps, Theme, useTheme } from '@mui/material';
 import { createStyles } from '@mui/styles';
+import { Search } from 'lucide-react';
 
 const useStyle = (theme: Theme, isFullWidth: boolean) =>
   createStyles({
     sx: {
       border: 'none',
-      borderRadius: '10px',
+      borderRadius: '4px',
       height: '36px',
-      width: '260px',
+      width: '210px',
       fontSize: '14px',
       fontWeight: '400',
+      boxShadow: '0px 0px 10px 0px rgba(0, 0, 0, 0.09)',
       fontFamily: '"Red Hat Display", sans-serif',
       lineHeight: '19px',
       backgroundColor: theme.palette.common.white,
       color: '#757897',
-      margin: '0 8px',
+      margin: '0',
       '& input::placeholder': {
         opacity: 0.7,
       },
@@ -73,18 +74,25 @@ const SearchInput = ({
   const styles = useStyle(theme, isFullWidth);
   return (
     <TextField
-      sx={sx || styles.sx}
+      sx={{ ...styles.sx, ...sx }}
       placeholder={placeholder || 'Search'}
       value={value}
       type={type}
       InputProps={{
         startAdornment: (
-          <SearchIcon
-            style={{
-              color: '#757897',
-              width: '24px',
-              height: '24px',
-            }}
+          // <SearchIcon
+          //   style={{
+          //     color: '#757897',
+          //     width: '22px',
+          //     height: '22px',
+          //     marginRight: '4px'
+          //   }}
+          // />
+          <Search
+            size={18}
+            color="#757897"
+            style={{ marginRight: '4px' }}
+            strokeWidth={1.25}
           />
         ),
         sx: { py: 0 },

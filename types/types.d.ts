@@ -3,6 +3,10 @@ interface UserLogin {
   password: string;
 }
 
+interface Option {
+  value: string;
+  label: string;
+}
 interface IResponse<T = any> {
   success: boolean;
   message?: string;

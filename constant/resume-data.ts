@@ -1,93 +1,88 @@
-interface Option {
-  _id: string;
-  name: string;
-}
-
-export const states = [
+export const states: Option[] = [
   {
-    _id: 'Haryana',
-    name: 'Haryana',
+    value: 'Haryana',
+    label: 'Haryana',
   },
   {
-    _id: 'Uttar Pardesh',
-    name: 'Uttar Pardesh',
+    value: 'Uttar Pardesh',
+    label: 'Uttar Pardesh',
   },
   {
-    _id: 'Rajasthan',
-    name: 'Rajasthan',
+    value: 'Rajasthan',
+    label: 'Rajasthan',
   },
   {
-    _id: 'Himachal Pardesh',
-    name: 'Himachal Pardesh',
+    value: 'Himachal Pardesh',
+    label: 'Himachal Pardesh',
   },
   {
-    _id: 'Delhi',
-    name: 'Delhi',
+    value: 'Delhi',
+    label: 'Delhi',
   },
 ];
 
 export const experienceLevels = [
   {
-    _id: '0-1 Yr. Fresher',
-    name: '0-1 Yr. Fresher',
+    value: '0',
+    label: '0-1 Yr. Fresher',
   },
   {
-    _id: '1-4 Yr. Consultant / Associate',
-    name: '1-4 Yr. Consultant / Associate',
+    value: '1',
+    label: '1-4 Yr. Consultant / Associate',
   },
   {
-    _id: '4-8 Yr. Sr. Associate / AM / DM',
-    name: '4-8 Yr. Sr. Associate / AM / DM',
+    value: '4',
+    label: '4-8 Yr. Sr. Associate / AM / DM',
   },
   {
-    _id: '8-12 Yr. Manager',
-    name: '8-12 Yr. Manager',
+    value: '8',
+    label: '8-12 Yr. Manager',
   },
   {
-    _id: '12-15 Yr. Sr. Manager / AVP',
-    name: '12-15 Yr. Sr. Manager / AVP',
+    value: '12',
+    label: '12-15 Yr. Sr. Manager / AVP',
   },
   {
-    _id: '15+ Yr. Director / VP',
-    name: '15+ Yr. Director / VP',
+    value: '15',
+    label: '15+ Yr. Director / VP',
   },
 ];
 
-export const areaOfExpertise = [
+export const areaOfExpertises = [
   {
-    _id: 'Account / Finance / Legal',
-    name: 'Account / Finance / Legal',
+    value: 'Account / Finance / Legal',
+    label: 'Account / Finance / Legal',
   },
   {
-    _id: 'Production / Manufacturing / Construction',
-    name: 'Production / Manufacturing / Construction',
+    value: 'Production / Manufacturing / Construction',
+    label: 'Production / Manufacturing / Construction',
   },
   {
-    _id: 'Quality / Risk Management',
-    name: 'Quality / Risk Management',
+    value: 'Quality / Risk Management',
+    label: 'Quality / Risk Management',
   },
   {
-    _id: 'HR / Payroll / Compliance',
-    name: 'HR / Payroll / Compliance',
+    value: 'HR / Payroll / Compliance',
+    label: 'HR / Payroll / Compliance',
   },
   {
-    _id: 'IT / ITES',
-    name: 'IT / ITES',
+    value: 'IT / ITES',
+    label: 'IT / ITES',
   },
   {
-    _id: 'Sales / Marketing / Business Development',
-    name: 'Sales / Marketing / Business Development',
+    value: 'Sales / Marketing / Business Development',
+    label: 'Sales / Marketing / Business Development',
   },
   {
-    _id: 'Procurement / Supply Chain',
-    name: 'Procurement / Supply Chain',
+    value: 'Procurement / Supply Chain',
+    label: 'Procurement / Supply Chain',
   },
   {
-    _id: 'Product Management',
-    name: 'Product Management',
+    value: 'Product Management',
+    label: 'Product Management',
   },
   {
-    _id: 'Project / Program Management',
-    name: 'Project / Program Management',
+    value: 'Project / Program Management',
+    label: 'Project / Program Management',
   },
 ];

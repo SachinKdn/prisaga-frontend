@@ -1,6 +1,7 @@
 'use client';
 
 import handleError from '@hooks/handleError';
+import { getToken } from './tokenHandler';
 
 const useAuthenticatedFileUploadApi = () => {
   const uploadFile = async (payload: any) => {
@@ -8,7 +9,7 @@ const useAuthenticatedFileUploadApi = () => {
       const { file } = payload;
       const formData = new FormData();
       formData.append('file', file);
-      const token = localStorage.getItem('token');
+      const token = await getToken();
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}application/upload`,
         {
@@ -22,13 +23,11 @@ const useAuthenticatedFileUploadApi = () => {
       if (!response.ok) {
         throw new Error(`File not uploaded!`);
       }
-      console.log(response);
       const data: IResponse<UploadResponse> = await response.json();
       return data;
     } catch (error) {
       console.error(error);
       handleError(error);
-      //   throw error;
     }
   };
 

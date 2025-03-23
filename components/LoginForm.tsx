@@ -62,7 +62,6 @@ const LoginForm: React.FC = () => {
       if (!response.ok) {
         throw new Error(result.message);
       }
-      console.log(result.data.accessToken);
       await setToken(result.data.accessToken);
       handleAuthSuccess(result.data.user, result.data.accessToken);
     } catch (error) {
@@ -73,25 +72,16 @@ const LoginForm: React.FC = () => {
   };
 
   const handleAuthSuccess = (user: User, accessToken: string) => {
-    // Store token in localStorage
     localStorage.setItem('token', accessToken);
-
-    // Dispatch login success action
     dispatch(loginSuccess(user));
-
-    // Navigate based on user role
     const routeMap: Record<UserRole, string> = {
       [UserRole.SUPERADMIN]: '/resume',
       [UserRole.ADMIN]: '/resume',
       [UserRole.VENDOR]: '/vendor',
       [UserRole.USER]: '/user',
     };
-
     const route = routeMap[user.role as UserRole];
-
-    if (route) {
-      router.push(route);
-    }
+    router.push(route);
   };
 
   return (

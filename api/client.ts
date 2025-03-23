@@ -51,7 +51,6 @@ async function request<T>(
   try {
     const response = await fetch(`${baseUrl}${url}`, requestConfig);
     console.log(response);
-    // Handle unauthorized access
     if (response.status === 401) {
       localStorage.clear();
       window.location.href = '/login';
@@ -59,18 +58,12 @@ async function request<T>(
     }
 
     const result = (await response.json()) as IResponse<T> | ErrorResponse;
-    // if (!response.ok) {
-    //   console.log("Error in response.ok->", result)
-    //   throw new Error(result.message || 'Something went wrong!');
-    // }
     if (!response.ok) {
       console.log('Error in response.ok->', result);
       if ('data' in result && result.data && 'errors' in result.data) {
         const errorData = result.data as ValidationError;
-
         if (errorData.errors && errorData.errors.length > 0) {
           const errorMsg = errorData.errors[0].msg;
-          // throw new Error(errorMsg || result.message);
           handleError(new Error(errorMsg || result.message));
           return undefined;
         }
@@ -133,8 +126,13 @@ export async function createResume(
   });
 }
 
-export async function getResumes(): Promise<UploadedResume[] | undefined> {
-  return request<UploadedResume[]>('application/resumes', {
-    method: 'GET',
-  });
+export async function getResumes(
+  params?: string
+): Promise<ITableResponse<UploadedResume[]> | undefined> {
+  return request<ITableResponse<UploadedResume[]>>(
+    `application/resumes?${params || ''}`,
+    {
+      method: 'GET',
+    }
+  );
 }

@@ -62,7 +62,9 @@ const ResumeCard = (props: Props) => {
           </Box>
           <Box sx={style.infoItem}>
             <WorkIcon sx={style.icon} />
-            <Typography sx={style.text}>{data.experience}</Typography>
+            <Typography
+              sx={style.text}
+            >{`${data.experience === '0' ? '0-1 Yr. Experience' : data.experience + '+ Yr. Experience'}`}</Typography>
           </Box>
         </Box>
 
@@ -97,7 +99,9 @@ const ResumeCard = (props: Props) => {
               <BusinessCenterIcon sx={style.icon} />
               <Typography sx={style.subHeading}>Summary</Typography>
             </Box>
-            <Typography sx={style.text}>{data.summary}</Typography>
+            <Typography sx={style.text}>
+              {data.summary || 'Not available'}
+            </Typography>
           </Box>
         </Box>
 

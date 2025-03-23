@@ -16,23 +16,19 @@ import { Input } from './common/Input';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { ResumeFormSchema } from '@utils/yup';
-import { areaOfExpertise, experienceLevels } from '@constant/resume-data';
+import { areaOfExpertises, experienceLevels } from '@constant/resume-data';
 import UploadResume from './common/UploadResume';
 import { getCitiesByState, getIndianStates } from '@services/loadOptions';
 import { createResume } from '@api/client';
 import handleSuccess from '@hooks/handleSuccess';
 import { useRouter } from 'next/navigation';
-interface Option {
-  value: string;
-  label: string;
-}
+
 const CreateResumeForm = () => {
   const {
     register,
     handleSubmit,
     setValue,
     formState: { errors },
-    watch,
     control,
   } = useForm<Resume>({
     resolver: yupResolver(ResumeFormSchema),
@@ -48,21 +44,17 @@ const CreateResumeForm = () => {
   const [uploading, setUploading] = useState(false);
   const [states, setStates] = useState<Option[]>([]);
   const [cities, setCities] = useState<Option[]>([]);
+  const [selectedState, setSelectedState] = useState<string>('');
 
-  const selectedState = watch('location.state');
-
-  // Load Indian states on component mount
   useEffect(() => {
     const indianStates = getIndianStates();
     setStates(indianStates);
   }, []);
 
-  // Load cities when state changes
   useEffect(() => {
     if (selectedState) {
       const cityList = getCitiesByState(selectedState);
       setCities(cityList);
-      // Reset city when state changes
       setValue('location.city', '');
     }
   }, [selectedState, setValue]);
@@ -76,10 +68,8 @@ const CreateResumeForm = () => {
       handleSuccess('Resume created successfully');
       router.back();
     }
-
     setLoading(false);
   };
-  console.log(errors);
   return (
     <Box sx={style.wrapper}>
       <Typography variant="h2" sx={style.heading}>
@@ -193,7 +183,8 @@ const CreateResumeForm = () => {
                       {states.map((state) => (
                         <MenuItem
                           key={state.value}
-                          value={state.value}
+                          value={state.label}
+                          onClick={() => setSelectedState(state.value)}
                           sx={style.selectItem}
                         >
                           {state.label}
@@ -299,11 +290,11 @@ const CreateResumeForm = () => {
                       </MenuItem>
                       {experienceLevels.map((type) => (
                         <MenuItem
-                          key={type._id}
-                          value={type._id}
+                          key={type.value}
+                          value={type.value}
                           sx={style.selectItem}
                         >
-                          {type.name}
+                          {type.label}
                         </MenuItem>
                       ))}
                     </Select>
@@ -350,13 +341,13 @@ const CreateResumeForm = () => {
                       <MenuItem value="" disabled sx={style.selectItem}>
                         Select Area
                       </MenuItem>
-                      {areaOfExpertise.map((type) => (
+                      {areaOfExpertises.map((type) => (
                         <MenuItem
-                          key={type._id}
-                          value={type._id}
+                          key={type.value}
+                          value={type.value}
                           sx={style.selectItem}
                         >
-                          {type.name}
+                          {type.value}
                         </MenuItem>
                       ))}
                     </Select>
@@ -426,7 +417,8 @@ const style = {
     flexDirection: 'column',
     height: '100%',
     width: '80%',
-    margin: 'auto',
+    mx: 'auto',
+    mb: '2rem',
   },
   innerWrapper: {
     display: 'flex',
@@ -464,7 +456,7 @@ const style = {
   },
   heading: {
     color: theme.palette.primary.main,
-    fontSize: '1.3rem',
+    fontSize: '1.1rem',
     fontWeight: '600',
     marginBottom: '10px',
   },
