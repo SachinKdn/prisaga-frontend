@@ -43,6 +43,10 @@ const useStyle = (theme: Theme) =>
       gap: 1,
       textDecoration: 'none',
       width: '100%',
+      padding: '4px 8px',
+      '&:hover': {
+        backgroundColor: '#e7e7e757',
+      },
     },
 
     iconWrapper: {
@@ -50,7 +54,7 @@ const useStyle = (theme: Theme) =>
       alignItems: 'center',
     },
     title: {
-      fontSize: '0.88rem',
+      fontSize: '0.80rem',
       fontWeight: 400,
       fontFamily: 'Sora',
       lineHeight: '24.54px',

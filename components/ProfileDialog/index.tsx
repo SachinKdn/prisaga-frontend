@@ -7,11 +7,11 @@ import SettingIcon from '@assets/svg/settings-02.svg';
 import TrendIcon from '@assets/svg/bar-chart-07.svg';
 import UploadIcon from '@assets/svg/upload-01.svg';
 import NotificationIcon from '@assets/svg/bell-01.svg';
+import BuildingIcon from '@assets/svg/building.svg';
 import { useSelector } from 'react-redux';
 import { UserRole } from '@/constant/enum';
 import { RootState } from '@/store';
 import theme from '@/app/theme';
-import { Building2 } from 'lucide-react';
 interface Props {
   open: boolean;
   onClose: () => void;
@@ -47,7 +47,7 @@ export const cards: ICard[] = [
     access: [UserRole.USER, UserRole.ADMIN, UserRole.ADMIN, UserRole.VENDOR],
   },
   {
-    icon: Building2,
+    icon: BuildingIcon,
     name: 'Our Organisation',
     to: '/company',
     access: [UserRole.ADMIN, UserRole.SUPERADMIN],

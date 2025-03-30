@@ -30,9 +30,36 @@ const useAuthenticatedFileUploadApi = () => {
       handleError(error);
     }
   };
+  const uploadProfilePicture = async (payload: any) => {
+    try {
+      const { file } = payload;
+      const formData = new FormData();
+      formData.append('file', file);
+      const token = await getToken();
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}user/updateProfilePic`,
+        {
+          method: 'POST',
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          body: formData,
+        }
+      );
+      if (!response.ok) {
+        throw new Error(`Image not uploaded!`);
+      }
+      const data: IResponse<User> = await response.json();
+      return data;
+    } catch (error) {
+      console.error(error);
+      handleError(error);
+    }
+  };
 
   return {
     uploadFile,
+    uploadProfilePicture,
   };
 };
 

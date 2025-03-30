@@ -1,131 +1,163 @@
 'use client';
-import { Box, Typography, Grid, Divider } from '@mui/material';
-import React from 'react';
+import { Box, Typography } from '@mui/material';
+import React, { useState, useEffect } from 'react';
 import dayjs from 'dayjs';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
 dayjs.extend(localizedFormat);
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import UploadImage from './UploadImage';
-import { RootState } from '@store';
-import { ChartColumn, Ellipsis, UserRound } from 'lucide-react';
-import { CountCard } from './VendorDetails';
-import SubmittedIcon from '@assets/svg/submitted-icon.svg';
-import SuccessIcon from '@assets/svg/success-icon.svg';
-import RejectedIcon from '@assets/svg/rejected-icon.svg';
+import { AppDispatch, RootState } from '@store';
+// import { ChartColumn, Ellipsis, UserRound } from 'lucide-react';
+// import { CountCard } from './VendorDetails';
+// import SubmittedIcon from '@assets/svg/submitted-icon.svg';
+// import SuccessIcon from '@assets/svg/success-icon.svg';
+// import RejectedIcon from '@assets/svg/rejected-icon.svg';
+// import ProfileIcon from '@assets/svg/profile-icon.svg';
 import DiamondIcon from '@assets/svg/diamond-icon.svg';
+import theme from '@app/theme';
+import SectionHeader from './Profile/SectionHeader';
+import { UserRole } from '@constant/enum';
+import { setUserInStore } from '@store/slices/user';
+import UpdateProfileModal from './Profile/UpdateProfileModal';
 
-const Profile: React.FC = () => {
+interface Props {
+  data: User;
+}
+const Profile = (props: Props) => {
+  const { data } = props;
+  const dispatch = useDispatch<AppDispatch>();
   const user = useSelector((state: RootState) => state.auth.user);
+  const [isOpenEditModal, setIsOpenEditModal] = useState(false);
+  useEffect(() => {
+    dispatch(setUserInStore(data));
+  }, [data]);
+  const handleEdit = () => {
+    setIsOpenEditModal(true);
+  };
+  const handleClose = () => {
+    setIsOpenEditModal(false);
+  };
   return (
     <Box
       sx={{
-        py: 4,
-        px: 6,
-        width: '100%',
-        boxShadow: '0px 4px 12px 0px rgba(0, 0, 0, 0.12)',
-        borderRadius: '8px',
-        backgroundColor: '#fff',
         display: 'flex',
         flexDirection: 'column',
+        gap: '1rem',
+        padding: '8px',
       }}
     >
-      <Grid container spacing={2}>
-        <Grid item xs={12} sm={2}>
-          <UploadImage />
-        </Grid>
-        <Grid item xs={12} sm={7}>
-          <Box>
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 2 }}>
-              <UserRound size={18} />
-              <Typography
-                variant="body2"
-                sx={{ color: '#5B617A', fontWeight: 500 }}
-              >
-                Agency Admin
-              </Typography>
-            </Box>
-
-            <Box sx={{ display: 'flex', gap: 4, paddingLeft: 3 }}>
-              <Box>
-                <Typography
-                  variant="body2"
-                  sx={{ color: '#0338CD', fontWeight: 600 }}
-                >
-                  Full Name
-                </Typography>
-                <Typography variant="body2" sx={{ color: '#5B617A' }}>
-                  {user?.firstName || 'NA'} {user?.lastName ?? ''}
-                </Typography>
-              </Box>
-
-              <Box>
-                <Typography
-                  variant="body2"
-                  sx={{ color: '#0338CD', fontWeight: 600 }}
-                >
-                  Email
-                </Typography>
-                <Typography variant="body2" sx={{ color: '#5B617A' }}>
-                  {user?.email ? user?.email : '--'}
-                </Typography>
-              </Box>
-
-              <Box>
-                <Typography
-                  variant="body2"
-                  sx={{ color: '#0338CD', fontWeight: 600 }}
-                >
-                  Phone Number
-                </Typography>
-                <Typography variant="body2" sx={{ color: '#5B617A' }}>
-                  {user?.phoneNumber ? user?.phoneNumber : '--'}
-                </Typography>
-              </Box>
-
-              <Box>
-                <Typography
-                  variant="body2"
-                  sx={{ color: '#0338CD', fontWeight: 600 }}
-                >
-                  Created At
-                </Typography>
-                <Typography variant="body2" sx={{ color: '#5B617A' }}>
-                  Created At {dayjs(user?.createdAt).format('MMM DD YYYY')}
-                </Typography>
-              </Box>
-            </Box>
+      <Box sx={styles.section}>
+        <UploadImage defaultSrc={user?.image} />
+        <Box sx={{ flex: 1, display: 'flex', alignItems: 'center' }}>
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'center',
+              paddingLeft: 1,
+            }}
+          >
+            <Typography variant="body2" sx={styles.username}>
+              {user?.firstName || 'NA'} {user?.lastName ?? ''}
+            </Typography>
+            <Typography variant="body2" sx={styles.text}>
+              {user?.role ? user?.role : '--'}
+            </Typography>
+            <Typography variant="body2" sx={styles.text}>
+              {user?.email ? user?.email : '--'}
+            </Typography>
           </Box>
-        </Grid>
-
-        <Grid item xs={12} sm={3}>
+        </Box>
+        {user?.role === UserRole.VENDOR && (
           <Box
             sx={{
               display: 'flex',
               alignItems: 'center',
-              gap: 2,
+              gap: 1,
               height: 'min-content',
             }}
           >
             <DiamondIcon />
-            <Box>
-              <Typography
-                variant="body2"
-                sx={{ color: '#5B617A', fontWeight: 500 }}
-              >
+            <Box sx={styles.detail}>
+              <Typography variant="body2" sx={styles.detailHeading}>
                 Subscription Type
               </Typography>
               <Typography
                 variant="body1"
-                sx={{ color: '#0338CD', fontWeight: 600 }}
+                sx={{
+                  ...styles.detailSubHeading,
+                  fontWeight: 700,
+                  color: theme.palette.primary.dark,
+                }}
               >
                 Upgrade Now
               </Typography>
             </Box>
           </Box>
-        </Grid>
-      </Grid>
+        )}
+      </Box>
 
-      <Divider sx={{ my: 2 }} />
+      <Box sx={styles.editSection}>
+        <SectionHeader title="Personal Information" handleEdit={handleEdit} />
+        <Box sx={styles.detailWrapper}>
+          <Box sx={styles.detail}>
+            <Typography variant="body2" sx={styles.detailHeading}>
+              First Name
+            </Typography>
+            <Typography variant="body2" sx={styles.detailSubHeading}>
+              {user?.firstName}
+            </Typography>
+          </Box>
+          <Box sx={styles.detail}>
+            <Typography variant="body2" sx={styles.detailHeading}>
+              Last Name
+            </Typography>
+            <Typography variant="body2" sx={styles.detailSubHeading}>
+              {user?.lastName}
+            </Typography>
+          </Box>
+          <Box sx={styles.detail}>
+            <Typography variant="body2" sx={styles.detailHeading}>
+              Username
+            </Typography>
+            <Typography variant="body2" sx={styles.detailSubHeading}>
+              {user?.username}
+            </Typography>
+          </Box>
+          <Box sx={styles.detail}>
+            <Typography variant="body2" sx={styles.detailHeading}>
+              Email
+            </Typography>
+            <Typography variant="body2" sx={styles.detailSubHeading}>
+              {user?.email}
+            </Typography>
+          </Box>
+          <Box sx={styles.detail}>
+            <Typography variant="body2" sx={styles.detailHeading}>
+              Mobile Number
+            </Typography>
+            <Typography variant="body2" sx={styles.detailSubHeading}>
+              {user?.phoneNumber}
+            </Typography>
+          </Box>
+          <Box sx={styles.detail}>
+            <Typography variant="body2" sx={styles.detailHeading}>
+              Role
+            </Typography>
+            <Typography variant="body2" sx={styles.detailSubHeading}>
+              {user?.role}
+            </Typography>
+          </Box>
+        </Box>
+      </Box>
+      {isOpenEditModal && (
+        <UpdateProfileModal
+          open={isOpenEditModal}
+          onClose={handleClose}
+          initialData={user!}
+        />
+      )}
+      {/* <Divider sx={{ my: 2 }} />
 
       <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 4, mt: 4 }}>
         <ChartColumn size={18} />
@@ -163,56 +195,64 @@ const Profile: React.FC = () => {
           iconClass={{ width: '25px', height: '20px' }}
           className={{ color: '#CB0000' }}
         />
-      </Box>
+      </Box> */}
     </Box>
-    // <Box sx={styles.wrapper}>
-    //   <Box sx={styles.innerWrapper}>
-    //     <Box sx={styles.profileContainer}>
-    //       <UploadImage />
-    //       <Box sx={styles.detail}>
-    //         <Typography sx={styles.userName}>{user?.firstName}</Typography>
-    //         <Typography sx={styles.role}>{user?.role}</Typography>
-    //       </Box>
-    //     </Box>
-    //     <Box sx={styles.contactContainer}>
-    //       <Box sx={styles.dataCard}>
-    //         <Typography sx={styles.contactType}>Email</Typography>
-    //         <Typography sx={styles.contact}>
-    //           {user?.email ? user?.email : "--"}
-    //         </Typography>
-    //       </Box>
-    //       <Box
-    //         sx={{
-    //           ...styles.dataCard,
-    //           backgroundColor: "#E0ECFC",
-    //           border: "1.5px solid #74A9F0",
-    //         }}
-    //       >
-    //         <Typography sx={styles.contactType}>Contact Number</Typography>
-    //         <Typography sx={styles.contact}>
-    //           {user?.phoneNumber ? user?.phoneNumber : "--"}
-    //         </Typography>
-    //       </Box>
-    //       <Box
-    //         sx={{
-    //           ...styles.dataCard,
-    //           backgroundColor: "#FEEFC2",
-    //           border: "1.5px solid #FBBF09",
-    //         }}
-    //       >
-    //         <Typography sx={styles.contactType}>Account Created On</Typography>
-    //         <Typography sx={styles.contact}>
-    //           {/* {user?.createdAt.slice(0, 10)} */}
-    //           {user?.createdAt
-    //             ? dayjs(user?.createdAt).format("MMM DD YYYY")
-    //             : "--"}
-    //           {/* {dayjs(user?.createdAt).format("MMM DD YYYY")} */}
-    //         </Typography>
-    //       </Box>
-    //     </Box>
-    //   </Box>
-    // </Box>
   );
 };
 
 export default Profile;
+
+const styles = {
+  username: {
+    fontWeight: 500,
+    fontSize: '0.95rem',
+    color: theme.palette.primary.main,
+  },
+  text: {
+    fontWeight: 500,
+    fontSize: '0.75rem',
+    color: theme.palette.primary.dark,
+  },
+  section: {
+    py: 3,
+    px: 3,
+    width: '100%',
+    borderRadius: '8px',
+    backgroundColor: '#fff',
+    boxShadow: '0px 0px 10px 0px rgba(0, 0, 0, 0.08)',
+    display: 'flex',
+    alignItems: 'center',
+    gap: '0.8rem',
+  },
+  editSection: {
+    py: 3,
+    px: 3,
+    width: '100%',
+    borderRadius: '8px',
+    backgroundColor: '#fff',
+    boxShadow: '0px 0px 10px 0px rgba(0, 0, 0, 0.08)',
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '0.5rem',
+  },
+  detailWrapper: {
+    display: 'grid',
+    gridTemplateColumns: 'repeat(3, 1fr)',
+    gap: 2,
+    padding: 2,
+  },
+  detail: {
+    display: 'flex',
+    flexDirection: 'column',
+  },
+  detailHeading: {
+    fontWeight: 500,
+    fontSize: '0.75rem',
+    color: theme.palette.primary.contrastText,
+  },
+  detailSubHeading: {
+    fontWeight: 500,
+    fontSize: '0.75rem',
+    color: theme.palette.primary.dark,
+  },
+};

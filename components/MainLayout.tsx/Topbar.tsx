@@ -12,7 +12,7 @@ import theme from '@/app/theme';
 import MenuIcon from '@mui/icons-material/Menu';
 import Image from 'next/image';
 import Logo from '@assets/svg/prisaga-svg-logo.svg';
-import ProfileImage from '@assets/png/profile-pic.png';
+import ProfileImage from '@assets/png/profile-pic-square.png';
 import { useState } from 'react';
 import { cards } from '../ProfileDialog';
 import { RootState } from '@store';
@@ -28,6 +28,7 @@ type Props = {
 };
 const Topbar = (props: Props) => {
   const { toggleDrawer, sidebarWidth } = props;
+  const user = useSelector((state: RootState) => state.auth.user);
   const isMd = useMediaQuery(theme.breakpoints.down('md'));
   const [open, setOpen] = useState(false);
   const handleProfileDialog = () => {
@@ -72,12 +73,15 @@ const Topbar = (props: Props) => {
         <Box sx={styles.box}>
           {/* <Image src={LogoImage} alt="logo" style={styles.logoImg} /> */}
           <Logo />
-          <Image
-            src={ProfileImage}
-            alt="profileImg"
-            style={styles.profileImg}
-            onClick={handleProfileDialog}
-          />
+          <Box sx={styles.profileImg}>
+            <Image
+              src={user?.image || ProfileImage}
+              alt="profileImg"
+              layout="fill"
+              // style={styles.profileImg}
+              onClick={handleProfileDialog}
+            />
+          </Box>
 
           {open && <ProfilePopup open={open} onClose={handleProfileDialog} />}
         </Box>
@@ -144,9 +148,11 @@ const styles = {
   profileImg: {
     height: '35px',
     width: '35px',
-    borderRadius: '100%',
+    position: 'relative',
+    border: '2px solid #358D9E',
+    borderRadius: '50%',
     cursor: 'pointer',
-
+    overflow: 'hidden',
     // [theme.breakpoints.down("md")]: {
     //   height: "40px",
     // },
@@ -181,8 +187,8 @@ const styles = {
     },
   },
   popUpWrapper: {
-    borderRadius: '12px',
-    padding: '15px 12px 15px 12px',
+    borderRadius: '4px',
+    padding: '6px 0px 6px 0px',
     position: 'absolute',
     top: '44px',
     right: '24px',
@@ -194,7 +200,6 @@ const styles = {
     flexDirection: 'column',
     justifyContent: 'space-between',
     alignItems: 'flex-start',
-    gap: '10px',
     overflowY: 'auto',
     maxHeight: '80vh',
     minWidth: '224px',

@@ -1,80 +1,90 @@
 'use client';
 import React, { useRef, useState } from 'react';
 import { Box } from '@mui/material';
-import defaultImage from '@assets/png/profile-pic.png';
+import defaultImage from '@assets/png/profile-pic-square.png';
 
 import CameraAltIcon from '@mui/icons-material/CameraAlt';
 import Image, { StaticImageData } from 'next/image';
 import theme from '@app/theme';
-const styles = {
-  imageBoxContainer: {
-    width: '150px',
-    height: 'auto',
-    borderRadius: '50%',
-    position: 'relative',
-    '& .image': {
-      borderRadius: '50%',
-    },
-    [theme.breakpoints.down('sm')]: {
-      width: '110px',
-    },
-  },
-  imageBox: {
-    height: '40px',
-    width: '40px',
-    position: 'absolute',
-    bottom: '0',
-    right: '12px',
-    borderRadius: '50%',
-    background: '#fff',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    cursor: 'pointer',
-    '& .fileInputBox': {
-      display: 'none',
-    },
-  },
-};
+import { Oval } from 'react-loader-spinner';
+import { AppDispatch } from '@store';
+import { useDispatch } from 'react-redux';
+import { useAuthenticatedFileUploadApi } from '@api/upload-file';
+import handleSuccess from '@hooks/handleSuccess';
+import { setUserInStore } from '@store/slices/user';
+
 interface UserContainerProps {
-  callback?: ((fileUrl: File) => void) | undefined;
   readOnly?: boolean;
   defaultSrc?: string;
 }
 const UploadImage: React.FC<UserContainerProps> = ({
-  callback = () => {},
   readOnly = false,
   defaultSrc = '',
 }) => {
+  const dispatch = useDispatch<AppDispatch>();
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const [isLoadingProfile, setIsLoadingProfile] = useState(false);
   const [imageUrl, setImageUrl] = useState<string | StaticImageData>(
     defaultSrc || defaultImage
   );
-  const handlePencilClick = () => {
+  const { uploadProfilePicture } = useAuthenticatedFileUploadApi();
+  const handleClick = () => {
     if (fileInputRef.current) {
       fileInputRef.current.click();
     }
   };
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = async (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setIsLoadingProfile(true);
     const file = event.target.files?.[0];
     if (file) {
       const fileUrl = URL.createObjectURL(file);
       setImageUrl(fileUrl);
-      callback(file);
+      const payload = { file };
+      const result = await uploadProfilePicture(payload);
+      if (result && result.data) {
+        console.log(result, '<---result');
+        handleSuccess('Profile Picture Updated Successfully');
+        dispatch(setUserInStore(result.data));
+      }
+      setIsLoadingProfile(false);
     }
   };
   return (
     <Box sx={styles.imageBoxContainer}>
+      {isLoadingProfile && (
+        <Box
+          sx={{
+            inset: 0,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            bgcolor: 'rgba(255, 255, 255, 0.2)',
+            backdropFilter: 'blur(1px)',
+            position: 'absolute',
+            zIndex: '10000',
+          }}
+        >
+          <Oval
+            ariaLabel="loading"
+            height={30}
+            width={30}
+            color="#358D9E"
+            secondaryColor="#fff"
+            strokeWidth={7}
+          />
+        </Box>
+      )}
       <Image
         className="image"
-        // height={"100%"}
-        // width={"100%"}
         src={imageUrl}
         alt="Upload"
-        style={{ height: '100%', width: '100%' }}
+        layout="fill"
+        style={{ height: '100%', width: '100%', objectFit: 'cover' }}
       />
-      {!readOnly && (
-        <Box sx={styles.imageBox} onClick={handlePencilClick}>
+      {!readOnly && !isLoadingProfile && (
+        <Box sx={styles.imageBox} onClick={handleClick}>
           <input
             className="fileInputBox"
             ref={fileInputRef}
@@ -86,11 +96,12 @@ const UploadImage: React.FC<UserContainerProps> = ({
           />
           <CameraAltIcon
             sx={{
-              width: '35px',
-              height: '35px',
+              width: '25px',
+              height: '25px',
+              color: theme.palette.primary.dark,
               [theme.breakpoints.down('sm')]: {
-                width: '30px',
-                height: '30px',
+                width: '28px',
+                height: '28px',
               },
             }}
           />
@@ -100,3 +111,38 @@ const UploadImage: React.FC<UserContainerProps> = ({
   );
 };
 export default UploadImage;
+
+const styles = {
+  imageBoxContainer: {
+    width: '110px',
+    height: '110px',
+    borderRadius: '8px',
+    overflow: 'hidden',
+    position: 'relative',
+    '& .image': {
+      // borderRadius: '50%',
+    },
+    [theme.breakpoints.down('sm')]: {
+      width: '110px',
+    },
+    boxShadow: '0px 0px 10px 0px rgba(0, 0, 0, 0.08)',
+  },
+  imageBox: {
+    // height: '40px',
+    // width: '40px',
+    position: 'absolute',
+    bottom: '0',
+    right: '0',
+    display: 'flex',
+    backgroundColor: '#fff',
+    zIndex: '1000',
+    borderTopLeftRadius: '8px',
+    padding: '2px',
+    justifyContent: 'center',
+    alignItems: 'center',
+    cursor: 'pointer',
+    '& .fileInputBox': {
+      display: 'none',
+    },
+  },
+};

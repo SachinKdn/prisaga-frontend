@@ -79,12 +79,14 @@ const InputComponent: React.FC<InputProps> = (props) => {
         sx={styles.textField}
       />
 
-      <Typography
-        sx={styles.error}
-        style={{ visibility: error ? 'visible' : 'hidden' }}
-      >
-        {error || ' '}
-      </Typography>
+      {error && (
+        <Typography
+          sx={styles.error}
+          style={{ visibility: error ? 'visible' : 'hidden' }}
+        >
+          {error || ' '}
+        </Typography>
+      )}
     </Box>
   );
 };
@@ -96,7 +98,7 @@ const styles = {
     fontWeight: '400',
     lineHeight: '21px',
     color: theme.palette.text.secondary,
-    marginBottom: '6px',
+    marginBottom: '4px',
   },
   error: {
     fontSize: '12px',

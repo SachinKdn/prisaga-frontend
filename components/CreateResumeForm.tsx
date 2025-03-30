@@ -430,13 +430,14 @@ const style = {
     display: 'flex',
     justifyContent: 'space-between',
     gap: '20px',
+    marginBottom: '8px',
   },
   labelText: {
     fontSize: '0.8rem',
     fontWeight: '400',
     lineHeight: '21px',
     color: theme.palette.text.secondary,
-    marginBottom: '6px',
+    marginBottom: '4px',
   },
   selectItem: {
     fontSize: '0.8rem',
