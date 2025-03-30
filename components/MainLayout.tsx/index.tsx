@@ -66,7 +66,9 @@ const MainLayout = ({ children }: { children: React.ReactNode }) => {
         }}
       >
         <Toolbar sx={{ minHeight: '60px !important' }} />
-        {children}
+        <Box sx={{ minHeight: `calc(100vh - 60px)`, overflow: 'auto' }}>
+          {children}
+        </Box>
       </Box>
     </Box>
   );

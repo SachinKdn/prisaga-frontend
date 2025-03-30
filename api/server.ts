@@ -62,8 +62,6 @@ async function request<T>(
   }
 }
 
-export async function getProfile(): Promise<
-  IResponse<User | null> | undefined
-> {
-  return request<IResponse<User | null>>('user/me');
+export async function getProfile(): Promise<User | undefined> {
+  return request<User>('user/me');
 }
