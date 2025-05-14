@@ -57,9 +57,37 @@ const useAuthenticatedFileUploadApi = () => {
     }
   };
 
+  const uploadAgencyLogo = async (payload: any, agencyId: string) => {
+    try {
+      const { file } = payload;
+      const formData = new FormData();
+      formData.append('file', file);
+      const token = await getToken();
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}agency/uploadLogo/${agencyId}`,
+        {
+          method: 'POST',
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          body: formData,
+        }
+      );
+      if (!response.ok) {
+        throw new Error(`Logo not uploaded!`);
+      }
+      const data: IResponse<Agency> = await response.json();
+      return data;
+    } catch (error) {
+      console.error(error);
+      handleError(error);
+    }
+  };
+
   return {
     uploadFile,
     uploadProfilePicture,
+    uploadAgencyLogo,
   };
 };
 

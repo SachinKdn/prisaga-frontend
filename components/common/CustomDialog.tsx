@@ -1,4 +1,11 @@
-import { Dialog, DialogContent, DialogTitle } from '@mui/material';
+import {
+  Box,
+  Button,
+  CircularProgress,
+  Dialog,
+  DialogContent,
+  DialogTitle,
+} from '@mui/material';
 import React, { ReactNode } from 'react';
 import CloseIcon from '@assets/svg/close.svg';
 import theme from '@/app/theme';
@@ -8,7 +15,11 @@ interface Props {
   isCrossIcon?: boolean;
   onClose: () => void;
   title: string;
-  children: ReactNode;
+  buttonTitle1: string;
+  buttonTitle2: string;
+  children?: ReactNode;
+  onConfirm: () => void;
+  isLoading?: boolean;
 }
 const CustomDialog: React.FC<Props> = ({
   open,
@@ -16,6 +27,10 @@ const CustomDialog: React.FC<Props> = ({
   title,
   children,
   isCrossIcon = true,
+  onConfirm,
+  buttonTitle1,
+  buttonTitle2,
+  isLoading,
 }) => {
   return (
     <Dialog
@@ -39,7 +54,39 @@ const CustomDialog: React.FC<Props> = ({
           />
         )}
       </DialogTitle>
-      <DialogContent>{children}</DialogContent>
+      <DialogContent>
+        {children}
+        <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            gap: 2,
+            marginTop: '15px',
+          }}
+        >
+          <Button
+            onClick={onClose}
+            color="secondary"
+            variant="outlined"
+            sx={styles.closeBtn}
+          >
+            {buttonTitle1}
+          </Button>
+          <Button
+            color="primary"
+            variant="contained"
+            fullWidth
+            sx={styles.submit}
+            onClick={onConfirm}
+          >
+            {isLoading ? (
+              <CircularProgress size={22} style={{ color: 'white' }} />
+            ) : (
+              buttonTitle2
+            )}
+          </Button>
+        </Box>
+      </DialogContent>
     </Dialog>
   );
 };
@@ -50,44 +97,45 @@ const styles = {
     '& .MuiPaper-root': {
       maxWidth: '492px',
       boxShadow: '0px 2px 30px 0px #0000000F',
-      borderRadius: '20px',
+      borderRadius: '8px',
       width: 'fit-content',
       minWidth: '292px',
     },
   },
-  btn: {
+  submit: {
     width: '100%',
-    height: '47px',
+    height: '35px',
     borderWidth: '1.5px',
-    color: theme.palette.primary.main,
-    borderRadius: '8px',
-    fontSize: '14px',
-    fontWeight: '500',
-    lineHeight: '19.95px',
-    fontFamily: '"Helvetica Neue", Arial, sans-serif',
-    boxShadow: 'none',
-    backgroundColor: theme.palette.secondary.main,
-    ':hover': {
-      backgroundColor: '#43afb0',
-      boxShadow: 'none',
-    },
-    '&:disabled': {
-      backgroundColor: theme.palette.secondary.main,
-    },
-  },
-  closeBtn: {
-    width: '100%',
-    height: '47px',
-    borderWidth: '1.5px',
-    borderColor: '#FD0015',
-    color: '#FD0015',
-    borderRadius: '8px',
+    color: '#fff',
+    borderRadius: '4px',
     fontSize: '14px',
     fontWeight: '500',
     lineHeight: '19.95px',
     fontFamily: '"Helvetica Neue", Arial, sans-serif',
     boxShadow: 'none',
     backgroundColor: theme.palette.primary.main,
+    ':hover': {
+      backgroundColor: '#43afb0',
+      boxShadow: 'none',
+    },
+    '&:disabled': {
+      color: '#fff',
+      backgroundColor: theme.palette.secondary.main,
+    },
+  },
+  closeBtn: {
+    width: '100%',
+    height: '35px',
+    borderWidth: '1.5px',
+    borderColor: '#FD0015',
+    color: '#FD0015',
+    borderRadius: '4px',
+    fontSize: '14px',
+    fontWeight: '500',
+    lineHeight: '19.95px',
+    fontFamily: '"Helvetica Neue", Arial, sans-serif',
+    boxShadow: 'none',
+    backgroundColor: 'transparent',
     ':hover': {
       borderColor: '#FD0015',
     },

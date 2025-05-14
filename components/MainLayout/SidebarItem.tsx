@@ -14,7 +14,8 @@ const SidebarItem = ({ item, toggleDrawer }: Props) => {
   const pathname = usePathname();
   const isMd = useMediaQuery(theme.breakpoints.down('md'));
   const Icon = item.icon;
-  const isActive = pathname.includes(item.to);
+  const isActive =
+    item.to === '/' ? pathname === '/' : pathname.startsWith(item.to);
   return (
     <Link href={item.to} onClick={isMd ? toggleDrawer : () => {}}>
       <Box

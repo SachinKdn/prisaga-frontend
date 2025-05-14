@@ -1,17 +1,17 @@
 'use client';
-import { Box, Button, CircularProgress } from '@mui/material';
-import { useEffect, useState } from 'react';
-import AddIcon from '@mui/icons-material/Add';
+import { Box } from '@mui/material';
+import { useEffect, useMemo, useState } from 'react';
 import useDebounce from '../hooks/useDebounce';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/store';
 import { UserRole } from '@/constant/enum';
 import CustomDialog from './common/CustomDialog';
 import Header from './Header';
-import SearchInput from './common/SearchInput';
 import CustomTable from './CustomTable';
 import EditUserDetailsModal from './EditUserDetailsModal';
 import theme from '@app/theme';
+import { deleteUser, getUsersList } from '@api/client';
+import handleSuccess from '@hooks/handleSuccess';
 
 interface Props {
   data: ITableResponse<User[]>;
@@ -54,21 +54,16 @@ const Users = (props: Props) => {
   };
   const handleDelete = async () => {
     console.log('You are trying to delete this user id-', selectedUserId);
-    // try {
-    //   const response = await deleteUser({
-    //     _id: selectedUserId,
-    //   }).unwrap();
-    //   handleSuccess(response.message);
-    //   refetch();
-    // } catch (error) {
-    //   handleError(error as FetchBaseQueryError);
-    // }
+    const result = await deleteUser(selectedUserId);
+    if (result) {
+      handleSuccess('User deleted successfully');
+      fetchUsers();
+    }
     setOpenDeleteDialog(false);
   };
   const handleUserCreated = (newUser: User) => {
     setUsers((prevUsers) => [...prevUsers, newUser]);
     console.log(newUser);
-    // refetch();
   };
   const handleUserUpdated = (updatedUser: User) => {
     console.log(updatedUser);
@@ -77,7 +72,6 @@ const Users = (props: Props) => {
         user._id === updatedUser._id ? { ...user, ...updatedUser } : user
       )
     );
-    // refetch();
   };
   const handleClose = () => {
     setOpen(false);
@@ -88,11 +82,12 @@ const Users = (props: Props) => {
     console.log(data);
     setUsers(data.data);
   }, [data]);
-  useEffect(() => {
-    console.log('---------users------------------------------------------');
-    console.log(users);
-  }, [setUsers]);
-
+  const fetchUsers = async () => {
+    const users = await getUsersList();
+    if (users) {
+      setUsers(users.data);
+    }
+  };
   const usersColumns: Column<User>[] = [
     {
       field: 'username',
@@ -100,7 +95,8 @@ const Users = (props: Props) => {
       render(row) {
         return (
           <span>
-            {row.firstName}&nbsp; {row.lastName}
+            {row.firstName}&nbsp;{row.lastName}{' '}
+            {row._id === user?._id && '(You)'}
           </span>
         );
       },
@@ -118,27 +114,32 @@ const Users = (props: Props) => {
         user._id === user.agency?.createdBy._id))
       ? usersColumns
       : usersColumns.slice(0, -1);
-  console.log(users);
+  console.log(user);
+  const isShowAddUserButton = useMemo(() => {
+    if (!user) return false;
+    const isSuperAdmin = user.role === UserRole.SUPERADMIN;
+    const isVendorOwner =
+      user.role === UserRole.VENDOR && user._id === user.agency?.createdBy?._id;
+    console.log(isVendorOwner, 'isVendorOwner');
+    return isSuperAdmin || isVendorOwner;
+  }, [user]);
+  const membersCount = useMemo(() => {
+    if (!user) return 0;
+    if (user.role === UserRole.VENDOR) {
+      const maxUsersCount = user.agency?.maxUserCounts;
+      return `${data.totalCount}/${maxUsersCount}`;
+    }
+    return data.totalCount;
+  }, [user, data]);
   return (
     <Box sx={styles.outerWrapper}>
-      <Header title={`Total members (${data.totalCount || 0})`}>
-        <Box>
-          <SearchInput onChange={handleOnChange} />
-        </Box>
-        {user &&
-          (user.role === UserRole.SUPERADMIN ||
-            (user.role === UserRole.VENDOR &&
-              user._id === user.agency?.createdBy._id)) && (
-            <Button
-              sx={styles.btn}
-              variant="contained"
-              startIcon={<AddIcon />}
-              onClick={handleAddUser}
-            >
-              Add User
-            </Button>
-          )}
-      </Header>
+      <Header
+        title={`Total members (${membersCount || 0})`}
+        showAddButton={isShowAddUserButton}
+        btnTitle="Add User"
+        handleClick={handleAddUser}
+        handleOnChange={handleOnChange}
+      />
       <CustomTable
         key={users.length}
         columns={columns}
@@ -150,6 +151,7 @@ const Users = (props: Props) => {
         totalCount={data.totalCount || 0}
         page={tablePage}
         handlePage={handlePage}
+        canDelete={false}
       />
       {selectedUser !== null ? (
         <EditUserDetailsModal
@@ -176,39 +178,10 @@ const Users = (props: Props) => {
           onClose={handleClose}
           title="Do you want to delete the user?"
           isCrossIcon={false}
-        >
-          <Box
-            sx={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              gap: 2,
-              marginTop: '15px',
-            }}
-          >
-            <Button
-              onClick={handleClose}
-              color="secondary"
-              variant="outlined"
-              sx={styles.closeBtn}
-            >
-              Cancel
-            </Button>
-            <Button
-              color="primary"
-              variant="contained"
-              fullWidth
-              sx={styles.submit}
-              onClick={handleDelete}
-              disabled={false ? true : false}
-            >
-              {false ? (
-                <CircularProgress size={22} style={{ color: 'white' }} />
-              ) : (
-                'Confirm'
-              )}
-            </Button>
-          </Box>
-        </CustomDialog>
+          onConfirm={handleDelete}
+          buttonTitle1="Cancel"
+          buttonTitle2="Confirm"
+        />
       )}
     </Box>
   );
@@ -222,6 +195,7 @@ const styles = {
     gap: '5px',
     minHeight: 'calc(100vh - 150px)',
     overflowX: 'auto',
+    padding: '0 8px',
   },
   btn: {
     margin: '0 8px',

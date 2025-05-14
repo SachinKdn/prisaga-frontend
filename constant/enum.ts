@@ -1,9 +1,9 @@
 // Enum for User Roles
 export enum UserRole {
-  USER = 'USER',
-  VENDOR = 'VENDOR',
-  ADMIN = 'ADMIN',
-  SUPERADMIN = 'SUPERADMIN',
+  USER = 'User',
+  VENDOR = 'Vendor',
+  ADMIN = 'Admin',
+  SUPERADMIN = 'Superadmin',
 }
 
 export enum Department {
@@ -25,14 +25,20 @@ export enum JobType {
 }
 
 export enum SubscriptionType {
-  PREMIUM_PRO = 'Premium Pro',
   PREMIUM = 'Premium',
+  LITE = 'Lite',
   FREE = 'Free',
 }
 
-export enum JobStatus {
+export enum JobApplicationStatus {
   PENDING = 'Pending',
   UNDER_REVIEW = 'Under Review',
   ACCEPTED = 'Accepted',
   REJECTED = 'Rejected',
+}
+
+export enum JobStatus {
+  ACTIVE = 'Active',
+  ON_HOLD = 'On Hold',
+  CLOSED = 'Closed',
 }

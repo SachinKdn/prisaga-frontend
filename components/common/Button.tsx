@@ -21,11 +21,13 @@ export const CustomButton = ({
   isDisabled = false,
   iconOnRight = false,
   style,
+  variant = 'contained',
 }: IButtonProps) => {
   return (
     <Button
       sx={{ ...styles.btn, ...style }}
       type={type}
+      variant={variant}
       onClick={onClick}
       disabled={isDisabled || loading}
       //   className={`flex justify-center items-center px-3 py-2 text-white rounded-[12px] text-center no-underline font-normal transition-colors duration-300 ${isDisabled || loading ? '!bg-gray-400 cursor-not-allowed' : 'bg-ocean-green'} ${className}`}

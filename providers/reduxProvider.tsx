@@ -1,17 +1,13 @@
 'use client';
 
 import { persistor, store } from '@/store';
-import { Provider, useDispatch } from 'react-redux';
-import { useEffect } from 'react';
-import { redirect, usePathname } from 'next/navigation';
+import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
-import { getProfile } from '@/api/user';
-import { loginSuccess } from '@/store/slices/user';
 
 export function ReduxProvider({ children }: { children: React.ReactNode }) {
   // const dispatch = useDispatch();
-  const protectedRoutes = ['/login', '/signup'];
-  const pathname = usePathname();
+  // const protectedRoutes = ['/login', '/signup'];
+  // const pathname = usePathname();
 
   // useEffect(()=>{
   //   const token = localStorage.getItem('token');

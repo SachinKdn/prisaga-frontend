@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Drawer, useMediaQuery, Box, Typography, Button } from '@mui/material';
+import React, { useMemo, useState } from 'react';
+import { Drawer, useMediaQuery, Box, Typography } from '@mui/material';
 import theme from '@/app/theme';
 import sizeConfigs from '@/configs/sizeConfigs';
 import Logo from '@assets/svg/prisaga-svg-logo.svg';
@@ -10,10 +10,11 @@ import OpenBar from '@assets/svg/open-bar.svg';
 import colorConfigs from '@/configs/colorConfigs';
 import LogoutIcon from '@assets/svg/logout.svg';
 import { usePathname } from 'next/navigation';
-import { AppDispatch } from '@/store';
-import { useDispatch } from 'react-redux';
+import { AppDispatch, RootState } from '@/store';
+import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '@/store/slices/user';
 import CustomDialog from '../common/CustomDialog';
+import { clearToken } from '@api/tokenHandler';
 type Props = {
   open: boolean;
   toggleDrawer: () => void;
@@ -30,13 +31,19 @@ const Sidebar = (props: Props) => {
   const handleClose = () => {
     setOpenDeleteDialog(false);
   };
-  const handleLogout = () => {
+  const handleLogout = async () => {
     localStorage.clear();
     sessionStorage.clear();
     dispatch(logout());
+    await clearToken();
     // navigate('/login', { replace: true })
     setOpenDeleteDialog(false);
   };
+  const user = useSelector((state: RootState) => state.auth.user);
+  const allowedRoutes = useMemo(() => {
+    if (!user) return [];
+    return routes.filter((route) => route.access.includes(user.role));
+  }, [user]);
   return (
     <Drawer
       variant="permanent"
@@ -70,7 +77,7 @@ const Sidebar = (props: Props) => {
             ...styles.innerWrapper,
           }}
         >
-          {routes.map((route, index) => (
+          {allowedRoutes.map((route, index) => (
             <SidebarItem item={route} key={index} toggleDrawer={toggleDrawer} />
           ))}
           <Box sx={styles.wrapper} onClick={() => setOpenDeleteDialog(true)}>
@@ -108,35 +115,11 @@ const Sidebar = (props: Props) => {
           open={openDeleteDialog}
           onClose={handleClose}
           title="Do you want to logout?"
-          isCrossIcon={false}
-        >
-          <Box
-            sx={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              gap: 2,
-              marginTop: '15px',
-            }}
-          >
-            <Button
-              onClick={handleClose}
-              color="secondary"
-              variant="outlined"
-              sx={styles.closeBtn}
-            >
-              No
-            </Button>
-            <Button
-              color="primary"
-              variant="contained"
-              fullWidth
-              sx={styles.submit}
-              onClick={handleLogout}
-            >
-              Yes
-            </Button>
-          </Box>
-        </CustomDialog>
+          isCrossIcon={true}
+          onConfirm={handleLogout}
+          buttonTitle1="No"
+          buttonTitle2="Yes"
+        />
       )}
       <Box
         sx={{
@@ -202,43 +185,6 @@ const styles = {
     display: 'flex',
     alignItems: 'center',
     height: '42px',
-  },
-  submit: {
-    width: '100%',
-    height: '35px',
-    borderWidth: '1.5px',
-    color: '#fff',
-    borderRadius: '8px',
-    fontSize: '14px',
-    fontWeight: '500',
-    lineHeight: '19.95px',
-    fontFamily: '"Helvetica Neue", Arial, sans-serif',
-    boxShadow: 'none',
-    backgroundColor: theme.palette.secondary.main,
-    ':hover': {
-      backgroundColor: '#43afb0',
-      boxShadow: 'none',
-    },
-    '&:disabled': {
-      color: '#fff',
-      backgroundColor: theme.palette.secondary.main,
-    },
-  },
-  closeBtn: {
-    width: '100%',
-    height: '35px',
-    borderWidth: '1.5px',
-    borderColor: '#FD0015',
-    color: '#FD0015',
-    borderRadius: '8px',
-    fontSize: '14px',
-    fontWeight: '500',
-    lineHeight: '19.95px',
-    fontFamily: '"Helvetica Neue", Arial, sans-serif',
-    boxShadow: 'none',
-    backgroundColor: 'transparent',
-    ':hover': {
-      borderColor: '#FD0015',
-    },
+    cursor: 'pointer',
   },
 };

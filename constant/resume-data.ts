@@ -86,3 +86,128 @@ export const areaOfExpertises = [
     label: 'Project / Program Management',
   },
 ];
+
+export const jobTypes = [
+  {
+    value: 'Internship',
+    label: 'Internship',
+  },
+  {
+    value: 'Freelance',
+    label: 'Freelance',
+  },
+  {
+    value: 'Part-time',
+    label: 'Part-time',
+  },
+  {
+    value: 'Full-time',
+    label: 'Full-time',
+  },
+];
+
+export const genders = [
+  {
+    value: 'Male',
+    label: 'Male',
+  },
+  {
+    value: 'Female',
+    label: 'Female',
+  },
+  {
+    value: 'Others',
+    label: 'Others',
+  },
+];
+export const userBusinessTypes = [
+  {
+    value: 'Freelancer',
+    label: 'Freelancer',
+  },
+  {
+    value: 'Recruitment Agency',
+    label: 'Recruitment Agency',
+  },
+];
+export const subscriptionTypes = [
+  {
+    value: 'Premium',
+    label: 'Premium',
+  },
+  {
+    value: 'Lite',
+    label: 'Lite',
+  },
+  {
+    value: 'Free',
+    label: 'Free',
+  },
+];
+export const postedWithinOptions = [
+  {
+    value: '24h',
+    label: 'Within 24 hours',
+  },
+  {
+    value: '7d',
+    label: 'Within 7 days',
+  },
+  {
+    value: '1m',
+    label: 'Within 1 month',
+  },
+  {
+    value: '3m',
+    label: 'Within 3 months',
+  },
+];
+
+export const currencies = [
+  {
+    value: 'INR',
+    label: 'INR ₹',
+  },
+  {
+    value: 'USD',
+    label: 'USD $',
+  },
+];
+
+export const salaryTenures = [
+  {
+    value: 'Yearly',
+    label: 'Yearly',
+  },
+  {
+    value: 'Monthly',
+    label: 'Monthly',
+  },
+];
+
+export const noticePeriods = [
+  {
+    value: '0',
+    label: 'Immediate Joiner',
+  },
+  {
+    value: '15',
+    label: '15 Days',
+  },
+  {
+    value: '30',
+    label: '30 Days',
+  },
+  {
+    value: '45',
+    label: '45 Days',
+  },
+  {
+    value: '60',
+    label: '60 Days',
+  },
+  {
+    value: '90',
+    label: '90 Days',
+  },
+];
