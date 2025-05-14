@@ -22,6 +22,8 @@ import Loader from './Loader';
 import { ShieldCheck, ShieldX } from 'lucide-react';
 import Link from 'next/link';
 import theme from '@/app/theme';
+import { RootState } from '@store';
+import { useSelector } from 'react-redux';
 
 dayjs.extend(localizedFormat);
 
@@ -60,9 +62,10 @@ const CustomTable = <T extends { _id?: string }>({
   rowsPerPage = 10,
 }: TableProps<T>) => {
   const styles = useStyle(theme);
+  const user = useSelector((state: RootState) => state.auth.user);
   // disable-no-any
   const formatDate = (date: any) => {
-    return date ? dayjs(date).format('MMM DD YYYY HH:mm:ss') : '--';
+    return date ? dayjs(date).format('MMM DD YYYY HH:mm') : '--';
   };
 
   const formatNumber = (value: number) => {
@@ -81,6 +84,7 @@ const CustomTable = <T extends { _id?: string }>({
         <Box sx={styles.actionContainer}>
           {onEdit && (
             <IconButton
+              disabled={row._id === user?._id}
               onClick={() => {
                 if (setOpenForm) setOpenForm(true);
                 onEdit(row);
@@ -103,18 +107,17 @@ const CustomTable = <T extends { _id?: string }>({
     }
 
     if (column.field === 'goto') {
-      console.log('1497189491284012849712789412');
-      return (
-        <Link className="hover:text-[#16BDCD]" href={`vendor/${row['_id']}`}>
-          View Here
-        </Link>
-      );
+      return <Link href={`vendor/${row['_id']}`}>View Here</Link>;
     }
 
     const value = row[column.field];
 
     // Handle different value types
-    if (value instanceof Date || column.field.toLowerCase().includes('date')) {
+    if (
+      value instanceof Date ||
+      column.field.toLowerCase().includes('date') ||
+      column.field === 'createdAt'
+    ) {
       return formatDate(value);
     }
 
@@ -134,7 +137,6 @@ const CustomTable = <T extends { _id?: string }>({
     }
 
     if (column.field === 'isApproved') {
-      console.log('value---', value);
       return (
         <span>
           {row[column.field] ? (
@@ -146,7 +148,6 @@ const CustomTable = <T extends { _id?: string }>({
       );
     }
     if (column.field === 'location') {
-      console.log('value---location------', value);
       const location: ILocation = row[column.field] as ILocation;
       return <span>{location.city}</span>;
     }
@@ -267,7 +268,7 @@ const useStyle = (theme: Theme) =>
       },
     },
     tableHeader: {
-      backgroundColor: '#16BDCD',
+      backgroundColor: theme.palette.primary.main,
       borderRadius: '20px 20px 0px 0px',
       padding: '12px',
     },
@@ -297,6 +298,7 @@ const useStyle = (theme: Theme) =>
       },
     },
     iconEditButton: {
+      color: '#358D9E',
       [theme.breakpoints.down('md')]: {
         padding: '0px 10px',
       },

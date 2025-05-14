@@ -1,14 +1,12 @@
 'use client';
-import { Box, Button } from '@mui/material';
+import { Box } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import Header from './Header';
 import theme from '@app/theme';
-import AddIcon from '@mui/icons-material/Add';
 import { useRouter } from 'next/navigation';
 import { getResumes } from '@api/client';
 import ResumeCard from './ResumeCard';
 import ResumeCardSkeleton from './Skeletons/ResumeCardSkeleton';
-import SearchInput from './common/SearchInput';
 import useDebounce from '@hooks/useDebounce';
 import { areaOfExpertises, experienceLevels } from '@constant/resume-data';
 import SingleSelect from './common/SingleSelect';
@@ -42,10 +40,18 @@ const Resume = () => {
     console.log('fetch the resumes--searchValue>', searchValue);
     fetch();
   }, [searchValue, experience, areaOfExpertise]);
-
+  const addNewButton = () => {
+    router.push('/resume/new');
+  };
   return (
     <Box sx={styles.outerWrapper}>
-      <Header title={`Total resumes (${resumes.length})`}>
+      <Header
+        title={`Total resumes (${resumes.length})`}
+        showAddButton={true}
+        btnTitle="Add Resume"
+        handleClick={addNewButton}
+        handleOnChange={handleOnChange}
+      >
         <Box sx={{ display: 'flex', gap: 1 }}>
           <SingleSelect
             value={experience}
@@ -59,16 +65,7 @@ const Resume = () => {
             items={areaOfExpertises}
             placeholder="Select area of expertise"
           />
-          <SearchInput onChange={handleOnChange} sx={styles.searchBar} />
         </Box>
-        <Button
-          sx={styles.btn}
-          variant="contained"
-          startIcon={<AddIcon />}
-          onClick={() => router.push('/resume/new')}
-        >
-          Add Resume
-        </Button>
       </Header>
 
       {isLoading ? (
@@ -105,34 +102,6 @@ const styles = {
     gap: '5px',
     minHeight: 'calc(100vh - 150px)',
     overflowX: 'auto',
-  },
-  btn: {
-    margin: '0 8px',
-    width: '158px',
-    height: '28px',
-    borderRadius: '4px',
-    fontSize: '0.75rem',
-    fontWeight: '600',
-    fontFamily: theme.typography.fontFamily,
-    color: theme.palette.common.white,
-    lineHeight: '14.52px',
-    textTransform: 'capitalize',
-    boxShadow: 'none',
-    backgroundColor: theme.palette.primary.main,
-    ':hover': {
-      backgroundColor: '#43afb0',
-      boxShadow: 'none',
-    },
-  },
-  searchBar: {
-    height: '28px !important',
-    '& .MuiOutlinedInput-root': {
-      fontSize: '0.75rem !important',
-      height: '100%',
-      color: '#757897',
-      fontWeight: 500,
-      paddingLeft: '5px',
-    },
   },
   list: {
     display: 'flex',

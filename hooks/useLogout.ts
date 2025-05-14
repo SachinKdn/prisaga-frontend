@@ -1,8 +1,11 @@
 import { useRouter } from 'next/navigation';
-import { logout } from '@/store/slices/user';
+import { logout, setIsAuthenticated } from '@/store/slices/user';
 import { clearToken } from '@api/tokenHandler';
+import { useDispatch } from 'react-redux';
+import { AppDispatch } from '@store';
 const useLogout = () => {
   const router = useRouter();
+  const dispatch = useDispatch<AppDispatch>();
 
   const handleLogout = async () => {
     try {

@@ -53,7 +53,7 @@ const SingleSelect = (props: Props) => {
         inputProps={{ MenuProps: { disableScrollLock: true } }}
       >
         <MenuItem value="" sx={styles.selectItem}>
-          <em>{placeholder}</em>
+          <span style={{ fontStyle: 'normal' }}>{placeholder}</span>
         </MenuItem>
         {items.map((type) => (
           <MenuItem key={type.value} value={type.value} sx={styles.selectItem}>
@@ -72,7 +72,7 @@ const styles = {
     width: 180,
     margin: 0,
     '& .MuiSelect-root': {
-      fontSize: '0.75rem',
+      fontSize: '0.85rem',
       fontWeight: '500',
       color: theme.palette.text.secondary,
     },
@@ -95,10 +95,10 @@ const styles = {
     borderRadius: '4px',
     width: '100%',
     backgroundColor: '#FAFAFA',
-    height: '28px !important',
+    height: '35px !important',
   },
   selectItem: {
-    fontSize: '0.8rem',
+    fontSize: '0.85rem',
     fontWeight: '400',
     lineHeight: '21px',
     color: theme.palette.text.secondary,

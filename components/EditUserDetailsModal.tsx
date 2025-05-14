@@ -104,79 +104,78 @@ const EditUserDetailsModal: React.FC<UserDetailsFormProps> = ({
       </DialogTitle>
       <DialogContent>
         {!isCreated ? (
-          <form
-            onSubmit={handleSubmit(onSubmit)}
-            className="flex flex-col gap-3"
-          >
-            <Input
-              name="firstName"
-              type="text"
-              label="First Name"
-              placeholder="First Name"
-              register={register}
-              error={errors.firstName?.message}
-            />
-            <Input
-              name="lastName"
-              type="text"
-              label="Last Name"
-              placeholder="Last Name"
-              register={register}
-              error={errors.lastName?.message}
-            />
-            <Input
-              name="email"
-              type="text"
-              label="Email"
-              disabled={isEdit}
-              placeholder="Enter email"
-              register={register}
-              error={errors.email?.message}
-            />
-            <Input
-              name="username"
-              type="text"
-              label="UserName"
-              placeholder="Create username"
-              register={register}
-              error={errors.username?.message}
-            />
-            <Input
-              name="phoneNumber"
-              type="text"
-              label="Phone Number"
-              placeholder="Enter Phone Number"
-              register={register}
-              error={errors.phoneNumber?.message}
-            />
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <Box sx={styles.form}>
+              <Input
+                name="firstName"
+                type="text"
+                label="First Name"
+                placeholder="First Name"
+                register={register}
+                error={errors.firstName?.message}
+              />
+              <Input
+                name="lastName"
+                type="text"
+                label="Last Name"
+                placeholder="Last Name"
+                register={register}
+                error={errors.lastName?.message}
+              />
+              <Input
+                name="email"
+                type="text"
+                label="Email"
+                disabled={isEdit}
+                placeholder="Enter email"
+                register={register}
+                error={errors.email?.message}
+              />
+              <Input
+                name="username"
+                type="text"
+                label="UserName"
+                placeholder="Create username"
+                register={register}
+                error={errors.username?.message}
+              />
+              <Input
+                name="phoneNumber"
+                type="phone"
+                label="Phone Number"
+                placeholder="Enter Phone Number"
+                register={register}
+                error={errors.phoneNumber?.message}
+              />
 
-            <DialogActions sx={styles.diaogAction}>
-              <Button
-                onClick={onClose}
-                color="secondary"
-                variant="outlined"
-                sx={styles.closeBtn}
-              >
-                Cancel
-              </Button>
-              <Button
-                type="submit"
-                color="primary"
-                variant="contained"
-                fullWidth
-                sx={styles.btn}
-                disabled={loading}
-              >
-                {loading ? (
-                  <CircularProgress size={24} style={{ color: 'white' }} />
-                ) : (
-                  `${!isEdit ? 'Submit' : 'Update'}`
-                )}
-              </Button>
-            </DialogActions>
+              <DialogActions>
+                <Button
+                  onClick={onClose}
+                  color="secondary"
+                  variant="outlined"
+                  sx={styles.closeBtn}
+                >
+                  Cancel
+                </Button>
+                <Button
+                  type="submit"
+                  color="primary"
+                  variant="contained"
+                  fullWidth
+                  sx={styles.btn}
+                  disabled={loading}
+                >
+                  {loading ? (
+                    <CircularProgress size={24} style={{ color: 'white' }} />
+                  ) : (
+                    `${!isEdit ? 'Submit' : 'Update'}`
+                  )}
+                </Button>
+              </DialogActions>
+            </Box>
           </form>
         ) : (
-          <div>
+          <Box>
             <Box sx={styles.imgWrapper}>
               <Image
                 src={EmailConfirmationImage}
@@ -185,12 +184,13 @@ const EditUserDetailsModal: React.FC<UserDetailsFormProps> = ({
               />
             </Box>
             <Typography sx={styles.thankHeading}>
-              We just emailed invitation link to {watch('email')}{' '}
+              We have just sent invitation link to
             </Typography>
-            <Typography sx={styles.thank}>
+            <Typography sx={styles.email}>{watch('email')}</Typography>
+            {/* <Typography sx={styles.thank}>
               Click the link to verify and create password.{' '}
-            </Typography>
-          </div>
+            </Typography> */}
+          </Box>
         )}
       </DialogContent>
     </Dialog>
@@ -208,12 +208,18 @@ const styles = {
     '& .MuiPaper-root': {
       maxWidth: '492px',
       boxShadow: '0px 2px 30px 0px #0000000F',
-      borderRadius: '20px',
+      borderRadius: '8px',
+      // padding: '0 10px'
     },
-  },
-  diaogAction: {
+    '& .MuiDialogTitle-root': {
+      padding: '16px 24px',
+      paddingBottom: '0px',
+    },
     '& .MuiDialogActions-root': {
       justifyContent: 'space-between',
+      paddingX: 0,
+      paddingBottom: '0px',
+      paddingTop: '16px',
     },
   },
   btn: {
@@ -221,13 +227,13 @@ const styles = {
     height: '35px',
     borderWidth: '1.5px',
     color: 'white',
-    borderRadius: '8px',
+    borderRadius: '4px',
     fontSize: '12px',
     fontWeight: '500',
     lineHeight: '19.95px',
     // fontFamily: '"Helvetica Neue", Arial, sans-serif',
     boxShadow: 'none',
-    backgroundColor: theme.palette.secondary.main,
+    backgroundColor: theme.palette.primary.main,
     ':hover': {
       backgroundColor: '#43afb0',
       boxShadow: 'none',
@@ -242,7 +248,7 @@ const styles = {
     borderWidth: '1.5px',
     borderColor: '#FD0015',
     color: '#FD0015',
-    borderRadius: '8px',
+    borderRadius: '4px',
     fontSize: '12px',
     fontWeight: '500',
     lineHeight: '19.95px',
@@ -254,7 +260,7 @@ const styles = {
     },
   },
   formController: {
-    borderRadius: '12px',
+    borderRadius: '8px',
     width: '100%',
     backgroundColor: 'white',
     marginBottom: '10px',
@@ -277,7 +283,7 @@ const styles = {
     },
   },
   select: {
-    borderRadius: '12px',
+    borderRadius: '8px',
     width: '100%',
     backgroundColor: '#FAFAFA',
   },
@@ -291,12 +297,24 @@ const styles = {
     placeItems: 'center',
   },
   thankHeading: {
-    fontSize: '18px',
+    fontSize: '1.1rem',
+    textAlign: 'center',
+  },
+  email: {
+    fontSize: '0.92rem',
+    fontWeight: 600,
+    color: theme.palette.primary.main,
+
     textAlign: 'center',
   },
   thank: {
     textAlign: 'center',
-    fontSize: '13px',
+    fontSize: '0.77rem',
     marginTop: '5px',
+  },
+  form: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '0.25rem',
   },
 };

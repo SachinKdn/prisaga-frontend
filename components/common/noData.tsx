@@ -3,7 +3,13 @@ import Image from 'next/image';
 import NotFoundImage from '@assets/png/notFoundImg.png';
 import theme from '@app/theme';
 
-const NoDataFound = () => {
+interface Props {
+  title?: string;
+  subTitle?: string;
+}
+const NoDataFound = (props: Props) => {
+  const { title = 'Data Not Found', subTitle } = props;
+
   return (
     <Box sx={style.wrapper}>
       <Image
@@ -13,12 +19,14 @@ const NoDataFound = () => {
         height={300}
         style={style.imgWrapper}
       />
-      <Typography variant="h4" fontWeight="bold" gutterBottom>
-        Data Not Found
+      <Typography variant="h4" fontWeight="bold" gutterBottom sx={style.title}>
+        {title}
       </Typography>
-      <Typography variant="body1" color="text.secondary" mb={2}>
-        Try another filters.
-      </Typography>
+      {subTitle && (
+        <Typography variant="body1" color="text.secondary" mb={2}>
+          {subTitle}
+        </Typography>
+      )}
     </Box>
   );
 };
@@ -35,8 +43,14 @@ const style = {
     justifyContent: 'center',
     alignItems: 'center',
   },
+  title: {
+    color: theme.palette.primary.dark,
+    fontSize: '1.7rem',
+    fontWeight: 600,
+  },
   imgWrapper: {
     marginBottom: '8vh',
+    marginTop: '5vh',
   },
   link: {
     color: theme.palette.primary.main,

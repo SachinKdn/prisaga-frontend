@@ -7,20 +7,23 @@ import ModeEditIcon from '@mui/icons-material/ModeEdit';
 interface Props {
   title: string;
   handleEdit: () => void;
+  isEditable?: boolean;
 }
 const SectionHeader = (props: Props) => {
-  const { title, handleEdit } = props;
+  const { title, handleEdit, isEditable = true } = props;
   return (
     <Box sx={styles.wrapper}>
       <Typography sx={styles.title}>{title}</Typography>
-      <Button
-        variant="contained"
-        endIcon={<ModeEditIcon sx={{ fontSize: '0.88rem !important' }} />}
-        sx={styles.editButton}
-        onClick={handleEdit}
-      >
-        Edit
-      </Button>
+      {isEditable && (
+        <Button
+          variant="contained"
+          endIcon={<ModeEditIcon sx={{ fontSize: '0.88rem !important' }} />}
+          sx={styles.editButton}
+          onClick={handleEdit}
+        >
+          Edit
+        </Button>
+      )}
     </Box>
   );
 };
@@ -39,7 +42,7 @@ const styles = {
   },
   title: {
     fontWeight: 600,
-    fontSize: '1rem',
+    fontSize: '1.1rem',
     color: theme.palette.primary.main,
   },
   editButton: {

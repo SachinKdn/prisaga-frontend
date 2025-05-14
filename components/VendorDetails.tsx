@@ -1,13 +1,18 @@
-import React from 'react';
+'use client';
+import React, { useState } from 'react';
 import CustomTable from './CustomTable';
 
 import SubmittedIcon from '@assets/svg/submitted-icon.svg';
 import SuccessIcon from '@assets/svg/success-icon.svg';
 import RejectedIcon from '@assets/svg/rejected-icon.svg';
-import DiamondIcon from '@assets/svg/diamond-icon.svg';
-import { ChartColumn, Ellipsis, UserRound } from 'lucide-react';
-import dayjs from 'dayjs';
-import { Box, Typography, Grid, Divider } from '@mui/material';
+import { ChartColumn, Ellipsis } from 'lucide-react';
+import { Box, Typography, Button } from '@mui/material';
+import AgencyDetails from './Profile/AgencyDetails';
+import PersonalDetails from './Profile/PersonalDetails';
+import SubscriptionDetails from './Subscription/SubscriptionDetail';
+import BackPage from './BackPage';
+import theme from '@app/theme';
+import EditSubscriptionModal from './EditSubscriptionModal';
 
 interface Props {
   data: AgencyDetails;
@@ -15,7 +20,10 @@ interface Props {
 
 const VendorDetails = (props: Props) => {
   const { data } = props;
-  console.log('Vendor Entire Date----', data.agency);
+  const [isEditSubscriptionModal, setIsEditSubscriptionModal] = useState(false);
+
+  const [agency, setAgency] = useState<Agency>(data.agency);
+  console.log('Vendor Entire Date----', agency);
   const columns: Column<User>[] = [
     {
       field: 'username',
@@ -48,21 +56,57 @@ const VendorDetails = (props: Props) => {
         sx={{
           display: 'flex',
           justifyContent: 'space-between',
-          flexDirection: 'column',
-          alignItems: 'flex-start',
+          alignItems: 'center',
         }}
       >
-        <Typography
-          variant="h6"
-          sx={{ color: '#0F1C1B', lineHeight: 1.33, fontWeight: '600' }}
+        <BackPage />
+        <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            flexDirection: 'column',
+            alignItems: 'center',
+          }}
         >
-          {data.agency.agencyName}
-        </Typography>
-        <Typography variant="body2" sx={{ color: '#5B617A', fontWeight: 500 }}>
-          {data.agency.location.city}-{data.agency.location.state}
-        </Typography>
+          <Typography
+            variant="h6"
+            sx={{ color: '#0F1C1B', lineHeight: 1.33, fontWeight: '600' }}
+          >
+            {agency.agencyName}
+          </Typography>
+          <Typography
+            variant="body2"
+            sx={{ color: '#5B617A', fontWeight: 500, fontSize: '1rem' }}
+          >
+            {agency.location.city}-{agency.location.state}
+          </Typography>
+        </Box>
+        <Box
+          sx={{
+            display: 'flex',
+            gap: '0.5rem',
+            alignItems: 'center',
+          }}
+        >
+          <SubscriptionDetails subscriptionType={agency?.subscriptionType} />
+          <Button
+            onClick={() => {
+              setIsEditSubscriptionModal(true);
+            }}
+            color="secondary"
+            variant="outlined"
+            sx={styles.cancel}
+          >
+            Change
+          </Button>
+        </Box>
       </Box>
-
+      <PersonalDetails
+        title="Agency Admin Details"
+        user={agency.createdBy}
+        isEditable={false}
+      />
+      <AgencyDetails agency={agency} isEditable={false} />
       <Box
         sx={{
           py: 4,
@@ -75,105 +119,6 @@ const VendorDetails = (props: Props) => {
           flexDirection: 'column',
         }}
       >
-        <Grid container spacing={2}>
-          <Grid item xs={12} sm={8}>
-            <Box>
-              <Box
-                sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 2 }}
-              >
-                <UserRound size={18} />
-                <Typography
-                  variant="body2"
-                  sx={{ color: '#5B617A', fontWeight: 500 }}
-                >
-                  Agency Admin
-                </Typography>
-              </Box>
-
-              <Box sx={{ display: 'flex', gap: 4, paddingLeft: 6 }}>
-                <Box>
-                  <Typography
-                    variant="body2"
-                    sx={{ color: '#0338CD', fontWeight: 600 }}
-                  >
-                    Full Name
-                  </Typography>
-                  <Typography variant="body2" sx={{ color: '#5B617A' }}>
-                    {data.agency.createdBy.firstName || 'NA'}{' '}
-                    {data.agency.createdBy.lastName ?? ''}
-                  </Typography>
-                </Box>
-
-                <Box>
-                  <Typography
-                    variant="body2"
-                    sx={{ color: '#0338CD', fontWeight: 600 }}
-                  >
-                    Email
-                  </Typography>
-                  <Typography variant="body2" sx={{ color: '#5B617A' }}>
-                    {data.agency.createdBy.email}
-                  </Typography>
-                </Box>
-
-                <Box>
-                  <Typography
-                    variant="body2"
-                    sx={{ color: '#0338CD', fontWeight: 600 }}
-                  >
-                    Phone Number
-                  </Typography>
-                  <Typography variant="body2" sx={{ color: '#5B617A' }}>
-                    {data.agency.createdBy.phoneNumber}
-                  </Typography>
-                </Box>
-
-                <Box>
-                  <Typography
-                    variant="body2"
-                    sx={{ color: '#0338CD', fontWeight: 600 }}
-                  >
-                    Created At
-                  </Typography>
-                  <Typography variant="body2" sx={{ color: '#5B617A' }}>
-                    Created At{' '}
-                    {dayjs(data.agency.createdAt).format('MMM DD YYYY')}
-                  </Typography>
-                </Box>
-              </Box>
-            </Box>
-          </Grid>
-
-          <Grid item xs={12} sm={4}>
-            <Box
-              sx={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: 2,
-                height: 'min-content',
-              }}
-            >
-              <DiamondIcon />
-              <Box>
-                <Typography
-                  variant="body2"
-                  sx={{ color: '#5B617A', fontWeight: 500 }}
-                >
-                  Subscription Type
-                </Typography>
-                <Typography
-                  variant="h6"
-                  sx={{ color: '#0338CD', fontWeight: 600 }}
-                >
-                  {data.agency.subscriptionType}
-                </Typography>
-              </Box>
-            </Box>
-          </Grid>
-        </Grid>
-
-        <Divider sx={{ my: 2 }} />
-
         <Box
           sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 4, mt: 4 }}
         >
@@ -224,11 +169,41 @@ const VendorDetails = (props: Props) => {
         data={data.members || []}
         totalCount={data.members.length || 0}
       />
+      {isEditSubscriptionModal && (
+        <EditSubscriptionModal
+          open={isEditSubscriptionModal}
+          onClose={() => setIsEditSubscriptionModal(false)}
+          agencyId={agency._id}
+          currentSubscription={agency.subscriptionType}
+          onSubscriptionUpdated={(newSubscriptionType: string) => {
+            // Refresh agency data or update UI
+            setAgency({
+              ...agency,
+              subscriptionType: newSubscriptionType,
+            });
+          }}
+        />
+      )}
     </Box>
   );
 };
 
 export default VendorDetails;
+
+const styles = {
+  cancel: {
+    width: '90px',
+    height: '25px',
+    borderWidth: '1.5px',
+    borderColor: theme.palette.primary.main,
+    color: theme.palette.primary.main,
+    borderRadius: '40px',
+    fontSize: '14px',
+    fontWeight: '600',
+    boxShadow: 'none',
+    backgroundColor: 'transparent',
+  },
+};
 
 interface CountProps {
   title: string;

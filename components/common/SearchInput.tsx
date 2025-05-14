@@ -78,6 +78,7 @@ const SearchInput = ({
       placeholder={placeholder || 'Search'}
       value={value}
       type={type}
+      autoComplete="off"
       InputProps={{
         startAdornment: (
           // <SearchIcon
@@ -89,10 +90,10 @@ const SearchInput = ({
           //   }}
           // />
           <Search
-            size={18}
+            size={19}
             color="#757897"
             style={{ marginRight: '4px' }}
-            strokeWidth={1.25}
+            strokeWidth={1.5}
           />
         ),
         sx: { py: 0 },

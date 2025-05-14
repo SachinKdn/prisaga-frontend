@@ -15,17 +15,13 @@ import { LoginSchema } from '@/utils/yup';
 import { Input } from '@/components/common/Input';
 import { CustomButton } from '@/components/common/Button';
 import { UserRole } from '@constant/enum';
-import handleError from '@hooks/handleError';
 import { setToken } from '@api/tokenHandler';
+import { loginUser } from '@api/client';
+import Link from 'next/link';
 
 interface UserLogin {
   email: string;
   password: string;
-}
-
-interface LoginUserResponse {
-  user: User;
-  accessToken: string;
 }
 
 const LoginForm: React.FC = () => {
@@ -42,46 +38,28 @@ const LoginForm: React.FC = () => {
   });
 
   const onSubmit = async (formData: UserLogin) => {
-    try {
-      setIsLoading(true);
-
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}user/login`,
-        {
-          method: 'POST',
-          credentials: 'include',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(formData),
-        }
-      );
-
-      const result: IResponse<LoginUserResponse> = await response.json();
-
-      if (!response.ok) {
-        throw new Error(result.message);
-      }
-      await setToken(result.data.accessToken);
-      handleAuthSuccess(result.data.user, result.data.accessToken);
-    } catch (error) {
-      handleError(error);
-    } finally {
+    setIsLoading(true);
+    const result = await loginUser(formData);
+    if (result) {
+      await setToken(result.accessToken);
+      await handleAuthSuccess(result.user, result.accessToken);
+    } else {
       setIsLoading(false);
     }
   };
 
-  const handleAuthSuccess = (user: User, accessToken: string) => {
+  const handleAuthSuccess = async (user: User, accessToken: string) => {
     localStorage.setItem('token', accessToken);
     dispatch(loginSuccess(user));
     const routeMap: Record<UserRole, string> = {
       [UserRole.SUPERADMIN]: '/resume',
       [UserRole.ADMIN]: '/resume',
-      [UserRole.VENDOR]: '/vendor',
+      [UserRole.VENDOR]: '/',
       [UserRole.USER]: '/user',
     };
     const route = routeMap[user.role as UserRole];
-    router.push(route);
+    await router.push(route);
+    setIsLoading(false);
   };
 
   return (
@@ -142,11 +120,12 @@ const LoginForm: React.FC = () => {
 
         <Typography
           component="span"
-          onClick={() => router.push('/signup')}
+          // onClick={() => router.push('/signup')}
           my={3}
           sx={styles.footer}
         >
-          Don&apos;t have an account? <strong>Sign up</strong>
+          Don&apos;t have an account?{' '}
+          <Link href={'/agency-signup'}>Sign up</Link>
         </Typography>
       </Box>
     </Box>
