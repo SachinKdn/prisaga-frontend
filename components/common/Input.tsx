@@ -15,6 +15,7 @@ interface InputProps {
   labelSx?: SxProps;
   wrapperSx?: SxProps;
   type?: 'text' | 'email' | 'phone' | 'password' | 'number';
+  endAdornment?: string;
   placeholder?: string;
   className?: string;
   required?: boolean;
@@ -38,6 +39,7 @@ const InputComponent: React.FC<InputProps> = (props) => {
     disabled = false,
     register,
     error,
+    endAdornment,
   } = props;
 
   // const [inputType, setInputType] = useState(type);
@@ -57,9 +59,11 @@ const InputComponent: React.FC<InputProps> = (props) => {
   const registrationProps = register ? register(name) : { name };
 
   return (
-    <Box sx={wrapperSx}>
+    <Box sx={wrapperSx} style={{ width: '100%' }}>
       {label && (
-        <Typography sx={labelSx || styles.labelText}>{label}</Typography>
+        <Typography sx={labelSx || styles.labelText}>
+          {label} {required && '*'}
+        </Typography>
       )}
 
       <TextField
@@ -67,13 +71,16 @@ const InputComponent: React.FC<InputProps> = (props) => {
         type={type}
         // type={inputType}
         placeholder={placeholder}
-        required={required}
+        // required={required}
         disabled={disabled}
         InputProps={{
           startAdornment:
             type === 'phone' ? (
-              <InputAdornment position="start">+1</InputAdornment>
+              <InputAdornment position="start">+91</InputAdornment>
             ) : undefined,
+          endAdornment: endAdornment ? (
+            <InputAdornment position="end">{endAdornment}</InputAdornment>
+          ) : undefined,
         }}
         className={`${className} ${error ? 'text-red-500' : 'text-light-dark'}`}
         sx={styles.textField}
@@ -101,9 +108,9 @@ const styles = {
     marginBottom: '4px',
   },
   error: {
-    fontSize: '12px',
+    fontSize: '0.65rem',
     color: 'red',
-    height: '18px',
+    lineHeight: '14px',
   },
   textField: {
     borderRadius: '12px',
@@ -111,13 +118,15 @@ const styles = {
     '& .MuiOutlinedInput-input': {
       padding: '10px 12px',
     },
+    '& .MuiInputBase-input::placeholder': {
+      color: theme.palette.primary.contrastText,
+    },
     '& .MuiOutlinedInput-root': {
       height: '38px !important',
       color: theme.palette.text.primary,
       fontSize: '0.8rem',
       fontWeight: '500',
       lineHeight: '24px',
-
       // Autofill styling
       '& input:-webkit-autofill': {
         WebkitBoxShadow: '0 0 0 100px #FFFFFF inset',
@@ -132,6 +141,12 @@ const styles = {
       },
       '& input:-webkit-autofill:hover': {
         WebkitBoxShadow: '0 0 0 100px #FFFFFF inset',
+      },
+      '& .MuiInputAdornment-root': {
+        marginRight: '0',
+      },
+      '& .MuiTypography-root': {
+        fontSize: '0.8rem',
       },
     },
     '& .MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline': {

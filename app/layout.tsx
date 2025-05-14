@@ -3,8 +3,9 @@ import './globals.css';
 import { Toaster } from 'react-hot-toast';
 import ThemeProviderWrapper from '@providers/MUIprovider';
 import { ReduxProvider } from '@providers/reduxProvider';
-import MainLayout from '@components/MainLayout.tsx';
-import ProtectedRoutes from '@components/ProtectRoutes';
+import MainLayout from '@components/MainLayout';
+import SubscriptionAlertWrapper from '@components/Wrapper/SubscriptionAlertWrapper';
+import ProtectedRoutes from '@components/ProtectedRoutes';
 
 export const metadata: Metadata = {
   title: 'Prisaga Hiring+',
@@ -99,9 +100,11 @@ export default function RootLayout({
       <body>
         <ReduxProvider>
           <ThemeProviderWrapper>
-            <ProtectedRoutes>
-              <MainLayout>{children}</MainLayout>
-            </ProtectedRoutes>
+            <SubscriptionAlertWrapper>
+              <ProtectedRoutes>
+                <MainLayout>{children}</MainLayout>
+              </ProtectedRoutes>
+            </SubscriptionAlertWrapper>
           </ThemeProviderWrapper>
           <Toaster
             position="top-right"

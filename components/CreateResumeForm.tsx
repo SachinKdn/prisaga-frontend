@@ -71,14 +71,14 @@ const CreateResumeForm = () => {
     setLoading(false);
   };
   return (
-    <Box sx={style.wrapper}>
-      <Typography variant="h2" sx={style.heading}>
+    <Box sx={styles.wrapper}>
+      <Typography variant="h2" sx={styles.heading}>
         Let&apos;s add the new resume in our warehouse
       </Typography>
       <form onSubmit={handleSubmit(onSubmit)}>
         <DetailsHeading title="Personal Details" />
-        <Box sx={style.innerWrapper}>
-          <Box sx={style.formContainer}>
+        <Box sx={styles.innerWrapper}>
+          <Box sx={styles.formContainer}>
             <Input
               wrapperSx={{ flex: 1 }}
               name="firstName"
@@ -107,7 +107,7 @@ const CreateResumeForm = () => {
               error={errors.email?.message}
             />
           </Box>
-          <Box sx={style.formContainer}>
+          <Box sx={styles.formContainer}>
             <Input
               wrapperSx={{ flex: 1 }}
               name="phoneNumber"
@@ -137,7 +137,7 @@ const CreateResumeForm = () => {
             />
           </Box>
           <DetailsHeading title="Address Details" />
-          <Box sx={style.formContainer}>
+          <Box sx={styles.formContainer}>
             <Input
               wrapperSx={{ flex: 1 }}
               name="location.postalCode"
@@ -149,12 +149,12 @@ const CreateResumeForm = () => {
             />
 
             <Box sx={{ flex: 1 }}>
-              <Typography sx={style.labelText}>Select State</Typography>
+              <Typography sx={styles.labelText}>Select State</Typography>
               <FormControl
                 fullWidth
                 error={!!errors.location?.state}
                 sx={[
-                  style.formController,
+                  styles.formController,
                   {
                     '& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline':
                       {
@@ -175,9 +175,9 @@ const CreateResumeForm = () => {
                       inputProps={{ MenuProps: { disableScrollLock: true } }}
                       {...field}
                       displayEmpty
-                      sx={style.select}
+                      sx={styles.select}
                     >
-                      <MenuItem value="" disabled sx={style.selectItem}>
+                      <MenuItem value="" disabled sx={styles.selectItem}>
                         Select State
                       </MenuItem>
                       {states.map((state) => (
@@ -185,7 +185,7 @@ const CreateResumeForm = () => {
                           key={state.value}
                           value={state.label}
                           onClick={() => setSelectedState(state.value)}
-                          sx={style.selectItem}
+                          sx={styles.selectItem}
                         >
                           {state.label}
                         </MenuItem>
@@ -194,19 +194,19 @@ const CreateResumeForm = () => {
                   )}
                 />
                 {!!errors.location?.state?.message && (
-                  <Typography sx={style.error}>
+                  <Typography sx={styles.error}>
                     {errors.location?.state?.message}
                   </Typography>
                 )}
               </FormControl>
             </Box>
             <Box sx={{ flex: 1 }}>
-              <Typography sx={style.labelText}>Select City</Typography>
+              <Typography sx={styles.labelText}>Select City</Typography>
               <FormControl
                 fullWidth
                 error={!!errors.location?.city}
                 sx={[
-                  style.formController,
+                  styles.formController,
                   {
                     '& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline':
                       {
@@ -226,17 +226,17 @@ const CreateResumeForm = () => {
                     <Select
                       {...field}
                       displayEmpty
-                      sx={style.select}
+                      sx={styles.select}
                       inputProps={{ MenuProps: { disableScrollLock: true } }}
                     >
-                      <MenuItem value="" disabled sx={style.selectItem}>
+                      <MenuItem value="" disabled sx={styles.selectItem}>
                         Select City
                       </MenuItem>
                       {cities.map((city) => (
                         <MenuItem
                           key={city.value}
                           value={city.value}
-                          sx={style.selectItem}
+                          sx={styles.selectItem}
                         >
                           {city.label}
                         </MenuItem>
@@ -245,7 +245,7 @@ const CreateResumeForm = () => {
                   )}
                 />
                 {!!errors.location?.city?.message && (
-                  <Typography sx={style.error}>
+                  <Typography sx={styles.error}>
                     {errors.location?.city?.message}
                   </Typography>
                 )}
@@ -253,16 +253,16 @@ const CreateResumeForm = () => {
             </Box>
           </Box>
           <DetailsHeading title="Professional Details" />
-          <Box sx={style.formContainer}>
+          <Box sx={styles.formContainer}>
             <Box sx={{ flex: 1 }}>
-              <Typography sx={style.labelText}>
+              <Typography sx={styles.labelText}>
                 Select Experience Level
               </Typography>
               <FormControl
                 fullWidth
                 error={!!errors.experience}
                 sx={[
-                  style.formController,
+                  styles.formController,
                   {
                     '& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline':
                       {
@@ -282,17 +282,17 @@ const CreateResumeForm = () => {
                     <Select
                       {...field}
                       displayEmpty
-                      sx={style.select}
+                      sx={styles.select}
                       inputProps={{ MenuProps: { disableScrollLock: true } }}
                     >
-                      <MenuItem value="" disabled sx={style.selectItem}>
+                      <MenuItem value="" disabled sx={styles.selectItem}>
                         Select Experience
                       </MenuItem>
                       {experienceLevels.map((type) => (
                         <MenuItem
                           key={type.value}
                           value={type.value}
-                          sx={style.selectItem}
+                          sx={styles.selectItem}
                         >
                           {type.label}
                         </MenuItem>
@@ -301,21 +301,21 @@ const CreateResumeForm = () => {
                   )}
                 />
                 {!!errors.experience && (
-                  <Typography sx={style.error}>
+                  <Typography sx={styles.error}>
                     {errors.experience.message}
                   </Typography>
                 )}
               </FormControl>
             </Box>
             <Box sx={{ flex: 1 }}>
-              <Typography sx={style.labelText}>
+              <Typography sx={styles.labelText}>
                 Select Area Of Expertise
               </Typography>
               <FormControl
                 fullWidth
                 error={!!errors.areaOfExpertise}
                 sx={[
-                  style.formController,
+                  styles.formController,
                   {
                     '& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline':
                       {
@@ -336,16 +336,16 @@ const CreateResumeForm = () => {
                       {...field}
                       inputProps={{ MenuProps: { disableScrollLock: true } }}
                       displayEmpty
-                      sx={style.select}
+                      sx={styles.select}
                     >
-                      <MenuItem value="" disabled sx={style.selectItem}>
+                      <MenuItem value="" disabled sx={styles.selectItem}>
                         Select Area
                       </MenuItem>
                       {areaOfExpertises.map((type) => (
                         <MenuItem
                           key={type.value}
                           value={type.value}
-                          sx={style.selectItem}
+                          sx={styles.selectItem}
                         >
                           {type.value}
                         </MenuItem>
@@ -354,14 +354,14 @@ const CreateResumeForm = () => {
                   )}
                 />
                 {!!errors.areaOfExpertise && (
-                  <Typography sx={style.error}>
+                  <Typography sx={styles.error}>
                     {errors.areaOfExpertise.message}
                   </Typography>
                 )}
               </FormControl>
             </Box>
             <Box sx={{ flex: 1 }}>
-              <Typography sx={style.labelText}>Summary</Typography>
+              <Typography sx={styles.labelText}>Summary</Typography>
               <TextField
                 {...register('summary')}
                 name="summary"
@@ -370,7 +370,7 @@ const CreateResumeForm = () => {
                 multiline
                 rows={3}
                 placeholder="Enter summary"
-                sx={style.textField}
+                sx={styles.textField}
               />
             </Box>
           </Box>
@@ -390,7 +390,7 @@ const CreateResumeForm = () => {
             variant="contained"
             fullWidth
             disabled={loading}
-            sx={style.btn}
+            sx={styles.btn}
           >
             {loading || uploading ? (
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
@@ -411,7 +411,7 @@ const CreateResumeForm = () => {
 
 export default CreateResumeForm;
 
-const style = {
+const styles = {
   wrapper: {
     display: 'flex',
     flexDirection: 'column',

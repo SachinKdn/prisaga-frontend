@@ -1,51 +1,67 @@
 'use client';
-import { Box } from '@mui/material';
-import Image from 'next/image';
-import React, { useRef, useState } from 'react';
-import { Oval } from 'react-loader-spinner';
-import defaultPic from '@assets/png/profile-pic.png';
-import { CustomButton } from './common/Button';
+import { Box, Button, CircularProgress, Typography } from '@mui/material';
+import React, { useEffect, useRef, useState } from 'react';
 import handleError from '@hooks/handleError';
-import { Pencil, Trash2 } from 'lucide-react';
-import { useForm } from 'react-hook-form';
+import { SubmitHandler, useForm } from 'react-hook-form';
 import { CompanySchema } from '@utils/yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Input } from './common/Input';
-import DynamicAutocomplete from './common/InputSelector';
-import { getUsersList } from '@api/user';
+import theme from '@app/theme';
+import FormControllerSelector from './common/FormControllerSelector';
+import { getCitiesByState, getIndianStates } from '@services/loadOptions';
+import { createCompany } from '@api/client';
+import handleSuccess from '@hooks/handleSuccess';
+import { useRouter } from 'next/navigation';
 
-interface Props {
-  data?: Company;
-  isEdit?: boolean;
-}
-const CompanyForm = (props: Props) => {
-  const {} = props;
+// interface Props {
+//   data?: Company;
+//   isEdit?: boolean;
+// }
+const CompanyForm = () => {
+  const router = useRouter();
   const {
     register,
     setValue,
+    control,
     formState: { errors },
-    getValues,
+    handleSubmit,
   } = useForm<Company>({
     resolver: yupResolver(CompanySchema),
   });
 
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [loading, setLoading] = useState(false);
+  const [uploading, setUploading] = useState(false);
+  const [states, setStates] = useState<Option[]>([]);
+  const [cities, setCities] = useState<Option[]>([]);
+  const [selectedState, setSelectedState] = useState<string>('');
+  useEffect(() => {
+    const indianStates = getIndianStates();
+    setStates(indianStates);
+  }, []);
+  useEffect(() => {
+    if (selectedState) {
+      const cityList = getCitiesByState(selectedState);
+      setCities(cityList);
+      setValue('location.city', '');
+    }
+  }, [selectedState, setValue]);
   // disable-no-any
-  const [selectedCompany, setSelectedCompany] = useState<any>();
-  const [isLoadingProfile, setIsLoadingProfile] = useState(false);
-  const [imagePreview, setImagePreview] = useState<string | undefined>();
+  // const [selectedCompany, setSelectedCompany] = useState<any>();
+  // const [isLoadingProfile, setIsLoadingProfile] = useState(false);
+  // const [imagePreview, setImagePreview] = useState<string | undefined>();
 
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const handleFileChange = async (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
     try {
-      setIsLoading(true);
+      setLoading(true);
       if (event.target.files && event.target.files[0]) {
-        setIsLoadingProfile(true);
+        // setIsLoadingProfile(true);
+        setUploading(true);
         const file = event.target.files[0];
-        const imageUrl = URL.createObjectURL(file);
-        setImagePreview(imageUrl);
+        // const imageUrl = URL.createObjectURL(file);
+        // setImagePreview(imageUrl);
         const payload = { file };
         console.log(payload);
         // if (user) user.setProfileImage({ file });
@@ -61,33 +77,37 @@ const CompanyForm = (props: Props) => {
       console.error('Error updating user profile:', error);
       handleError(error);
     } finally {
-      setIsLoadingProfile(false);
-      setIsLoading(false);
+      // setIsLoadingProfile(false);
+      setLoading(false);
     }
   };
 
-  const handleChangePicture = () => {
-    if (fileInputRef.current) {
-      fileInputRef.current.click();
+  // const handleChangePicture = () => {
+  //   if (fileInputRef.current) {
+  //     fileInputRef.current.click();
+  //   }
+  // };
+  // const handleDeletePicture = () => {
+  //   setImagePreview(undefined);
+  //   setValue('logo', '');
+  // };
+  const onSubmit: SubmitHandler<Company> = async (data) => {
+    console.log('submitted---', data);
+    setLoading(true);
+    const result = await createCompany(data);
+    console.log(result);
+    if (result) {
+      handleSuccess('Resume created successfully');
+      router.push('/company');
     }
-  };
-  const handleDeletePicture = () => {
-    setImagePreview(undefined);
-    setValue('logo', '');
-  };
-  const fetchCompanies = async (i: string) => {
-    const result = await getUsersList();
-    console.log('result-->', i, result);
-    return [
-      {
-        id: 123,
-        label: 'sachin',
-      },
-    ];
+    setLoading(false);
   };
   return (
     <Box sx={styles.wrapper}>
-      <Box sx={styles.uploadWrapper}>
+      <Typography variant="h2" sx={styles.heading}>
+        Let&apos;s Get Started: Add New Company Details
+      </Typography>
+      {/* <Box sx={styles.uploadWrapper}>
         <Box sx={styles.imgWrapper}>
           {isLoadingProfile && (
             <div className="inset-0 flex items-center justify-center bg-gray-100 absolute">
@@ -127,28 +147,19 @@ const CompanyForm = (props: Props) => {
               onClick={handleDeletePicture}
             >
               <Trash2 color="#FF0000" strokeWidth={1.75} height={20} />
-              {/* <Trash color="#FF0000" strokeWidth={1.75} height={20} /> */}
             </CustomButton>
           )}
         </div>
-      </Box>
-      <Box>
-        <form>
+      </Box> */}
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <Box sx={styles.formContainer}>
           <Input
             name="name"
             type="text"
-            label="First Name"
-            placeholder="First Name"
+            label="Company name"
+            placeholder="Enter company name"
             register={register}
             error={errors.name?.message}
-          />
-          <Input
-            name="location.city"
-            type="text"
-            label="City"
-            placeholder="City"
-            register={register}
-            error={errors.location?.city?.message}
           />
           <Input
             name="teamSize"
@@ -174,18 +185,54 @@ const CompanyForm = (props: Props) => {
             register={register}
             error={errors.linkedin?.message}
           />
-          <DynamicAutocomplete
-            label="Company"
-            value={selectedCompany}
-            onChange={(newValue) => setSelectedCompany(newValue)}
-            loadOptions={fetchCompanies}
-            isRequired
-            error={!!errors.name}
-            // helperText={errors.name }
-            // renderOption={renderCompanyOption}
+        </Box>
+        <Box sx={styles.formContainer}>
+          <Input
+            name="location.postalCode"
+            type="number"
+            label="Postal code"
+            placeholder="6 digit code"
+            register={register}
+            error={errors.location?.postalCode?.message}
           />
-        </form>
-      </Box>
+          <FormControllerSelector<Company>
+            name="location.state"
+            control={control}
+            labelText="Select state"
+            options={states}
+            errorMessage={errors.location?.state?.message}
+            placeholder="Select state"
+            onSelect={setSelectedState}
+          />
+          <FormControllerSelector<Company>
+            name="location.city"
+            control={control}
+            labelText="Select city"
+            options={cities}
+            errorMessage={errors.location?.city?.message}
+            placeholder="Select city"
+          />
+        </Box>
+        <Button
+          type="submit"
+          color="primary"
+          variant="contained"
+          fullWidth
+          disabled={loading}
+          sx={styles.btn}
+        >
+          {loading || uploading ? (
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+              <CircularProgress size={18} style={{ color: 'white' }} />
+              <Typography
+                sx={{ fontSize: '0.75rem' }}
+              >{`${uploading ? 'Uploading...' : 'Saving...'}`}</Typography>
+            </Box>
+          ) : (
+            `Save`
+          )}
+        </Button>
+      </form>
       <input
         ref={fileInputRef}
         type="file"
@@ -206,6 +253,12 @@ const styles = {
     display: 'flex',
     flexDirection: 'column',
   },
+  heading: {
+    color: theme.palette.primary.main,
+    fontSize: '1.1rem',
+    fontWeight: '600',
+    marginBottom: '10px',
+  },
   uploadWrapper: {
     display: 'flex',
     gap: '6rem',
@@ -222,5 +275,33 @@ const styles = {
     fontWeight: '600',
     justifyContent: 'start !important',
     alignItems: 'center !important',
+  },
+  formContainer: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    gap: '20px',
+    marginBottom: '8px',
+  },
+  btn: {
+    width: '100%',
+    height: '38px',
+    marginTop: '40px',
+    borderWidth: '1.5px',
+    color: 'white',
+    borderRadius: '4px',
+    fontSize: '0.75rem',
+    fontWeight: '500',
+    lineHeight: '19.95px',
+    // fontFamily: '"Helvetica Neue", Arial, sans-serif',
+    boxShadow: 'none',
+    backgroundColor: theme.palette.primary.main,
+    ':hover': {
+      backgroundColor: '#43afb0',
+      boxShadow: 'none',
+    },
+    '&:disabled': {
+      backgroundColor: theme.palette.secondary.main,
+      color: 'white',
+    },
   },
 };

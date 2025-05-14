@@ -1,5 +1,5 @@
-import CreateJobForm from '@components/CreateJobForm';
+import AddNewJob from '@components/AddNewJob';
 
 export default function Page() {
-  return <CreateJobForm />;
+  return <AddNewJob />;
 }

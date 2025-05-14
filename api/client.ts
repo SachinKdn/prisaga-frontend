@@ -23,12 +23,13 @@ interface RequestConfig extends RequestInit {
 
 async function request<T>(
   url: string,
-  config: RequestConfig = {}
+  config: RequestConfig = {},
+  isPublicRoute: boolean = false
 ): Promise<T | undefined> {
   const { isNotifyError = false, bodyData, ...restConfig } = config;
   const token = await getToken();
   const baseUrl = process.env.NEXT_PUBLIC_API_URL;
-  if (!token) {
+  if (!token && !isPublicRoute) {
     localStorage.clear();
     return undefined;
   }
@@ -50,7 +51,6 @@ async function request<T>(
 
   try {
     const response = await fetch(`${baseUrl}${url}`, requestConfig);
-    console.log(response);
     if (response.status === 401) {
       localStorage.clear();
       window.location.href = '/login';
@@ -80,6 +80,7 @@ async function request<T>(
     return (result as IResponse<T>).data;
   } catch (error) {
     if (isNotifyError) {
+      console.log('=========isNotifyError======', isNotifyError);
       handleError(
         error instanceof Error ? error : new Error('Unexpected error occurred')
       );
@@ -94,6 +95,7 @@ export async function createUser(
   return request<User>('user/createUser', {
     method: 'POST',
     bodyData: payload,
+    isNotifyError: true,
   });
 }
 
@@ -107,14 +109,81 @@ export async function updateUser(
   });
 }
 
+export async function deleteUser(id: string): Promise<User | undefined> {
+  return request<User>(`user/${id}`, {
+    method: 'DELETE',
+  });
+}
+
 export async function loginUser(
   payload: UserLogin
 ): Promise<LoginUserResponse | undefined> {
-  return request<LoginUserResponse>('user/login', {
-    method: 'POST',
+  return request<LoginUserResponse>(
+    'user/login',
+    {
+      isNotifyError: true,
+      method: 'POST',
+      bodyData: payload,
+    },
+    true
+  );
+}
+
+export async function registerAgency(
+  payload: AgencySignup
+): Promise<LoginUserResponse | undefined> {
+  return request<LoginUserResponse>(
+    'user/agency-register',
+    {
+      isNotifyError: true,
+      method: 'POST',
+      bodyData: payload,
+    },
+    true
+  );
+}
+
+export async function createAgency(
+  userId: string,
+  payload: IAgencyDetails
+): Promise<Agency | undefined> {
+  return request<Agency>(
+    `agency/create/${userId}`,
+    {
+      isNotifyError: true,
+      method: 'POST',
+      bodyData: payload,
+    },
+    true
+  );
+}
+
+export async function updateAgency(
+  id: string,
+  payload: IAgencyDetails
+): Promise<IAgencyDetails | undefined> {
+  return request<IAgencyDetails>(`agency/${id}`, {
+    method: 'PUT',
     bodyData: payload,
   });
 }
+
+export async function createPassword(
+  token: string,
+  payload: INewPassword
+): Promise<User | undefined> {
+  return request<User>(
+    `user/resetPassword/${token}`,
+    {
+      isNotifyError: true,
+      method: 'POST',
+      bodyData: payload,
+    },
+    true
+  );
+}
+
+// resume-----------------
 
 export async function createResume(
   payload: Resume
@@ -135,4 +204,155 @@ export async function getResumes(
       method: 'GET',
     }
   );
+}
+
+export async function getUsersList(): Promise<
+  ITableResponse<User[]> | undefined
+> {
+  return request<ITableResponse<User[]>>('user/all');
+}
+
+// company-----------------
+
+export async function getCompanies(): Promise<
+  ITableResponse<Company[]> | undefined
+> {
+  return request<ITableResponse<Company[]> | undefined>('company/all');
+}
+
+export async function createCompany(
+  payload: Company
+): Promise<Company | undefined> {
+  return request<Company | undefined>('company/create', {
+    method: 'POST',
+    bodyData: payload,
+    isNotifyError: true,
+  });
+}
+
+// job-----------------
+export async function createJob(
+  payload: Partial<IJob>
+): Promise<IJob | undefined> {
+  return request<IJob | undefined>('job/create', {
+    method: 'POST',
+    bodyData: payload,
+    isNotifyError: true,
+  });
+}
+
+export async function updateJob(
+  payload: Partial<IJob>,
+  id: string
+): Promise<IJob | undefined> {
+  return request<IJob | undefined>(`job/update/${id}`, {
+    method: 'PUT',
+    bodyData: payload,
+    isNotifyError: true,
+  });
+}
+
+export async function getJobsList(
+  params?: string
+): Promise<ITableResponse<IJob[]> | undefined> {
+  return request<ITableResponse<IJob[]>>(`job?${params || ''}`);
+}
+
+export async function getAllocatedJobs(
+  params?: string
+): Promise<ITableResponse<IJob[]> | undefined> {
+  return request<ITableResponse<IJob[]> | undefined>(
+    `job/allocatedJobs?${params || ''}`,
+    {
+      method: 'GET',
+    }
+  );
+}
+
+export async function getEngagedJobs(
+  params?: string
+): Promise<ITableResponse<IJob[]> | undefined> {
+  return request<ITableResponse<IJob[]> | undefined>(
+    `job/engagedJobs?${params || ''}`,
+    {
+      method: 'GET',
+    }
+  );
+}
+
+export async function getDeallocatedJobs(
+  params?: string
+): Promise<ITableResponse<IJob[]> | undefined> {
+  return request<ITableResponse<IJob[]> | undefined>(
+    `job/deallocatedJobs?${params || ''}`,
+    {
+      method: 'GET',
+    }
+  );
+}
+
+export async function toggleJobCategory(
+  jobId: string,
+  category: string
+): Promise<Agency | undefined> {
+  return request<Agency | undefined>(`agency/toggleJob`, {
+    method: 'POST',
+    bodyData: { jobId, category },
+    isNotifyError: true,
+  });
+}
+
+// Application/ Candidate -------------------------
+
+export async function checkCandidate(
+  payload: IAddCandidate
+): Promise<CheckCandidateResumeResponse | undefined> {
+  return request<CheckCandidateResumeResponse | undefined>(
+    'application/checkCandidate',
+    {
+      method: 'POST',
+      bodyData: payload,
+      isNotifyError: true,
+    }
+  );
+}
+
+export async function applyForJob(
+  payload: Partial<IApplicationForm>
+): Promise<IApplicationForm | undefined> {
+  return request<IApplicationForm>('application/create', {
+    method: 'POST',
+    bodyData: payload,
+    isNotifyError: true,
+  });
+}
+
+// Vendor - Agency --------------------------------
+export async function getVendorsList(
+  params?: string
+): Promise<ITableResponse<Agency[]> | undefined> {
+  return request<ITableResponse<Agency[]>>(`agency/list?${params || ''}`, {
+    method: 'GET',
+  });
+}
+
+export async function updateAgencySubscription(
+  payload: SubscriptionFormData,
+  id: string
+): Promise<Agency | undefined> {
+  return request<Agency | undefined>(`agency/subcription/${id}`, {
+    method: 'PUT',
+    bodyData: payload,
+    isNotifyError: true,
+  });
+}
+
+export async function sendUpgradeRequest(
+  payload: SubscriptionFormData
+): Promise<string | undefined> {
+  return request<string | undefined>(`agency/subscriptionRequest`, {
+    method: 'POST',
+    bodyData: payload,
+    isNotifyError: true,
+  });
 }

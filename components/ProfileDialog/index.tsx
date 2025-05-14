@@ -3,10 +3,6 @@ import { Box, Dialog, DialogContent, SxProps } from '@mui/material';
 import Card from './Card';
 import ProfileIcon from '@assets/svg/profile-icon.svg';
 import KeyIcon from '@assets/svg/key-01.svg';
-import SettingIcon from '@assets/svg/settings-02.svg';
-import TrendIcon from '@assets/svg/bar-chart-07.svg';
-import UploadIcon from '@assets/svg/upload-01.svg';
-import NotificationIcon from '@assets/svg/bell-01.svg';
 import BuildingIcon from '@assets/svg/building.svg';
 import { useSelector } from 'react-redux';
 import { UserRole } from '@/constant/enum';
@@ -36,40 +32,40 @@ export const cards: ICard[] = [
   },
   {
     icon: KeyIcon,
-    name: 'Change Password',
-    to: '/password',
-    access: [UserRole.USER, UserRole.ADMIN, UserRole.ADMIN, UserRole.VENDOR],
+    name: 'Your Plan',
+    to: '/subscriptionPlan',
+    access: [UserRole.VENDOR],
   },
-  {
-    icon: SettingIcon,
-    name: 'Settings',
-    to: '/settings',
-    access: [UserRole.USER, UserRole.ADMIN, UserRole.ADMIN, UserRole.VENDOR],
-  },
+  // {
+  //   icon: SettingIcon,
+  //   name: 'Settings',
+  //   to: '/settings',
+  //   access: [UserRole.USER, UserRole.ADMIN, UserRole.ADMIN, UserRole.VENDOR],
+  // },
   {
     icon: BuildingIcon,
     name: 'Our Organisation',
     to: '/company',
     access: [UserRole.ADMIN, UserRole.SUPERADMIN],
   },
-  {
-    icon: TrendIcon,
-    name: 'Job Trends',
-    to: '/trends',
-    access: [UserRole.ADMIN, UserRole.SUPERADMIN, UserRole.VENDOR],
-  },
-  {
-    icon: UploadIcon,
-    name: 'Upload Excel',
-    to: '/upload',
-    access: [UserRole.ADMIN],
-  },
-  {
-    icon: NotificationIcon,
-    name: 'Customer Support',
-    to: '/notifications',
-    access: [UserRole.USER, UserRole.ADMIN, UserRole.ADMIN],
-  },
+  // {
+  //   icon: TrendIcon,
+  //   name: 'Job Trends',
+  //   to: '/trends',
+  //   access: [UserRole.ADMIN, UserRole.SUPERADMIN, UserRole.VENDOR],
+  // },
+  // {
+  //   icon: UploadIcon,
+  //   name: 'Upload Excel',
+  //   to: '/upload',
+  //   access: [UserRole.ADMIN],
+  // },
+  // {
+  //   icon: NotificationIcon,
+  //   name: 'Customer Support',
+  //   to: '/notifications',
+  //   access: [UserRole.USER, UserRole.ADMIN, UserRole.ADMIN],
+  // },
 ];
 const ProfileDialog: React.FC<Props> = ({ open, onClose }) => {
   const user = useSelector((state: RootState) => state.auth.user);

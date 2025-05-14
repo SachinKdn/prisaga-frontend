@@ -9,9 +9,9 @@ import { RootState } from '@/store';
 import { UserRole } from '@/constant/enum';
 import SearchInput from './common/SearchInput';
 import theme from '@app/theme';
-import { getCompanyList } from '@api/server-company';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { getCompanies } from '@api/client';
 
 const Company = () => {
   const router = useRouter();
@@ -36,7 +36,7 @@ const Company = () => {
 
   useEffect(() => {
     const fetchCompanyList = async () => {
-      const result = await getCompanyList();
+      const result = await getCompanies();
       console.log(result);
       if (result) {
         setTotalCount(result.totalCount);
@@ -64,7 +64,7 @@ const Company = () => {
 
   return (
     <Box sx={styles.outerWrapper}>
-      <Header title={`Total companies (10)`}>
+      <Header title={`Total companies (10)`} showAddButton={false}>
         <Box>
           <SearchInput onChange={handleOnChange} />
         </Box>

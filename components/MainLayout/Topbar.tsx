@@ -20,6 +20,9 @@ import { useSelector } from 'react-redux';
 import Card from '@components/ProfileDialog/Card';
 import { useOnClickOutside } from '@hooks/useOnClickOutside';
 import { usePathname } from 'next/navigation';
+import Link from 'next/link';
+import DiamondIcon from '@assets/svg/diamond-icon.svg';
+import { SubscriptionType, UserRole } from '@constant/enum';
 
 type Props = {
   sidebarWidth: string;
@@ -39,14 +42,14 @@ const Topbar = (props: Props) => {
     '': 'Dashboard',
     resume: 'Resume Warehouse',
     profile: 'My Profile',
+    jobs: 'Job Section',
+    users: 'Users',
   };
 
   const title = useMemo(() => {
-    console.log(pathname);
     const route = pathname.split('/')[1];
     return pageHeading[route];
   }, [pathname]);
-  console.log('title--->', title);
   return (
     <AppBar
       position="fixed"
@@ -72,6 +75,13 @@ const Topbar = (props: Props) => {
         </Box>
         <Box sx={styles.box}>
           {/* <Image src={LogoImage} alt="logo" style={styles.logoImg} /> */}
+          {user?.role === UserRole.VENDOR &&
+            user?.agency?.subscriptionType === SubscriptionType.FREE && (
+              <Link href={'/subscription'} style={styles.subscriptionBox}>
+                <DiamondIcon width="20px" height="18px" />
+                Upgrade Now
+              </Link>
+            )}
           <Logo />
           <Box sx={styles.profileImg}>
             <Image
@@ -206,6 +216,19 @@ const styles = {
     [theme.breakpoints.down('md')]: {
       minWidth: '165px',
     },
+  },
+  subscriptionBox: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    borderRadius: '40px',
+    border: '2px solid #358D9E',
+    padding: '4px 6px',
+    fontFamily: 'Poppins',
+    color: theme.palette.primary.main,
+    fontSize: '0.78rem',
+    fontWeight: '600',
+    gap: '0.35rem',
   },
 };
 

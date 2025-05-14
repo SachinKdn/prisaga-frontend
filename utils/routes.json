@@ -1,0 +1,36 @@
+{
+  "Admin": [
+    "/dashboard",
+    "/resume",
+    "/resume/new",
+    "/users",
+    "/jobs",
+    "/jobs/new",
+    "/company",
+    "/company/new",
+    "/vendor"
+  ],
+  "Superadmin": [
+    "/dashboard",
+    "/resume",
+    "/resume/new",
+    "/users",
+    "/jobs",
+    "/jobs/new",
+    "/jobs/:referenceId",
+    "/company",
+    "/company/new",
+    "/vendor"
+  ],
+  "User": ["/"],
+  "Vendor": [
+    "/subscriptionPlan",
+    "/subscription",
+    "/",
+    "/jobs",
+    "/jobs/:referenceId",
+    "/users",
+    "/profile/edit-agency"
+  ],
+  "All": ["/profile", "/unauthorized", "/support"]
+}

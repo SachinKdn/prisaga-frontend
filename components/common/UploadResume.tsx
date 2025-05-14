@@ -2,7 +2,7 @@ import theme from '@app/theme';
 import { Box, IconButton, Typography } from '@mui/material';
 import CloudUploadIcon from '@assets/svg/cloud.svg';
 import React, { useRef, useState } from 'react';
-import { UseFormRegisterReturn, UseFormSetValue } from 'react-hook-form';
+import { UseFormRegisterReturn } from 'react-hook-form';
 import { useAuthenticatedFileUploadApi } from '@api/upload-file';
 import { useEffect } from 'react';
 
@@ -16,7 +16,7 @@ interface Props {
   uploadedFileName?: string;
   register?: UseFormRegisterReturn;
   error?: string;
-  setValue: UseFormSetValue<Resume>;
+  setValue: any;
   setIsUploading: (v: boolean) => void;
 }
 const UploadResume = (props: Props) => {
@@ -81,7 +81,7 @@ const UploadResume = (props: Props) => {
           <IconButton disableRipple component="span" sx={style.iconWrapper}>
             <CloudUploadIcon />
             <Typography variant="body2" sx={style.text}>
-              {selectedFile ? selectedFile.name : 'Upload'}
+              {selectedFile ? selectedFile.name : 'Upload Resume'}
             </Typography>
           </IconButton>
         </label>

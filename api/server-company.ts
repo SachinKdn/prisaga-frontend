@@ -82,26 +82,3 @@ async function request<T>(
     return undefined;
   }
 }
-
-export async function getCompanyList(): Promise<
-  ITableResponse<Company[]> | undefined
-> {
-  const result = await request<ITableResponse<Company[]>>('company/all');
-  return result;
-}
-
-export async function getAgencyList(): Promise<
-  ITableResponse<Agency[]> | undefined
-> {
-  const result = await request<ITableResponse<Agency[]>>('agency/list');
-  return result;
-}
-
-export async function getAgencyById(
-  id: string
-): Promise<AgencyDetails | undefined> {
-  console.log('\n\n\n\n\n\n\n id----->', id);
-  const result = await request<AgencyDetails>(`agency/${id}`);
-  return result;
-}
-// You can add more API endpoint functions here

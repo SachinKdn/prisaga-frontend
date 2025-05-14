@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 export async function POST(req: Request) {
   const { accessToken } = await req.json();
   if (!accessToken) {
+    console.log('token not attached');
     return NextResponse.json(
       {
         error: 'Token missing',
@@ -40,6 +41,6 @@ export async function DELETE() {
     path: '/',
     expires: new Date(0),
   });
-
+  console.log('DELETE TOKEN');
   return response;
 }
