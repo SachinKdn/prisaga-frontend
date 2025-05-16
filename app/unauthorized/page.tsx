@@ -5,9 +5,14 @@ import NotFoundImage from '@assets/png/notFoundImg.png';
 import theme from '@app/theme';
 import Link from 'next/link';
 import { UserRole } from '@constant/enum';
-import { useSearchParams } from 'next/navigation';
+import { permanentRedirect, useSearchParams } from 'next/navigation';
+import { useDispatch } from 'react-redux';
+import { AppDispatch } from '@store';
+import { logout } from '@store/slices/user';
+import { clearToken } from '@api/tokenHandler';
 
 const Unauth = () => {
+  const dispatch = useDispatch<AppDispatch>();
   const searchParams = useSearchParams();
   const params = new URLSearchParams(searchParams);
   const type = params.get('type');
@@ -15,7 +20,14 @@ const Unauth = () => {
     type === UserRole.ADMIN || type === UserRole.SUPERADMIN
       ? '/dashboard'
       : '/';
-
+  const handleLogout = async () => {
+    console.log('logout');
+    localStorage.clear();
+    sessionStorage.clear();
+    dispatch(logout());
+    await clearToken();
+    permanentRedirect('/login');
+  };
   return (
     <Box sx={style.wrapper}>
       <Image
@@ -34,6 +46,19 @@ const Unauth = () => {
       <Link href={path} style={style.link}>
         Go to Homepage
       </Link>
+      <Typography
+        variant="body1"
+        sx={{
+          mt: '1rem',
+          color: 'red',
+          fontSize: '1rem',
+          cursor: 'pointer',
+          fontWeight: 500,
+        }}
+        onClick={handleLogout}
+      >
+        Logout
+      </Typography>
     </Box>
   );
 };

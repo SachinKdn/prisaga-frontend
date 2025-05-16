@@ -57,8 +57,8 @@ const UpdateProfileModal: React.FC<UserDetailsFormProps> = ({
     const result = await updateUser(data, initialData!._id);
     console.log(result);
     if (result) {
-      handleSuccess('User Details Updated Successfully');
       dispatch(setUserInStore(result));
+      handleSuccess('User Details Updated Successfully');
     }
     onClose();
     setLoading(false);

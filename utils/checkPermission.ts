@@ -1,6 +1,13 @@
 import { SubscriptionType, UserRole } from '@constant/enum';
 import routes from './routes.json';
-const freeVendorRoutes = ['/profile', '/unauthorized', '/', '/subscription'];
+const freeVendorRoutes = [
+  '/profile',
+  '/unauthorized',
+  '/',
+  '/subscription',
+  '/support',
+  '/profile/edit-agency',
+];
 export const isRouteHasPermission = (
   role: UserRole,
   subscriptionType: SubscriptionType,

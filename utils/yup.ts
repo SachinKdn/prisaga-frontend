@@ -88,7 +88,9 @@ export const CompanySchema = Yup.object().shape({
 
   linkedin: Yup.string().optional(),
 
-  website_url: Yup.string().optional().url('Website URL must be valid'),
+  website_url: Yup.string()
+    .optional()
+    .url('Website URL must be valid i.e. https://www.xyz.com'),
 });
 
 export const ResumeFormSchema = Yup.object().shape({
@@ -342,7 +344,7 @@ export const AgencyDetailsSchema = Yup.object().shape({
       }
     ),
   website_url: Yup.string()
-    .url('Website URL must be valid')
+    .url('Website URL must be valid i.e. https://www.xyz.com')
     .required('Website URL is required'),
   teamSize: Yup.number()
     .required('Team size is required')
@@ -350,7 +352,7 @@ export const AgencyDetailsSchema = Yup.object().shape({
     .min(1, 'Team size must be at least 1'),
   isBulkHiring: Yup.boolean().required('Bulk hiring status is required'),
   linkedin: Yup.string()
-    .url('LinkedIn URL must be valid')
+    .url('LinkedIn URL must be valid i.e. https://www.xyz.com')
     .required('LinkedIn URL is required'),
   targetJobLevel: Yup.array()
     .of(Yup.string().required('Target job level cannot be empty'))

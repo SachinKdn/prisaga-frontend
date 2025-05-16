@@ -47,7 +47,15 @@ const AgencySignupForm: React.FC = () => {
           <Typography sx={styles.heading}>Create Agency Account</Typography>
 
           <form style={{ width: '100%' }} onSubmit={handleSubmit(onSubmit)}>
-            <Box mt={3} sx={{ width: '100%' }}>
+            <Box
+              mt={3}
+              sx={{
+                width: '100%',
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '10px',
+              }}
+            >
               <FormControllerSelector<AgencySignup>
                 name="userBusinessType"
                 control={control}

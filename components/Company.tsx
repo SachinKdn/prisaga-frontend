@@ -54,7 +54,14 @@ const Company = () => {
       field: 'goto',
       label: 'Action',
       render(row) {
-        return <Link href={`company/${row._id}`}>View Here</Link>;
+        return (
+          <Link
+            href={`company/${row._id}`}
+            style={{ color: theme.palette.primary.main, fontWeight: 500 }}
+          >
+            View Here
+          </Link>
+        );
       },
     },
     // { field: 'isApproved', label: 'Status' },
@@ -64,7 +71,7 @@ const Company = () => {
 
   return (
     <Box sx={styles.outerWrapper}>
-      <Header title={`Total companies (10)`} showAddButton={false}>
+      <Header title={`Total companies (${totalCount})`} showAddButton={false}>
         <Box>
           <SearchInput onChange={handleOnChange} />
         </Box>

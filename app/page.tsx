@@ -1,7 +1,7 @@
 export default function Page() {
   return (
     <>
-      <p>Home Page</p>
+      <p>This page under maintenance, move with other features.</p>
     </>
   );
 }

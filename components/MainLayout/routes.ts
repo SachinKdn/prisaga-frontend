@@ -65,4 +65,5 @@ export const publicRoutes = [
   '/createPassword',
   '/reset-password',
   '/unauthorized',
+  '/support',
 ];

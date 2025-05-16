@@ -69,7 +69,7 @@ export default SingleSelect;
 
 const styles = {
   formController: {
-    width: 180,
+    width: 200,
     margin: 0,
     '& .MuiSelect-root': {
       fontSize: '0.85rem',

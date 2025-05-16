@@ -2,10 +2,6 @@
 import React, { useState } from 'react';
 import CustomTable from './CustomTable';
 
-import SubmittedIcon from '@assets/svg/submitted-icon.svg';
-import SuccessIcon from '@assets/svg/success-icon.svg';
-import RejectedIcon from '@assets/svg/rejected-icon.svg';
-import { ChartColumn, Ellipsis } from 'lucide-react';
 import { Box, Typography, Button } from '@mui/material';
 import AgencyDetails from './Profile/AgencyDetails';
 import PersonalDetails from './Profile/PersonalDetails';
@@ -107,7 +103,7 @@ const VendorDetails = (props: Props) => {
         isEditable={false}
       />
       <AgencyDetails agency={agency} isEditable={false} />
-      <Box
+      {/* <Box
         sx={{
           py: 4,
           px: 6,
@@ -161,7 +157,7 @@ const VendorDetails = (props: Props) => {
             className={{ color: '#CB0000' }}
           />
         </Box>
-      </Box>
+      </Box> */}
 
       <CustomTable
         key={data.members.length}
