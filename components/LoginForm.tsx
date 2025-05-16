@@ -6,6 +6,7 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useDispatch } from 'react-redux';
 import { useRouter } from 'next/navigation';
+import { HelpCircle } from 'lucide-react';
 
 import theme from '@/app/theme';
 import { AppDispatch } from '@/store';
@@ -90,12 +91,33 @@ const LoginForm: React.FC = () => {
             />
           </Box>
 
-          <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+          <Box
+            sx={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              mt: 2,
+            }}
+          >
+            <Link
+              href="/support"
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '4px',
+                textDecoration: 'none',
+                color: theme.palette.primary.main,
+              }}
+            >
+              <HelpCircle size={16} />
+              <Typography sx={{ fontSize: '0.875rem', fontWeight: 500 }}>
+                Contact Support
+              </Typography>
+            </Link>
             <Typography
               component="span"
               onClick={() => {}}
               textAlign="right"
-              width="100%"
               sx={{
                 cursor: 'pointer',
                 display: 'block',

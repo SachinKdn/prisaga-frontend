@@ -105,3 +105,11 @@ export async function getAgencyById(
 ): Promise<AgencyDetails | undefined> {
   return request<AgencyDetails>(`agency/${id}`);
 }
+
+// Comapny---------------------------
+
+export async function getCompanyById(
+  companyId: string
+): Promise<Company | undefined> {
+  return request<Company>(`company/${companyId}`);
+}

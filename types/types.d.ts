@@ -132,6 +132,7 @@ interface Company {
   linkedin?: string;
   website_url?: string;
   createdBy?: string;
+  createdAt?: string;
 }
 
 interface Resume {

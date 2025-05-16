@@ -97,7 +97,7 @@ const CompanyForm = () => {
     const result = await createCompany(data);
     console.log(result);
     if (result) {
-      handleSuccess('Resume created successfully');
+      handleSuccess('Company created successfully');
       router.push('/company');
     }
     setLoading(false);

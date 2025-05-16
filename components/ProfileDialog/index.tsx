@@ -44,7 +44,7 @@ export const cards: ICard[] = [
   // },
   {
     icon: BuildingIcon,
-    name: 'Our Organisation',
+    name: 'Companies',
     to: '/company',
     access: [UserRole.ADMIN, UserRole.SUPERADMIN],
   },

@@ -197,7 +197,7 @@ const styles = {
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
-    padding: '10px 20px',
+    padding: '10px 0px',
     position: 'sticky',
     top: '0',
     zIndex: '100',

@@ -1,5 +1,5 @@
 'use client';
-import { Box } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import { useEffect, useMemo, useState } from 'react';
 import useDebounce from '../hooks/useDebounce';
 import { useSelector } from 'react-redux';
@@ -12,6 +12,7 @@ import EditUserDetailsModal from './EditUserDetailsModal';
 import theme from '@app/theme';
 import { deleteUser, getUsersList } from '@api/client';
 import handleSuccess from '@hooks/handleSuccess';
+import { Crown } from 'lucide-react';
 
 interface Props {
   data: ITableResponse<User[]>;
@@ -94,10 +95,15 @@ const Users = (props: Props) => {
       label: 'Name',
       render(row) {
         return (
-          <span>
+          <Typography sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
             {row.firstName}&nbsp;{row.lastName}{' '}
             {row._id === user?._id && '(You)'}
-          </span>
+            {row.role === UserRole.SUPERADMIN ? (
+              <Crown size={20} color="#FAD10F" />
+            ) : (
+              ''
+            )}
+          </Typography>
         );
       },
     },

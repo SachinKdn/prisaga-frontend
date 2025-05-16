@@ -3,10 +3,14 @@ import theme from '@/app/theme';
 import FacebookIcon from '@mui/icons-material/Facebook';
 import InstagramIcon from '@mui/icons-material/Instagram';
 import TwitterIcon from '@mui/icons-material/Twitter';
+import BackPage from '@components/BackPage';
 
 export default function SupportPage() {
   return (
     <Box sx={styles.wrapper}>
+      <Box sx={{ position: 'absolute', top: '12px', left: '64px' }}>
+        <BackPage />
+      </Box>
       <Box sx={styles.contentWrapper}>
         <Box sx={styles.headerSection}>
           <Typography variant="body2" sx={styles.getStarted}>
@@ -75,6 +79,7 @@ export default function SupportPage() {
 
 const styles = {
   wrapper: {
+    position: 'relative',
     width: '100%',
     display: 'flex',
     justifyContent: 'center',

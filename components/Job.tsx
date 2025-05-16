@@ -12,7 +12,6 @@ const Job = (props: Props) => {
   console.log(data, 'data');
   return (
     <Box sx={styles.outerWrapper}>
-      {/* TODO: Add job details content */}
       <Box sx={styles.header}>
         <BackPage />
         <Box sx={styles.adminSection}>

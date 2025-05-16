@@ -1,5 +1,6 @@
+'use client';
 import { Box, Typography } from '@mui/material';
-import React from 'react';
+import React, { useEffect } from 'react';
 import dayjs from 'dayjs';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
 dayjs.extend(localizedFormat);
@@ -19,9 +20,11 @@ interface Props {
 const Profile = (props: Props) => {
   const { data } = props;
   const dispatch = useDispatch<AppDispatch>();
-  dispatch(setUserInStore(data));
+  useEffect(() => {
+    dispatch(setUserInStore(data));
+  }, [data]);
   const user = useSelector((state: RootState) => state.auth.user);
-
+  console.log('user', user);
   return (
     <Box
       sx={{
